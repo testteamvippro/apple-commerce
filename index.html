@@ -43,9 +43,10 @@
 <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
-        <p class="hero-eyebrow">New arrivals 2026</p>
-        <h1 class="hero-title">Think Different.<br>Shop Different.</h1>
-        <p class="hero-sub">Discover the full lineup of Apple products — iPhones, Macs, iPads, and more.</p>
+        <div class="hero-accent-bar"></div>
+        <p class="hero-eyebrow">New &amp; Used · All Generations</p>
+        <h1 class="hero-title">Every iPhone.<br>Every Budget.</h1>
+        <p class="hero-sub">From iPhone X to iPhone 17 Pro Max — new and certified used Apple devices at unbeatable prices.</p>
         <div class="hero-cta">
             <a href="#products" class="btn-primary">Shop Now</a>
             <a href="#categories" class="btn-ghost">Browse Categories</a>
@@ -62,10 +63,10 @@
         <h2 class="section-title">Shop by Category</h2>
         <div class="cat-grid">
             <div class="cat-card" onclick="filterCategory('iPhone')">
-                <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&q=80" alt="iPhone">
+                <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&q=80" alt="iPhone">
                 <div class="cat-info">
                     <h3>iPhone</h3>
-                    <p>From $599</p>
+                    <p>New &amp; Used · From $119</p>
                 </div>
             </div>
             <div class="cat-card" onclick="filterCategory('Mac')">
@@ -111,15 +112,29 @@
 <section class="products-section" id="products">
     <div class="container">
         <div class="products-header">
-            <h2 class="section-title" id="productsHeading">All Products</h2>
-            <div class="filter-bar">
-                <button class="filter-pill active" data-cat="all">All</button>
-                <button class="filter-pill" data-cat="iPhone">iPhone</button>
-                <button class="filter-pill" data-cat="Mac">Mac</button>
-                <button class="filter-pill" data-cat="iPad">iPad</button>
-                <button class="filter-pill" data-cat="AirPods">AirPods</button>
-                <button class="filter-pill" data-cat="Watch">Watch</button>
-                <button class="filter-pill" data-cat="Accessories">Accessories</button>
+            <div>
+                <h2 class="section-title" id="productsHeading">All Products</h2>
+                <p class="products-count" id="productsCount"></p>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Category</div>
+                <div class="filter-bar">
+                    <button class="filter-pill active" data-cat="all">All</button>
+                    <button class="filter-pill" data-cat="iPhone">iPhone</button>
+                    <button class="filter-pill" data-cat="Mac">Mac</button>
+                    <button class="filter-pill" data-cat="iPad">iPad</button>
+                    <button class="filter-pill" data-cat="AirPods">AirPods</button>
+                    <button class="filter-pill" data-cat="Watch">Watch</button>
+                    <button class="filter-pill" data-cat="Accessories">Accessories</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">Condition</div>
+                <div class="filter-bar">
+                    <button class="filter-pill active" data-cond="all">All</button>
+                    <button class="filter-pill" data-cond="New">🟢 New</button>
+                    <button class="filter-pill" data-cond="Used">🟡 Used</button>
+                </div>
             </div>
         </div>
 

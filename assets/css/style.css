@@ -10,8 +10,8 @@
     --gray-400: #aeaeb2;
     --gray-600: #636366;
     --gray-900: #1c1c1e;
-    --blue: #0071e3;
-    --blue-dark: #0062c4;
+    --blue: #e8001a;
+    --blue-dark: #c0001a;
     --red: #ff3b30;
     --green: #34c759;
     --orange: #ff9500;
@@ -114,6 +114,7 @@ a { text-decoration: none; color: inherit; }
     align-items: center; gap: 60px;
     padding: 80px 24px;
     max-width: 1200px; margin-left: auto; margin-right: auto; margin-top: 60px;
+    background: linear-gradient(150deg, rgba(232,0,26,.04) 0%, #fff 45%);
 }
 
 .hero-bg { display: none; }
@@ -129,7 +130,7 @@ a { text-decoration: none; color: inherit; }
     font-size: clamp(40px, 5vw, 64px);
     font-weight: 800; line-height: 1.1;
     letter-spacing: -0.02em; margin-bottom: 20px;
-    background: linear-gradient(135deg, #000 0%, #444 100%);
+    background: linear-gradient(135deg, #e8001a 0%, #1a1a1a 55%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
@@ -146,7 +147,7 @@ a { text-decoration: none; color: inherit; }
     content: '';
     position: absolute;
     width: 80%; height: 80%;
-    background: radial-gradient(circle, rgba(0,113,227,.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(232,0,26,.13) 0%, transparent 70%);
     border-radius: 50%;
 }
 
@@ -167,7 +168,7 @@ a { text-decoration: none; color: inherit; }
     font-size: 15px; font-weight: 600;
     transition: var(--transition); cursor: pointer; border: none;
 }
-.btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,113,227,.35); }
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,0,26,.35); }
 
 .btn-ghost {
     display: inline-flex; align-items: center; gap: 8px;
@@ -238,7 +239,7 @@ a { text-decoration: none; color: inherit; }
     transition: var(--transition);
 }
 .filter-pill:hover { border-color: var(--blue); color: var(--blue); }
-.filter-pill.active { background: var(--black); color: white; border-color: var(--black); }
+.filter-pill.active { background: var(--blue); color: white; border-color: var(--blue); }
 
 /* ===================== PRODUCTS GRID ===================== */
 .products-grid {
@@ -439,7 +440,7 @@ a { text-decoration: none; color: inherit; }
     font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px;
     transition: var(--transition);
 }
-.btn-add:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,113,227,.35); }
+.btn-add:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,0,26,.35); }
 
 .btn-cart-go {
     display: block; text-align: center;
@@ -538,7 +539,7 @@ a { text-decoration: none; color: inherit; }
     background: var(--blue); color: white; border: none; border-radius: var(--radius-md);
     font-size: 16px; font-weight: 700; cursor: pointer; transition: var(--transition);
 }
-.btn-checkout:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,113,227,.3); }
+.btn-checkout:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,0,26,.3); }
 
 .btn-continue {
     display: block; width: 100%; padding: 13px; margin-top: 10px;
@@ -593,7 +594,7 @@ a { text-decoration: none; color: inherit; }
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none; border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(0,113,227,.12);
+    box-shadow: 0 0 0 3px rgba(232,0,26,.12);
 }
 
 .form-group textarea { resize: vertical; min-height: 80px; }
@@ -604,7 +605,7 @@ a { text-decoration: none; color: inherit; }
     border-radius: var(--radius-md); font-size: 17px; font-weight: 700;
     cursor: pointer; transition: var(--transition);
 }
-.btn-place-order:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,113,227,.35); }
+.btn-place-order:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(232,0,26,.35); }
 
 .order-aside {
     position: sticky; top: 80px;
@@ -766,4 +767,56 @@ a { text-decoration: none; color: inherit; }
     .cat-grid { grid-template-columns: 1fr; }
     .products-grid { grid-template-columns: 1fr; }
     .success-card { padding: 40px 24px; }
+}
+
+/* ===================== CONDITION TAGS ===================== */
+.condition-tag {
+    position: absolute; top: 12px; right: 12px; z-index: 1;
+    padding: 4px 10px; border-radius: 100px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    backdrop-filter: blur(6px);
+}
+.condition-new {
+    background: rgba(52,199,89,.18); color: #1a7535;
+    border: 1px solid rgba(52,199,89,.35);
+}
+.condition-used {
+    background: rgba(255,149,0,.18); color: #b36000;
+    border: 1px solid rgba(255,149,0,.35);
+}
+
+/* ===================== FILTER GROUP ===================== */
+.filter-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.filter-label {
+    font-size: 11px; font-weight: 700; color: var(--gray-400);
+    text-transform: uppercase; letter-spacing: .08em;
+}
+
+/* ===================== CARD CONDITION NOTE ===================== */
+.card-condition-note {
+    font-size: 11px; font-weight: 600; color: #b36000;
+    margin-top: 3px; display: block;
+}
+.card-price-wrap { display: flex; flex-direction: column; }
+
+/* ===================== MODAL CONDITION ===================== */
+.modal-condition {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; margin-bottom: 10px;
+}
+.modal-condition.condition-new { background: rgba(52,199,89,.12); color: #1a7535; }
+.modal-condition.condition-used { background: rgba(255,149,0,.12); color: #b36000; }
+
+/* ===================== HERO ACCENT BAR ===================== */
+.hero-accent-bar {
+    width: 50px; height: 4px;
+    background: linear-gradient(90deg, var(--blue) 0%, rgba(232,0,26,.3) 100%);
+    border-radius: 2px; margin-bottom: 20px;
+}
+
+/* ===================== PRODUCT COUNT ===================== */
+.products-count {
+    font-size: 14px; color: var(--gray-400); font-weight: 500; margin-top: 4px;
 }

@@ -1,12 +1,14 @@
 let products = [];
 let currentProduct = null;
 let cart = loadCart();
+let activeCat = 'all';
+let activeCond = 'all';
 
 // ---- Boot ----
 document.addEventListener('DOMContentLoaded', async () => {
     updateBadge();
     await fetchProducts();
-    renderGrid(products);
+    applyFilters();
     setupFilters();
     setupModal();
     setupMobileNav();
@@ -23,20 +25,38 @@ function renderGrid(list) {
     const grid = document.getElementById('productsGrid');
     if (!grid) return;
     grid.innerHTML = '';
+
+    const count = document.getElementById('productsCount');
+    if (count) count.textContent = `${list.length} product${list.length !== 1 ? 's' : ''} found`;
+
+    if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray-400)">
+            <div style="font-size:48px;margin-bottom:16px">🔍</div>
+            <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">No products found</h3>
+            <p>Try changing the filters above.</p>
+        </div>`;
+        return;
+    }
+
     list.forEach(p => {
+        const isUsed = p.condition === 'Used';
         const el = document.createElement('div');
         el.className = 'product-card';
         el.innerHTML = `
             <div class="card-img-wrap">
                 ${p.badge ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
-                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/f2f2f7/999?text=${encodeURIComponent(p.name)}'">
+                <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${p.condition || 'New'}</span>
+                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/f5f5f5/ccc?text=${encodeURIComponent(p.name)}'">
             </div>
             <div class="card-body">
                 <p class="card-cat">${p.category}</p>
                 <h3 class="card-name">${p.name}</h3>
                 <p class="card-desc">${p.description}</p>
                 <div class="card-footer">
-                    <span class="card-price">$${p.price.toLocaleString()}</span>
+                    <div class="card-price-wrap">
+                        <span class="card-price">$${p.price.toLocaleString()}</span>
+                        ${isUsed ? '<span class="card-condition-note">Certified Used</span>' : ''}
+                    </div>
                     <button class="card-add" title="Add to cart" onclick="quickAdd(event, ${p.id})">+</button>
                 </div>
             </div>
@@ -48,16 +68,40 @@ function renderGrid(list) {
 }
 
 // ---- Filters ----
+function getFiltered() {
+    return products.filter(p => {
+        const catOk = activeCat === 'all' || p.category === activeCat;
+        const condOk = activeCond === 'all' || p.condition === activeCond;
+        return catOk && condOk;
+    });
+}
+
+function applyFilters() {
+    const filtered = getFiltered();
+    const heading = document.getElementById('productsHeading');
+    if (heading) {
+        const cat = activeCat === 'all' ? 'All Products' : activeCat;
+        const cond = activeCond === 'all' ? '' : ` · ${activeCond}`;
+        heading.textContent = cat + cond;
+    }
+    renderGrid(filtered);
+}
+
 function setupFilters() {
-    document.querySelectorAll('.filter-pill').forEach(btn => {
+    document.querySelectorAll('.filter-pill[data-cat]').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-pill[data-cat]').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const cat = btn.dataset.cat;
-            const filtered = cat === 'all' ? products : products.filter(p => p.category === cat);
-            const heading = document.getElementById('productsHeading');
-            if (heading) heading.textContent = cat === 'all' ? 'All Products' : cat;
-            renderGrid(filtered);
+            activeCat = btn.dataset.cat;
+            applyFilters();
+        });
+    });
+    document.querySelectorAll('.filter-pill[data-cond]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-pill[data-cond]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCond = btn.dataset.cond;
+            applyFilters();
         });
     });
 }
@@ -66,13 +110,11 @@ function setupFilters() {
 function filterCategory(cat) {
     document.querySelector('#products').scrollIntoView({ behavior: 'smooth' });
     setTimeout(() => {
-        document.querySelectorAll('.filter-pill').forEach(b => {
+        document.querySelectorAll('.filter-pill[data-cat]').forEach(b => {
             b.classList.toggle('active', b.dataset.cat === cat);
         });
-        const filtered = products.filter(p => p.category === cat);
-        const heading = document.getElementById('productsHeading');
-        if (heading) heading.textContent = cat;
-        renderGrid(filtered);
+        activeCat = cat;
+        applyFilters();
     }, 500);
 }
 
@@ -118,6 +160,17 @@ function openModal(id) {
     badge.textContent = p.badge || '';
     badge.className = 'modal-badge' + (p.badge ? ` badge-${p.badge.toLowerCase()}` : '');
     badge.style.display = p.badge ? 'inline-block' : 'none';
+
+    // show condition
+    let condEl = document.getElementById('modalCondition');
+    if (!condEl) {
+        condEl = document.createElement('div');
+        condEl.id = 'modalCondition';
+        badge.parentNode.insertBefore(condEl, badge.nextSibling);
+    }
+    condEl.className = `modal-condition condition-${(p.condition||'new').toLowerCase()}`;
+    condEl.textContent = p.condition === 'Used' ? '🟡 Used · Certified Excellent' : '🟢 Brand New · Sealed';
+    condEl.style.display = 'flex';
 
     document.getElementById('modalCat').textContent = p.category;
     document.getElementById('modalTitle').textContent = p.name;
