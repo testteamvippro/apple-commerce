@@ -1,0 +1,18 @@
+# Backend files (not needed for GitHub Pages)
+submit-order.php
+process-order.php
+orders/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup files
+*.bak
+*.backup

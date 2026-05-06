@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": "iPhone 15 Pro",
+    "category": "iPhone",
+    "price": 999,
+    "image": "https://via.placeholder.com/400x300?text=iPhone+15+Pro",
+    "description": "The latest flagship iPhone with advanced camera system and A17 Pro chip.",
+    "specs": [
+      "6.1\" Super Retina XDR display",
+      "A17 Pro chip",
+      "Advanced dual camera system",
+      "Up to 29 hours battery life"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "iPhone 15",
+    "category": "iPhone",
+    "price": 799,
+    "image": "https://via.placeholder.com/400x300?text=iPhone+15",
+    "description": "The newest iPhone with impressive performance and camera capabilities.",
+    "specs": [
+      "6.1\" Liquid Retina display",
+      "A16 Bionic chip",
+      "Dual camera system",
+      "Up to 26 hours battery life"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "MacBook Pro 16\"",
+    "category": "Mac",
+    "price": 2399,
+    "image": "https://via.placeholder.com/400x300?text=MacBook+Pro+16",
+    "description": "Powerful laptop for professionals with M3 Max chip.",
+    "specs": [
+      "16-inch Liquid Retina XDR display",
+      "M3 Max chip",
+      "36GB Unified Memory",
+      "1TB SSD Storage"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "MacBook Air 13\"",
+    "category": "Mac",
+    "price": 1199,
+    "image": "https://via.placeholder.com/400x300?text=MacBook+Air+13",
+    "description": "Ultraportable laptop with M2 chip for everyday tasks.",
+    "specs": [
+      "13.3-inch Liquid Retina display",
+      "M2 chip",
+      "8GB Unified Memory",
+      "256GB SSD Storage"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "iPad Pro 12.9\"",
+    "category": "iPad",
+    "price": 1099,
+    "image": "https://via.placeholder.com/400x300?text=iPad+Pro+12.9",
+    "description": "Powerful tablet for creative professionals.",
+    "specs": [
+      "12.9-inch Liquid Retina XDR display",
+      "M2 chip",
+      "8GB RAM",
+      "128GB Storage"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "iPad Air 11\"",
+    "category": "iPad",
+    "price": 799,
+    "image": "https://via.placeholder.com/400x300?text=iPad+Air+11",
+    "description": "Versatile tablet with impressive performance.",
+    "specs": [
+      "11-inch Liquid Retina display",
+      "M1 chip",
+      "8GB RAM",
+      "64GB Storage"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "AirPods Pro (2nd Gen)",
+    "category": "AirPods",
+    "price": 249,
+    "image": "https://via.placeholder.com/400x300?text=AirPods+Pro",
+    "description": "Premium wireless earbuds with active noise cancellation.",
+    "specs": [
+      "Active Noise Cancellation",
+      "Adaptive Audio",
+      "Spatial Audio",
+      "Up to 6 hours listening time"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "AirPods Max",
+    "category": "AirPods",
+    "price": 549,
+    "image": "https://via.placeholder.com/400x300?text=AirPods+Max",
+    "description": "Over-ear headphones with spatial audio and immersive sound.",
+    "specs": [
+      "Over-ear design",
+      "Spatial audio with dynamic head tracking",
+      "Active Noise Cancellation",
+      "Up to 20 hours battery life"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Apple Watch Series 9",
+    "category": "Watch",
+    "price": 399,
+    "image": "https://via.placeholder.com/400x300?text=Apple+Watch+Series+9",
+    "description": "Advanced health and fitness tracking smartwatch.",
+    "specs": [
+      "Always-On Retina display",
+      "Advanced fitness tracking",
+      "ECG and blood oxygen",
+      "Water resistant"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Apple Watch Ultra",
+    "category": "Watch",
+    "price": 799,
+    "image": "https://via.placeholder.com/400x300?text=Apple+Watch+Ultra",
+    "description": "Rugged outdoor smartwatch for adventure enthusiasts.",
+    "specs": [
+      "Large Retina display",
+      "Titanium case",
+      "Action button",
+      "Extreme sports features"
+    ]
+  }
+]

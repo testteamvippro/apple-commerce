@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Store - Premium Electronics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <h1>🍎 Apple Store</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="#" class="nav-link active">Products</a>
+                <a href="cart.html" class="nav-link cart-link">
+                    🛒 Cart <span class="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Premium Apple Products</h2>
+            <p>Discover the latest iPhones, MacBooks, AirPods, and more</p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="container">
+            <h3>Filter by Category</h3>
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">All Products</button>
+                <button class="filter-btn" data-category="iPhone">iPhone</button>
+                <button class="filter-btn" data-category="Mac">Mac</button>
+                <button class="filter-btn" data-category="iPad">iPad</button>
+                <button class="filter-btn" data-category="AirPods">AirPods</button>
+                <button class="filter-btn" data-category="Watch">Apple Watch</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="container">
+            <h2>Our Collection</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Product" class="modal-image">
+                <div class="modal-info">
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription" class="product-description"></p>
+                    <div class="product-specs" id="modalSpecs"></div>
+                    <p class="price" id="modalPrice"></p>
+                    <input type="number" id="quantity" min="1" value="1" class="quantity-input">
+                    <button class="btn-add-to-cart" onclick="addToCartFromModal()">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </modal>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Apple Store. Easy deployment on Hostinger/Inet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

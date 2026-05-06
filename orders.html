@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Apple Store</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <h1>🍎 Apple Store</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="index.html" class="nav-link">Products</a>
+                <a href="cart.html" class="nav-link">🛒 Cart</a>
+                <a href="orders.html" class="nav-link active">📋 Orders</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Orders Section -->
+    <section class="orders-section">
+        <div class="container">
+            <h2>Your Orders</h2>
+            
+            <div class="orders-controls">
+                <button class="btn-secondary" onclick="clearAllOrders()" style="background-color: #ff3b30; color: white; border: none;">Clear All Orders</button>
+                <button class="btn-primary" onclick="exportOrders()">Export as JSON</button>
+            </div>
+
+            <!-- Orders List -->
+            <div id="ordersList"></div>
+
+            <!-- No Orders Message -->
+            <div id="noOrders" class="cart-empty" style="display: none;">
+                <p>No orders yet</p>
+                <a href="index.html" class="btn-primary">Start Shopping</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Apple Store. GitHub Pages Version. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/orders.js"></script>
+</body>
+</html>
