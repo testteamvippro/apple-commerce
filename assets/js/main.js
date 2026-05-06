@@ -27,13 +27,13 @@ function renderGrid(list) {
     grid.innerHTML = '';
 
     const count = document.getElementById('productsCount');
-    if (count) count.textContent = `${list.length} product${list.length !== 1 ? 's' : ''} found`;
+    if (count) count.textContent = `${list.length} sản phẩm`; 
 
     if (list.length === 0) {
         grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray-400)">
             <div style="font-size:48px;margin-bottom:16px">🔍</div>
-            <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">No products found</h3>
-            <p>Try changing the filters above.</p>
+            <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Không tìm thấy sản phẩm</h3>
+            <p>Hãy thay đổi các bộ lọc phía trên.</p>
         </div>`;
         return;
     }
@@ -45,7 +45,7 @@ function renderGrid(list) {
         el.innerHTML = `
             <div class="card-img-wrap">
                 ${p.badge ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
-                <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${p.condition || 'New'}</span>
+                <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${p.condition === 'Used' ? '✅ Đã Dùng' : '🟢 Mới'}</span>
                 <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/f5f5f5/ccc?text=${encodeURIComponent(p.name)}'">
             </div>
             <div class="card-body">
@@ -54,10 +54,10 @@ function renderGrid(list) {
                 <p class="card-desc">${p.description}</p>
                 <div class="card-footer">
                     <div class="card-price-wrap">
-                        <span class="card-price">$${p.price.toLocaleString()}</span>
-                        ${isUsed ? '<span class="card-condition-note">Certified Used</span>' : ''}
+                        <span class="card-price">${p.price.toLocaleString('vi-VN')}₫</span>
+                        ${isUsed ? '<span class="card-condition-note">Chứng Thực Tuyệt Vời</span>' : ''}
                     </div>
-                    <button class="card-add" title="Add to cart" onclick="quickAdd(event, ${p.id})">+</button>
+                    <button class="card-add" title="Thêm vào giỏ" onclick="quickAdd(event, ${p.id})">+</button>
                 </div>
             </div>
         `;
@@ -80,8 +80,8 @@ function applyFilters() {
     const filtered = getFiltered();
     const heading = document.getElementById('productsHeading');
     if (heading) {
-        const cat = activeCat === 'all' ? 'All Products' : activeCat;
-        const cond = activeCond === 'all' ? '' : ` · ${activeCond}`;
+        const cat = activeCat === 'all' ? 'Tất Cả Sản Phẩm' : activeCat;
+        const cond = activeCond === 'all' ? '' : ` · ${activeCond === 'New' ? 'Mới' : 'Đã Dùng'}`;
         heading.textContent = cat + cond;
     }
     renderGrid(filtered);
@@ -124,7 +124,7 @@ function quickAdd(e, id) {
     const p = products.find(x => x.id === id);
     if (!p) return;
     addToCart(p, 1);
-    showToast(`${p.name} added to cart 🛒`);
+    showToast(`${p.name} đã thêm vào giỏ 🛒`);
 }
 
 // ---- Modal ----
@@ -141,7 +141,7 @@ function setupModal() {
         if (!currentProduct) return;
         const qty = parseInt(document.getElementById('modalQty').value) || 1;
         addToCart(currentProduct, qty);
-        showToast(`${currentProduct.name} added to cart 🛒`);
+        showToast(`${currentProduct.name} đã thêm vào giỏ 🛒`);
         closeModal();
     });
 }
@@ -169,7 +169,7 @@ function openModal(id) {
         badge.parentNode.insertBefore(condEl, badge.nextSibling);
     }
     condEl.className = `modal-condition condition-${(p.condition||'new').toLowerCase()}`;
-    condEl.textContent = p.condition === 'Used' ? '🟡 Used · Certified Excellent' : '🟢 Brand New · Sealed';
+    condEl.textContent = p.condition === 'Used' ? '🟡 Đã Dùng · Chứng Thực Tuyệt Vời' : '🟢 Mới · Hộp Nguyên Seal';
     condEl.style.display = 'flex';
 
     document.getElementById('modalCat').textContent = p.category;

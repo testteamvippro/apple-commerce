@@ -32,7 +32,7 @@ function renderSummary() {
                 <div class="aside-item-name">${item.name}</div>
                 <div class="aside-item-qty">Qty: ${item.quantity}</div>
             </div>
-            <div class="aside-item-price">$${(item.price * item.quantity).toLocaleString()}</div>
+            <div class="aside-item-price">₫${(item.price * item.quantity).toLocaleString()}</div>
         `;
         itemsEl.appendChild(el);
     });
@@ -40,7 +40,7 @@ function renderSummary() {
     const sub = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const tax = sub * 0.1;
     const total = sub + tax;
-    const fmt = n => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    const fmt = n => `₫${n.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
 
     document.getElementById('checkoutSubtotal').textContent = fmt(sub);
     document.getElementById('checkoutTax').textContent = fmt(tax);
@@ -87,13 +87,13 @@ function showSuccess(num) {
         <div class="success-wrap" style="grid-column:1/-1">
             <div class="success-card">
                 <div class="success-icon">✅</div>
-                <h2>Order Placed!</h2>
-                <p>Thank you for your order. We'll reach out shortly to confirm payment.</p>
+                <h2>Đơn Hàng Đã Được Đặt!</h2>
+                <p>Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ liên hệ bạn sớm để xác nhận thanh toán.</p>
                 <div class="success-order">${num}</div>
-                <p>Save your order number for tracking.</p>
+                <p>Lưu lại mã đơn hàng của bạn để theo dõi.</p>
                 <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
-                    <a href="orders.html" class="btn-primary">View Orders</a>
-                    <a href="index.html" class="btn-ghost">Continue Shopping</a>
+                    <a href="orders.html" class="btn-primary">Xem Đơn Hàng</a>
+                    <a href="index.html" class="btn-ghost">Tiếp Tục Mua Sắm</a>
                 </div>
             </div>
         </div>

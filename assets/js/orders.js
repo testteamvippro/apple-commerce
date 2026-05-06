@@ -47,49 +47,49 @@ function renderOrders() {
                 <div class="order-meta">
                     <div class="order-meta-item"><strong>${order.firstName} ${order.lastName}</strong></div>
                     <div class="order-meta-item">${order.items.length} item${order.items.length > 1 ? 's' : ''}</div>
-                    <div class="order-meta-item"><strong>$${order.total.toLocaleString('en-US', {minimumFractionDigits:2})}</strong></div>
-                    <span class="order-status">Pending</span>
+                    <div class="order-meta-item"><strong>₫${order.total.toLocaleString('en-US', {minimumFractionDigits:2})}</strong></div>
+                    <span class="order-status">Đang Xử Lý</span>
                 </div>
                 <div class="order-actions-bar">
-                    <button class="btn-sm" onclick="toggleDetails(${i})">Details</button>
+                    <button class="btn-sm" onclick="toggleDetails(${i})">Chi Tiết</button>
                     <button class="btn-sm blue" onclick="downloadOrder(${i})">↓ JSON</button>
-                    <button class="btn-sm danger" onclick="deleteOrder(${i})">Delete</button>
+                    <button class="btn-sm danger" onclick="deleteOrder(${i})">Xóa</button>
                 </div>
             </div>
             <div class="order-details-panel" id="details${i}">
                 <div class="details-grid">
                     <div class="details-block">
-                        <h4>Customer</h4>
+                        <h4>Khách Hàng</h4>
                         <p>${order.firstName} ${order.lastName}<br>${order.email}<br>${order.phone}</p>
                     </div>
                     <div class="details-block">
-                        <h4>Shipping Address</h4>
+                        <h4>Địa Chỉ Giao Hàng</h4>
                         <p>${order.address}<br>${order.city}, ${order.state} ${order.postal}<br>${order.country}</p>
                     </div>
                     <div class="details-block">
-                        <h4>Notes</h4>
+                        <h4>Ghi Chú</h4>
                         <p>${order.notes || '—'}</p>
                     </div>
                 </div>
                 <table class="items-table">
                     <thead>
-                        <tr><th>Product</th><th>Unit Price</th><th>Qty</th><th>Total</th></tr>
+                        <tr><th>Sản Phẩm</th><th>Giá Đơn Vị</th><th>Số Lượng</th><th>Tổng</th></tr>
                     </thead>
                     <tbody>
                         ${order.items.map(item => `
                             <tr>
                                 <td>${item.name}</td>
-                                <td>$${item.price.toLocaleString()}</td>
+                                <td>₫${item.price.toLocaleString()}</td>
                                 <td>${item.quantity}</td>
-                                <td>$${(item.price * item.quantity).toLocaleString()}</td>
+                                <td>₫${(item.price * item.quantity).toLocaleString()}</td>
                             </tr>
                         `).join('')}
                     </tbody>
                 </table>
                 <div class="totals-mini">
-                    <div>Subtotal: $${order.subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
-                    <div>Tax (10%): $${order.tax.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
-                    <div class="total-big">Total: $${order.total.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+                    <div>Tạm Tính: ₫${order.subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+                    <div>Thuế (10%): ₫${order.tax.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+                    <div class="total-big">Tổng: ₫${order.total.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
                 </div>
             </div>
         `;

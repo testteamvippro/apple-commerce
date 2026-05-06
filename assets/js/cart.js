@@ -56,7 +56,7 @@ function renderCart() {
                 </div>
             </div>
             <div class="cart-item-right">
-                <span class="cart-item-total">$${(item.price * item.quantity).toLocaleString()}</span>
+                <span class="cart-item-total">₫${(item.price * item.quantity).toLocaleString()}</span>
                 <button class="cart-item-remove" onclick="removeItem(${i})">Remove</button>
             </div>
         `;
@@ -89,7 +89,7 @@ function updateSummary() {
     const sub = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const tax = sub * 0.1;
     const total = sub + tax;
-    const fmt = n => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    const fmt = n => `₫${n.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
     document.getElementById('subtotal').textContent = fmt(sub);
     document.getElementById('tax').textContent = fmt(tax);
     document.getElementById('total').textContent = fmt(total);
