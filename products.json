@@ -1,142 +1,225 @@
 [
   {
     "id": 1,
-    "name": "iPhone 15 Pro",
+    "name": "iPhone 15 Pro Max",
     "category": "iPhone",
-    "price": 999,
-    "image": "https://via.placeholder.com/400x300?text=iPhone+15+Pro",
-    "description": "The latest flagship iPhone with advanced camera system and A17 Pro chip.",
-    "specs": [
-      "6.1\" Super Retina XDR display",
-      "A17 Pro chip",
-      "Advanced dual camera system",
-      "Up to 29 hours battery life"
-    ]
+    "price": 1199,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+      "https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=600&q=80"
+    ],
+    "description": "The most pro iPhone ever. Titanium design, A17 Pro chip, and the most powerful camera system on iPhone.",
+    "specs": ["6.7\" Super Retina XDR display", "A17 Pro chip", "48MP Fusion camera", "Up to 29 hours battery", "Titanium design", "USB 3"]
   },
   {
     "id": 2,
-    "name": "iPhone 15",
+    "name": "iPhone 15 Pro",
     "category": "iPhone",
-    "price": 799,
-    "image": "https://via.placeholder.com/400x300?text=iPhone+15",
-    "description": "The newest iPhone with impressive performance and camera capabilities.",
-    "specs": [
-      "6.1\" Liquid Retina display",
-      "A16 Bionic chip",
-      "Dual camera system",
-      "Up to 26 hours battery life"
-    ]
+    "price": 999,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1695048071014-640980b58b97?w=600&q=80",
+    "gallery": [],
+    "description": "Forged in titanium and featuring the groundbreaking A17 Pro chip, a customizable Action button, and the most powerful iPhone camera system ever.",
+    "specs": ["6.1\" Super Retina XDR display", "A17 Pro chip", "Advanced Triple camera", "Up to 23 hours battery", "Action Button", "Titanium design"]
   },
   {
     "id": 3,
-    "name": "MacBook Pro 16\"",
-    "category": "Mac",
-    "price": 2399,
-    "image": "https://via.placeholder.com/400x300?text=MacBook+Pro+16",
-    "description": "Powerful laptop for professionals with M3 Max chip.",
-    "specs": [
-      "16-inch Liquid Retina XDR display",
-      "M3 Max chip",
-      "36GB Unified Memory",
-      "1TB SSD Storage"
-    ]
+    "name": "iPhone 15",
+    "category": "iPhone",
+    "price": 799,
+    "badge": "",
+    "image": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&q=80",
+    "gallery": [],
+    "description": "A15 Bionic chip, beautiful Super Retina XDR display, and an advanced dual camera system.",
+    "specs": ["6.1\" Super Retina XDR display", "A16 Bionic chip", "48MP Main camera", "Up to 26 hours battery", "Dynamic Island", "USB-C"]
   },
   {
     "id": 4,
-    "name": "MacBook Air 13\"",
-    "category": "Mac",
-    "price": 1199,
-    "image": "https://via.placeholder.com/400x300?text=MacBook+Air+13",
-    "description": "Ultraportable laptop with M2 chip for everyday tasks.",
-    "specs": [
-      "13.3-inch Liquid Retina display",
-      "M2 chip",
-      "8GB Unified Memory",
-      "256GB SSD Storage"
-    ]
+    "name": "iPhone 14",
+    "category": "iPhone",
+    "price": 599,
+    "badge": "Sale",
+    "image": "https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=600&q=80",
+    "gallery": [],
+    "description": "Supercharged by A15 Bionic chip, great camera system with a bigger main sensor, and emergency SOS via satellite.",
+    "specs": ["6.1\" Super Retina XDR display", "A15 Bionic chip", "12MP Dual camera", "Up to 20 hours battery", "Crash Detection", "Emergency SOS"]
   },
   {
     "id": 5,
-    "name": "iPad Pro 12.9\"",
-    "category": "iPad",
-    "price": 1099,
-    "image": "https://via.placeholder.com/400x300?text=iPad+Pro+12.9",
-    "description": "Powerful tablet for creative professionals.",
-    "specs": [
-      "12.9-inch Liquid Retina XDR display",
-      "M2 chip",
-      "8GB RAM",
-      "128GB Storage"
-    ]
+    "name": "MacBook Pro 16\" M3 Max",
+    "category": "Mac",
+    "price": 3499,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+    "gallery": [],
+    "description": "The most powerful MacBook Pro ever. M3 Max chip, Liquid Retina XDR display, and all-day battery life.",
+    "specs": ["16\" Liquid Retina XDR display", "M3 Max chip", "48GB Unified Memory", "1TB SSD", "Up to 22 hours battery", "HDMI & SD card"]
   },
   {
     "id": 6,
-    "name": "iPad Air 11\"",
-    "category": "iPad",
-    "price": 799,
-    "image": "https://via.placeholder.com/400x300?text=iPad+Air+11",
-    "description": "Versatile tablet with impressive performance.",
-    "specs": [
-      "11-inch Liquid Retina display",
-      "M1 chip",
-      "8GB RAM",
-      "64GB Storage"
-    ]
+    "name": "MacBook Pro 14\" M3 Pro",
+    "category": "Mac",
+    "price": 1999,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&q=80",
+    "gallery": [],
+    "description": "Supercharged by M3 Pro chip, a 14-inch Liquid Retina XDR display, and all-day battery — this MacBook Pro is for those who demand the best.",
+    "specs": ["14\" Liquid Retina XDR display", "M3 Pro chip", "18GB Unified Memory", "512GB SSD", "Up to 18 hours battery", "MagSafe 3"]
   },
   {
     "id": 7,
-    "name": "AirPods Pro (2nd Gen)",
-    "category": "AirPods",
-    "price": 249,
-    "image": "https://via.placeholder.com/400x300?text=AirPods+Pro",
-    "description": "Premium wireless earbuds with active noise cancellation.",
-    "specs": [
-      "Active Noise Cancellation",
-      "Adaptive Audio",
-      "Spatial Audio",
-      "Up to 6 hours listening time"
-    ]
+    "name": "MacBook Air 15\" M3",
+    "category": "Mac",
+    "price": 1299,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&q=80",
+    "gallery": [],
+    "description": "The 15-inch MacBook Air. Serious performance in an impossibly thin and light design.",
+    "specs": ["15.3\" Liquid Retina display", "M3 chip", "8GB Unified Memory", "256GB SSD", "Up to 18 hours battery", "1080p FaceTime camera"]
   },
   {
     "id": 8,
-    "name": "AirPods Max",
-    "category": "AirPods",
-    "price": 549,
-    "image": "https://via.placeholder.com/400x300?text=AirPods+Max",
-    "description": "Over-ear headphones with spatial audio and immersive sound.",
-    "specs": [
-      "Over-ear design",
-      "Spatial audio with dynamic head tracking",
-      "Active Noise Cancellation",
-      "Up to 20 hours battery life"
-    ]
+    "name": "MacBook Air 13\" M2",
+    "category": "Mac",
+    "price": 1099,
+    "badge": "Sale",
+    "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80",
+    "gallery": [],
+    "description": "Strikingly thin design, M2 chip, a beautiful Liquid Retina display, MagSafe charging, and incredible battery life.",
+    "specs": ["13.6\" Liquid Retina display", "M2 chip", "8GB Unified Memory", "256GB SSD", "Up to 18 hours battery", "MagSafe 3"]
   },
   {
     "id": 9,
-    "name": "Apple Watch Series 9",
-    "category": "Watch",
-    "price": 399,
-    "image": "https://via.placeholder.com/400x300?text=Apple+Watch+Series+9",
-    "description": "Advanced health and fitness tracking smartwatch.",
-    "specs": [
-      "Always-On Retina display",
-      "Advanced fitness tracking",
-      "ECG and blood oxygen",
-      "Water resistant"
-    ]
+    "name": "iPad Pro 12.9\" M2",
+    "category": "iPad",
+    "price": 1099,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80",
+    "gallery": [],
+    "description": "Supercharged by M2 chip. The most advanced iPad ever — it's practically a computer. With a stunning XDR display and ProRes video.",
+    "specs": ["12.9\" Liquid Retina XDR display", "M2 chip", "8GB RAM", "128GB Storage", "Apple Pencil support", "Wi-Fi 6E"]
   },
   {
     "id": 10,
-    "name": "Apple Watch Ultra",
+    "name": "iPad Air 11\" M2",
+    "category": "iPad",
+    "price": 799,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?w=600&q=80",
+    "gallery": [],
+    "description": "Serious performance in a thin and light design. The powerful M2 chip with a stunning Liquid Retina display.",
+    "specs": ["11\" Liquid Retina display", "M2 chip", "8GB RAM", "128GB Storage", "USB-C", "Apple Pencil Pro support"]
+  },
+  {
+    "id": 11,
+    "name": "iPad mini 7",
+    "category": "iPad",
+    "price": 499,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&q=80",
+    "gallery": [],
+    "description": "The ultimate compact iPad. Featuring the A17 Pro chip and an 8.3-inch Liquid Retina display.",
+    "specs": ["8.3\" Liquid Retina display", "A17 Pro chip", "8GB RAM", "128GB Storage", "USB-C", "5G capable"]
+  },
+  {
+    "id": 12,
+    "name": "AirPods Pro (2nd Gen)",
+    "category": "AirPods",
+    "price": 249,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1639134280203-a73a64f9e1b1?w=600&q=80",
+    "gallery": [],
+    "description": "Adaptive Audio. Personalized Spatial Audio. All-new H2 chip. The most powerful AirPods Pro ever.",
+    "specs": ["Active Noise Cancellation", "Adaptive Transparency", "Spatial Audio", "Up to 6 hours listening", "MagSafe charging case", "IP54 rated"]
+  },
+  {
+    "id": 13,
+    "name": "AirPods (4th Gen)",
+    "category": "AirPods",
+    "price": 179,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=600&q=80",
+    "gallery": [],
+    "description": "All-new design, upgraded H2 chip for rich, detailed audio, and optional Active Noise Cancellation.",
+    "specs": ["H2 chip", "Personalized Spatial Audio", "Optional Active Noise Cancellation", "Up to 5 hours listening", "USB-C charging", "IPX4 rated"]
+  },
+  {
+    "id": 14,
+    "name": "AirPods Max (USB-C)",
+    "category": "AirPods",
+    "price": 549,
+    "badge": "",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80",
+    "gallery": [],
+    "description": "An uncompromising listening experience with high-fidelity audio, industry-leading Active Noise Cancellation, and a premium design.",
+    "specs": ["Over-ear design", "Active Noise Cancellation", "Spatial Audio", "Up to 20 hours battery", "USB-C", "Available in 5 colors"]
+  },
+  {
+    "id": 15,
+    "name": "Apple Watch Series 10",
+    "category": "Watch",
+    "price": 399,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=600&q=80",
+    "gallery": [],
+    "description": "The thinnest Apple Watch ever. Advanced health features including sleep apnea detection, always-on Retina display.",
+    "specs": ["46mm case", "Always-On Retina display", "Sleep Apnea detection", "ECG & Blood Oxygen", "GPS + Cellular", "Water resistant 50m"]
+  },
+  {
+    "id": 16,
+    "name": "Apple Watch Ultra 2",
     "category": "Watch",
     "price": 799,
-    "image": "https://via.placeholder.com/400x300?text=Apple+Watch+Ultra",
-    "description": "Rugged outdoor smartwatch for adventure enthusiasts.",
-    "specs": [
-      "Large Retina display",
-      "Titanium case",
-      "Action button",
-      "Extreme sports features"
-    ]
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600&q=80",
+    "gallery": [],
+    "description": "Designed for endurance athletes and explorers. The most capable and durable Apple Watch ever.",
+    "specs": ["49mm Titanium case", "Precision GPS", "Depth App", "Action Button", "Up to 60 hours battery", "Water resistant 100m"]
+  },
+  {
+    "id": 17,
+    "name": "Apple Watch SE (2nd Gen)",
+    "category": "Watch",
+    "price": 249,
+    "badge": "Sale",
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
+    "gallery": [],
+    "description": "Packed with features that help you stay healthy, active, and connected — at a great price.",
+    "specs": ["40mm/44mm case", "Retina display", "Crash Detection", "Fall Detection", "GPS", "Water resistant 50m"]
+  },
+  {
+    "id": 18,
+    "name": "Apple TV 4K (3rd Gen)",
+    "category": "Accessories",
+    "price": 129,
+    "badge": "",
+    "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600&q=80",
+    "gallery": [],
+    "description": "Stunning 4K HDR streaming, powerful A15 Bionic chip, and Siri Remote with full touch control.",
+    "specs": ["4K HDR", "A15 Bionic chip", "Wi-Fi 6", "Siri Remote", "Thread & HomeKit", "Dolby Atmos"]
+  },
+  {
+    "id": 19,
+    "name": "HomePod (2nd Gen)",
+    "category": "Accessories",
+    "price": 299,
+    "badge": "",
+    "image": "https://images.unsplash.com/photo-1512446816042-444d641267d4?w=600&q=80",
+    "gallery": [],
+    "description": "Breakthrough sound quality, intelligence through Siri, and is the perfect hub for your smart home.",
+    "specs": ["S9 chip", "High-excursion woofer", "Five tweeters", "Spatial Audio", "Temperature & humidity sensor", "Thread"]
+  },
+  {
+    "id": 20,
+    "name": "MagSafe Charger Bundle",
+    "category": "Accessories",
+    "price": 89,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80",
+    "gallery": [],
+    "description": "Complete MagSafe charging bundle for iPhone, AirPods, and Apple Watch — all in one elegant charger.",
+    "specs": ["15W MagSafe for iPhone", "5W for AirPods", "Apple Watch charging", "USB-C power adapter", "1m braided cable", "Compatible with MagSafe cases"]
   }
 ]

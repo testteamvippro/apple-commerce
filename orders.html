@@ -3,52 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders - Apple Store</title>
+    <title>My Orders — Apple Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <h1>🍎 Apple Store</h1>
-            </div>
-            <div class="navbar-menu">
-                <a href="index.html" class="nav-link">Products</a>
-                <a href="cart.html" class="nav-link">🛒 Cart</a>
-                <a href="orders.html" class="nav-link active">📋 Orders</a>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+            Apple Store
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Products</a>
+            <a href="orders.html" class="nav-link active">Orders</a>
+        </div>
+        <a href="cart.html" class="nav-cart">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+    </div>
+</nav>
+
+<div class="page-hero">
+    <div class="container">
+        <h1>My Orders</h1>
+        <p>Track and manage your purchases</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="orders-layout">
+        <div class="orders-toolbar">
+            <span id="ordersCount" style="font-size:15px;color:var(--gray-600)"></span>
+            <div class="orders-toolbar-right">
+                <button class="btn-sm blue" onclick="exportAllOrders()">↓ Export All</button>
+                <button class="btn-sm danger" onclick="clearAllOrders()">Clear All</button>
             </div>
         </div>
-    </nav>
 
-    <!-- Orders Section -->
-    <section class="orders-section">
-        <div class="container">
-            <h2>Your Orders</h2>
-            
-            <div class="orders-controls">
-                <button class="btn-secondary" onclick="clearAllOrders()" style="background-color: #ff3b30; color: white; border: none;">Clear All Orders</button>
-                <button class="btn-primary" onclick="exportOrders()">Export as JSON</button>
-            </div>
+        <div id="ordersList"></div>
 
-            <!-- Orders List -->
-            <div id="ordersList"></div>
-
-            <!-- No Orders Message -->
-            <div id="noOrders" class="cart-empty" style="display: none;">
-                <p>No orders yet</p>
-                <a href="index.html" class="btn-primary">Start Shopping</a>
-            </div>
+        <div class="empty-orders" id="ordersEmpty" style="display:none">
+            <div class="empty-icon">📦</div>
+            <h3>No orders yet</h3>
+            <p>Your order history will appear here once you make a purchase.</p>
+            <a href="index.html" class="btn-primary">Start Shopping</a>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Apple Store. GitHub Pages Version. All rights reserved.</p>
-        </div>
-    </footer>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-bottom"><p>© 2026 Apple Store. All rights reserved.</p></div>
+    </div>
+</footer>
 
-    <script src="assets/js/orders.js"></script>
+<script src="assets/js/orders.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const count = orders.length;
+    const el = document.getElementById('ordersCount');
+    if (el) el.textContent = count > 0 ? `${count} order${count > 1 ? 's' : ''} found` : '';
+});
+</script>
 </body>
 </html>

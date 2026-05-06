@@ -1,183 +1,189 @@
 let products = [];
-let filteredProducts = [];
-let cart = [];
-let currentModal = null;
 let currentProduct = null;
+let cart = loadCart();
 
-// Load products from JSON
-async function loadProducts() {
-    try {
-        const response = await fetch('products.json');
-        products = await response.json();
-        filteredProducts = [...products];
-        displayProducts(filteredProducts);
-        updateCartCount();
-    } catch (error) {
-        console.error('Error loading products:', error);
-    }
-}
-
-// Display products in grid
-function displayProducts(productsToDisplay) {
-    const grid = document.getElementById('productsGrid');
-    grid.innerHTML = '';
-
-    productsToDisplay.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="product-image">
-            <div class="product-info">
-                <p class="product-category">${product.category}</p>
-                <h3 class="product-name">${product.name}</h3>
-                <p class="product-description">${product.description}</p>
-                <p class="product-price">$${product.price.toLocaleString()}</p>
-                <button class="btn-view" onclick="openModal(${product.id})">View Details</button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-// Open product details modal
-function openModal(productId) {
-    currentProduct = products.find(p => p.id === productId);
-    if (!currentProduct) return;
-
-    document.getElementById('modalImage').src = currentProduct.image;
-    document.getElementById('modalTitle').textContent = currentProduct.name;
-    document.getElementById('modalDescription').textContent = currentProduct.description;
-    document.getElementById('modalPrice').textContent = `$${currentProduct.price.toLocaleString()}`;
-    document.getElementById('quantity').value = 1;
-
-    const specsDiv = document.getElementById('modalSpecs');
-    specsDiv.innerHTML = '<strong>Specifications:</strong><ul>' +
-        currentProduct.specs.map(spec => `<li>${spec}</li>`).join('') +
-        '</ul>';
-
-    const modal = document.getElementById('productModal');
-    modal.style.display = 'block';
-}
-
-// Close modal
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('productModal');
-    const closeBtn = document.querySelector('.close');
-
-    closeBtn.onclick = () => {
-        modal.style.display = 'none';
-    };
-
-    window.onclick = (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    };
-
-    // Load cart from localStorage
-    loadCart();
-    loadProducts();
-
-    // Setup filter buttons
-    setupFilterButtons();
+// ---- Boot ----
+document.addEventListener('DOMContentLoaded', async () => {
+    updateBadge();
+    await fetchProducts();
+    renderGrid(products);
+    setupFilters();
+    setupModal();
+    setupMobileNav();
 });
 
-// Add product to cart from modal
-function addToCartFromModal() {
-    if (!currentProduct) return;
-
-    const quantity = parseInt(document.getElementById('quantity').value) || 1;
-    addToCart(currentProduct, quantity);
-
-    // Close modal
-    document.getElementById('productModal').style.display = 'none';
-    
-    // Show notification
-    showNotification('Added to cart!');
+// ---- Fetch products ----
+async function fetchProducts() {
+    const res = await fetch('products.json');
+    products = await res.json();
 }
 
-// Add to cart
-function addToCart(product, quantity = 1) {
-    const existingItem = cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-        existingItem.quantity += quantity;
-    } else {
-        cart.push({
-            ...product,
-            quantity: quantity
-        });
-    }
-
-    saveCart();
-    updateCartCount();
+// ---- Render grid ----
+function renderGrid(list) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    list.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'product-card';
+        el.innerHTML = `
+            <div class="card-img-wrap">
+                ${p.badge ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
+                <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400/f2f2f7/999?text=${encodeURIComponent(p.name)}'">
+            </div>
+            <div class="card-body">
+                <p class="card-cat">${p.category}</p>
+                <h3 class="card-name">${p.name}</h3>
+                <p class="card-desc">${p.description}</p>
+                <div class="card-footer">
+                    <span class="card-price">$${p.price.toLocaleString()}</span>
+                    <button class="card-add" title="Add to cart" onclick="quickAdd(event, ${p.id})">+</button>
+                </div>
+            </div>
+        `;
+        el.querySelector('.card-img-wrap').addEventListener('click', () => openModal(p.id));
+        el.querySelector('.card-name').addEventListener('click', () => openModal(p.id));
+        grid.appendChild(el);
+    });
 }
 
-// Update cart count in navbar
-function updateCartCount() {
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.querySelector('.cart-count').textContent = count;
-}
-
-// Save cart to localStorage
-function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-// Load cart from localStorage
-function loadCart() {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-        updateCartCount();
-    }
-}
-
-// Setup filter buttons
-function setupFilterButtons() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-
-    filterBtns.forEach(btn => {
+// ---- Filters ----
+function setupFilters() {
+    document.querySelectorAll('.filter-pill').forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterBtns.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
-            const category = btn.getAttribute('data-category');
-            filterByCategory(category);
+            const cat = btn.dataset.cat;
+            const filtered = cat === 'all' ? products : products.filter(p => p.category === cat);
+            const heading = document.getElementById('productsHeading');
+            if (heading) heading.textContent = cat === 'all' ? 'All Products' : cat;
+            renderGrid(filtered);
         });
     });
 }
 
-// Filter products by category
-function filterByCategory(category) {
-    if (category === 'all') {
-        filteredProducts = [...products];
-    } else {
-        filteredProducts = products.filter(p => p.category === category);
-    }
-    displayProducts(filteredProducts);
-}
-
-// Show notification
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'success-message';
-    notification.textContent = message;
-    notification.style.position = 'fixed';
-    notification.style.top = '100px';
-    notification.style.right = '20px';
-    notification.style.zIndex = '1001';
-    notification.style.minWidth = '300px';
-    document.body.appendChild(notification);
-
+// ---- filterCategory (called from category cards) ----
+function filterCategory(cat) {
+    document.querySelector('#products').scrollIntoView({ behavior: 'smooth' });
     setTimeout(() => {
-        notification.remove();
-    }, 3000);
+        document.querySelectorAll('.filter-pill').forEach(b => {
+            b.classList.toggle('active', b.dataset.cat === cat);
+        });
+        const filtered = products.filter(p => p.category === cat);
+        const heading = document.getElementById('productsHeading');
+        if (heading) heading.textContent = cat;
+        renderGrid(filtered);
+    }, 500);
 }
 
-// Navigate to cart
-function goToCart() {
-    window.location.href = 'cart.html';
+// ---- Quick add without modal ----
+function quickAdd(e, id) {
+    e.stopPropagation();
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    addToCart(p, 1);
+    showToast(`${p.name} added to cart 🛒`);
+}
+
+// ---- Modal ----
+function setupModal() {
+    const overlay = document.getElementById('modalOverlay');
+    const btnClose = document.getElementById('modalClose');
+    if (!overlay) return;
+
+    btnClose.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    document.getElementById('btnAdd').addEventListener('click', () => {
+        if (!currentProduct) return;
+        const qty = parseInt(document.getElementById('modalQty').value) || 1;
+        addToCart(currentProduct, qty);
+        showToast(`${currentProduct.name} added to cart 🛒`);
+        closeModal();
+    });
+}
+
+function openModal(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    currentProduct = p;
+
+    document.getElementById('modalImg').src = p.image;
+    document.getElementById('modalImg').onerror = function() {
+        this.src = `https://placehold.co/600x400/f2f2f7/999?text=${encodeURIComponent(p.name)}`;
+    };
+
+    const badge = document.getElementById('modalBadge');
+    badge.textContent = p.badge || '';
+    badge.className = 'modal-badge' + (p.badge ? ` badge-${p.badge.toLowerCase()}` : '');
+    badge.style.display = p.badge ? 'inline-block' : 'none';
+
+    document.getElementById('modalCat').textContent = p.category;
+    document.getElementById('modalTitle').textContent = p.name;
+    document.getElementById('modalDesc').textContent = p.description;
+    document.getElementById('modalPrice').textContent = `$${p.price.toLocaleString()}`;
+    document.getElementById('modalQty').value = 1;
+
+    const specsList = document.getElementById('modalSpecs');
+    specsList.innerHTML = p.specs.map(s => `<li>${s}</li>`).join('');
+
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const overlay = document.getElementById('modalOverlay');
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    currentProduct = null;
+}
+
+function changeQty(delta) {
+    const input = document.getElementById('modalQty');
+    const val = Math.max(1, Math.min(10, (parseInt(input.value) || 1) + delta));
+    input.value = val;
+}
+
+// ---- Cart ----
+function loadCart() {
+    try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; }
+}
+
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateBadge();
+}
+
+function addToCart(product, qty) {
+    const existing = cart.find(i => i.id === product.id);
+    if (existing) existing.quantity += qty;
+    else cart.push({ ...product, quantity: qty });
+    saveCart();
+}
+
+function updateBadge() {
+    const count = cart.reduce((s, i) => s + i.quantity, 0);
+    const badge = document.getElementById('cartBadge');
+    if (!badge) return;
+    badge.textContent = count;
+    badge.classList.toggle('hidden', count === 0);
+}
+
+// ---- Mobile Nav ----
+function setupMobileNav() {
+    const burger = document.getElementById('navBurger');
+    const mobile = document.getElementById('navMobile');
+    if (!burger || !mobile) return;
+    burger.addEventListener('click', () => mobile.classList.toggle('open'));
+}
+
+// ---- Toast ----
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
 }

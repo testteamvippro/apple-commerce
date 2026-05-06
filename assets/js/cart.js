@@ -1,121 +1,101 @@
 let cart = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadCart();
-    displayCart();
+    cart = loadCart();
+    renderCart();
+    updateBadge();
 });
 
-// Load cart from localStorage
 function loadCart() {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-    }
+    try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; }
 }
 
-// Display cart items
-function displayCart() {
-    const cartItemsDiv = document.getElementById('cartItems');
-    const cartEmptyDiv = document.getElementById('cartEmpty');
-    const cartSummaryDiv = document.getElementById('cartSummary');
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateBadge();
+}
+
+function updateBadge() {
+    const count = cart.reduce((s, i) => s + i.quantity, 0);
+    const b = document.getElementById('cartBadge');
+    if (b) { b.textContent = count; b.classList.toggle('hidden', count === 0); }
+}
+
+function renderCart() {
+    const itemsEl = document.getElementById('cartItems');
+    const emptyEl = document.getElementById('cartEmpty');
+    const summaryEl = document.getElementById('cartSummary');
+    if (!itemsEl) return;
 
     if (cart.length === 0) {
-        cartItemsDiv.style.display = 'none';
-        cartSummaryDiv.style.display = 'none';
-        cartEmptyDiv.style.display = 'block';
+        itemsEl.style.display = 'none';
+        if (emptyEl) emptyEl.style.display = 'flex';
+        if (summaryEl) summaryEl.style.display = 'none';
         return;
     }
 
-    cartItemsDiv.style.display = 'flex';
-    cartSummaryDiv.style.display = 'block';
-    cartEmptyDiv.style.display = 'none';
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (summaryEl) summaryEl.style.display = 'block';
+    itemsEl.style.display = 'flex';
 
-    cartItemsDiv.innerHTML = '';
-    cart.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'cart-item';
-        itemDiv.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-            <div class="cart-item-details">
+    itemsEl.innerHTML = '';
+    cart.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.innerHTML = `
+            <img class="cart-item-img" src="${item.image}" alt="${item.name}"
+                 onerror="this.src='https://placehold.co/120x90/f2f2f7/999?text=Product'">
+            <div class="cart-item-info">
+                <p class="cart-item-cat">${item.category}</p>
                 <h3>${item.name}</h3>
-                <p>$${item.price.toLocaleString()}</p>
+                <div class="cart-qty" style="margin-top:8px">
+                    <button onclick="changeQty(${i}, -1)">−</button>
+                    <input type="number" value="${item.quantity}" min="1" max="10"
+                           onchange="setQty(${i}, this.value)">
+                    <button onclick="changeQty(${i}, 1)">+</button>
+                </div>
             </div>
-            <div class="cart-item-quantity">
-                <button onclick="updateQuantity(${index}, -1)">−</button>
-                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantityDirect(${index}, this.value)">
-                <button onclick="updateQuantity(${index}, 1)">+</button>
+            <div class="cart-item-right">
+                <span class="cart-item-total">$${(item.price * item.quantity).toLocaleString()}</span>
+                <button class="cart-item-remove" onclick="removeItem(${i})">Remove</button>
             </div>
-            <div class="cart-item-price">$${(item.price * item.quantity).toLocaleString()}</div>
-            <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
         `;
-        cartItemsDiv.appendChild(itemDiv);
+        itemsEl.appendChild(el);
     });
 
     updateSummary();
 }
 
-// Update quantity
-function updateQuantity(index, change) {
-    cart[index].quantity += change;
-    if (cart[index].quantity <= 0) {
-        removeFromCart(index);
-        return;
-    }
+function changeQty(i, delta) {
+    cart[i].quantity = Math.max(1, cart[i].quantity + delta);
     saveCart();
-    displayCart();
+    renderCart();
 }
 
-// Update quantity directly
-function updateQuantityDirect(index, value) {
-    const quantity = parseInt(value) || 1;
-    if (quantity <= 0) {
-        removeFromCart(index);
-        return;
-    }
-    cart[index].quantity = quantity;
+function setQty(i, val) {
+    const q = Math.max(1, parseInt(val) || 1);
+    cart[i].quantity = q;
     saveCart();
-    displayCart();
+    renderCart();
 }
 
-// Remove from cart
-function removeFromCart(index) {
-    cart.splice(index, 1);
+function removeItem(i) {
+    cart.splice(i, 1);
     saveCart();
-    updateNavbarCount();
-    displayCart();
+    renderCart();
 }
 
-// Update summary
 function updateSummary() {
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.1;
-    const total = subtotal + tax;
-
-    document.getElementById('subtotal').textContent = `$${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    document.getElementById('tax').textContent = `$${tax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    document.getElementById('total').textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    const sub = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+    const tax = sub * 0.1;
+    const total = sub + tax;
+    const fmt = n => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    document.getElementById('subtotal').textContent = fmt(sub);
+    document.getElementById('tax').textContent = fmt(tax);
+    document.getElementById('total').textContent = fmt(total);
 }
 
-// Save cart
-function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateNavbarCount();
-}
-
-// Update navbar cart count
-function updateNavbarCount() {
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const cartCountEl = document.querySelector('.cart-count');
-    if (cartCountEl) {
-        cartCountEl.textContent = count;
-    }
-}
-
-// Navigate to checkout
 function goToCheckout() {
-    if (cart.length === 0) {
-        alert('Your cart is empty');
-        return;
-    }
+    if (cart.length === 0) { alert('Your cart is empty.'); return; }
     window.location.href = 'checkout.html';
 }

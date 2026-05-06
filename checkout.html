@@ -3,125 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Apple Store</title>
+    <title>Checkout — Apple Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <h1>🍎 Apple Store</h1>
-            </div>
-            <div class="navbar-menu">
-                <a href="index.html" class="nav-link">Products</a>
-                <a href="cart.html" class="nav-link">🛒 Cart</a>
-            </div>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+            Apple Store
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Products</a>
+            <a href="orders.html" class="nav-link">Orders</a>
         </div>
-    </nav>
+        <a href="cart.html" class="nav-cart">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+    </div>
+</nav>
 
-    <!-- Checkout Section -->
-    <section class="checkout-section">
-        <div class="container">
-            <h2>Checkout</h2>
-            
-            <div class="checkout-wrapper">
-                <!-- Checkout Form -->
-                <div class="checkout-form">
-                    <form id="checkoutForm">
-                        <!-- Customer Information -->
-                        <fieldset>
-                            <legend>Customer Information</legend>
-                            <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email *</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number *</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                        </fieldset>
+<div class="page-hero">
+    <div class="container">
+        <h1>Checkout</h1>
+        <p>Complete your order</p>
+    </div>
+</div>
 
-                        <!-- Shipping Address -->
-                        <fieldset>
-                            <legend>Shipping Address</legend>
-                            <div class="form-group">
-                                <label for="address">Street Address *</label>
-                                <input type="text" id="address" name="address" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="city">City *</label>
-                                <input type="text" id="city" name="city" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="state">State/Province *</label>
-                                    <input type="text" id="state" name="state" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="postal">Postal Code *</label>
-                                    <input type="text" id="postal" name="postal" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="country">Country *</label>
-                                <input type="text" id="country" name="country" required>
-                            </div>
-                        </fieldset>
-
-                        <!-- Notes -->
-                        <fieldset>
-                            <legend>Additional Notes</legend>
-                            <div class="form-group">
-                                <label for="notes">Order Notes (Optional)</label>
-                                <textarea id="notes" name="notes" rows="3" placeholder="Any special requests or notes..."></textarea>
-                            </div>
-                        </fieldset>
-
-                        <button type="submit" class="btn-place-order">Place Order</button>
-                    </form>
+<div class="container">
+    <div class="checkout-layout">
+        <!-- Form -->
+        <div class="checkout-form-card">
+            <form id="checkoutForm">
+                <div class="form-section">
+                    <div class="form-section-title"><span>1</span> Customer Information</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Order Summary -->
-                <aside class="order-summary">
-                    <h3>Order Summary</h3>
-                    <div id="summaryItems"></div>
-                    <hr>
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span id="checkoutSubtotal">$0.00</span>
+                <div class="form-section">
+                    <div class="form-section-title"><span>2</span> Shipping Address</div>
+                    <div class="form-grid single">
+                        <div class="form-group">
+                            <label for="address">Street Address *</label>
+                            <input type="text" id="address" name="address" placeholder="123 Main Street" required>
+                        </div>
                     </div>
-                    <div class="summary-row">
-                        <span>Tax (10%):</span>
-                        <span id="checkoutTax">$0.00</span>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" placeholder="San Francisco" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State / Province *</label>
+                            <input type="text" id="state" name="state" placeholder="CA" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal">Postal Code *</label>
+                            <input type="text" id="postal" name="postal" placeholder="94102" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <input type="text" id="country" name="country" placeholder="United States" required>
+                        </div>
                     </div>
-                    <div class="summary-row total">
-                        <span>Total:</span>
-                        <span id="checkoutTotal">$0.00</span>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title"><span>3</span> Additional Notes</div>
+                    <div class="form-grid single">
+                        <div class="form-group">
+                            <label for="notes">Order Notes (Optional)</label>
+                            <textarea id="notes" name="notes" placeholder="Any special requests or delivery instructions..."></textarea>
+                        </div>
                     </div>
-                    <p class="note">
-                        ℹ️ <strong>Note:</strong> We'll contact you to confirm payment details and process your order.
-                    </p>
-                </aside>
+                    <button type="submit" class="btn-place-order">Place Order →</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Aside -->
+        <aside class="order-aside">
+            <div class="aside-header"><h3>Your Order</h3></div>
+            <div class="aside-items" id="asideItems"></div>
+            <div class="aside-totals">
+                <div class="summary-line"><span>Subtotal</span><span id="checkoutSubtotal">$0.00</span></div>
+                <div class="summary-line"><span>Tax (10%)</span><span id="checkoutTax">$0.00</span></div>
+                <div class="summary-line total"><span>Total</span><span id="checkoutTotal">$0.00</span></div>
             </div>
-        </div>
-    </section>
+            <div class="info-note">
+                <span>ℹ️</span>
+                We'll contact you after placing the order to confirm payment and delivery details.
+            </div>
+        </aside>
+    </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Apple Store. Easy deployment on Hostinger/Inet. All rights reserved.</p>
-        </div>
-    </footer>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-bottom"><p>© 2026 Apple Store. All rights reserved.</p></div>
+    </div>
+</footer>
 
-    <script src="assets/js/checkout.js"></script>
+<script src="assets/js/checkout.js"></script>
 </body>
 </html>

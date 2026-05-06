@@ -1,110 +1,100 @@
 let cart = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadCart();
-    displayOrderSummary();
+    cart = loadCart();
+    if (cart.length === 0) { window.location.href = 'cart.html'; return; }
+    renderSummary();
+    updateBadge();
     setupForm();
 });
 
-// Load cart from localStorage
 function loadCart() {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-    }
+    try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; }
 }
 
-// Display order summary
-function displayOrderSummary() {
-    const summaryItemsDiv = document.getElementById('summaryItems');
-    summaryItemsDiv.innerHTML = '';
+function updateBadge() {
+    const count = cart.reduce((s, i) => s + i.quantity, 0);
+    const b = document.getElementById('cartBadge');
+    if (b) { b.textContent = count; b.classList.toggle('hidden', count === 0); }
+}
 
+function renderSummary() {
+    const itemsEl = document.getElementById('asideItems');
+    if (!itemsEl) return;
+    itemsEl.innerHTML = '';
     cart.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'summary-item';
-        itemDiv.innerHTML = `
-            <span>${item.name} x ${item.quantity}</span>
-            <span>$${(item.price * item.quantity).toLocaleString()}</span>
+        const el = document.createElement('div');
+        el.className = 'aside-item';
+        el.innerHTML = `
+            <img src="${item.image}" alt="${item.name}"
+                 onerror="this.src='https://placehold.co/60x44/f2f2f7/999?text=P'">
+            <div>
+                <div class="aside-item-name">${item.name}</div>
+                <div class="aside-item-qty">Qty: ${item.quantity}</div>
+            </div>
+            <div class="aside-item-price">$${(item.price * item.quantity).toLocaleString()}</div>
         `;
-        summaryItemsDiv.appendChild(itemDiv);
+        itemsEl.appendChild(el);
     });
 
-    updateCheckoutSummary();
+    const sub = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+    const tax = sub * 0.1;
+    const total = sub + tax;
+    const fmt = n => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+
+    document.getElementById('checkoutSubtotal').textContent = fmt(sub);
+    document.getElementById('checkoutTax').textContent = fmt(tax);
+    document.getElementById('checkoutTotal').textContent = fmt(total);
 }
 
-// Update checkout summary totals
-function updateCheckoutSummary() {
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.1;
-    const total = subtotal + tax;
-
-    document.getElementById('checkoutSubtotal').textContent = `$${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    document.getElementById('checkoutTax').textContent = `$${tax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    document.getElementById('checkoutTotal').textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-}
-
-// Setup form submission
 function setupForm() {
-    const form = document.getElementById('checkoutForm');
-    form.addEventListener('submit', submitOrder);
+    document.getElementById('checkoutForm').addEventListener('submit', submitOrder);
 }
 
-// Submit order
 function submitOrder(e) {
     e.preventDefault();
-
-    if (cart.length === 0) {
-        alert('Your cart is empty');
-        return;
-    }
-
-    // Prepare order data
-    const formData = new FormData(document.getElementById('checkoutForm'));
-    const orderData = {
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        address: formData.get('address'),
-        city: formData.get('city'),
-        state: formData.get('state'),
-        postal: formData.get('postal'),
-        country: formData.get('country'),
-        notes: formData.get('notes'),
-        items: cart,
-        subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        tax: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.1,
-        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.1,
+    const data = new FormData(e.target);
+    const sub = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+    const order = {
+        orderNumber: 'ORD-' + Date.now(),
         orderDate: new Date().toLocaleString(),
-        orderNumber: generateOrderNumber()
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        email: data.get('email'),
+        phone: data.get('phone'),
+        address: data.get('address'),
+        city: data.get('city'),
+        state: data.get('state'),
+        postal: data.get('postal'),
+        country: data.get('country'),
+        notes: data.get('notes'),
+        items: cart,
+        subtotal: sub,
+        tax: sub * 0.1,
+        total: sub * 1.1
     };
 
-    // Save order to localStorage
     const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push(orderData);
+    orders.push(order);
     localStorage.setItem('orders', JSON.stringify(orders));
-
-    // Clear cart and show success
     localStorage.removeItem('cart');
-    showOrderSuccess(orderData.orderNumber);
+
+    showSuccess(order.orderNumber);
 }
 
-// Generate order number
-function generateOrderNumber() {
-    return 'ORD-' + Date.now();
-}
-
-// Show order success message
-function showOrderSuccess(orderNumber) {
-    const checkoutSection = document.querySelector('.checkout-section');
-    checkoutSection.innerHTML = `
-        <div class="container">
-            <div class="success-message" style="max-width: 600px; margin: 60px auto; padding: 40px; text-align: center; background-color: #d4edda; color: #155724;">
-                <h2 style="margin-bottom: 20px;">✓ Order Placed Successfully!</h2>
-                <p style="font-size: 16px; margin-bottom: 10px;">Thank you for your order.</p>
-                <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">Order Number: ${orderNumber}</p>
-                <p style="margin-bottom: 20px; color: #155724;">We'll contact you shortly to confirm payment details and process your order.</p>
-                <a href="index.html" class="btn-primary" style="display: inline-block; padding: 12px 24px; background-color: #28a745; text-decoration: none; color: white; border-radius: 8px; margin-top: 20px;">Continue Shopping</a>
+function showSuccess(num) {
+    document.querySelector('.checkout-layout').innerHTML = `
+        <div class="success-wrap" style="grid-column:1/-1">
+            <div class="success-card">
+                <div class="success-icon">✅</div>
+                <h2>Order Placed!</h2>
+                <p>Thank you for your order. We'll reach out shortly to confirm payment.</p>
+                <div class="success-order">${num}</div>
+                <p>Save your order number for tracking.</p>
+                <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
+                    <a href="orders.html" class="btn-primary">View Orders</a>
+                    <a href="index.html" class="btn-ghost">Continue Shopping</a>
+                </div>
             </div>
         </div>
     `;

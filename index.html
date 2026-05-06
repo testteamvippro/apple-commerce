@@ -3,83 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Store - Premium Electronics</title>
+    <title>Apple Store — Premium Electronics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <h1>🍎 Apple Store</h1>
-            </div>
-            <div class="navbar-menu">
-                <a href="#" class="nav-link active">Products</a>
-                <a href="cart.html" class="nav-link cart-link">
-                    🛒 Cart <span class="cart-count">0</span>
-                </a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Premium Apple Products</h2>
-            <p>Discover the latest iPhones, MacBooks, AirPods, and more</p>
-        </div>
-    </section>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+            <span>Apple Store</span>
+        </a>
 
-    <!-- Filters -->
-    <section class="filters-section">
-        <div class="container">
-            <h3>Filter by Category</h3>
-            <div class="filters">
-                <button class="filter-btn active" data-category="all">All Products</button>
-                <button class="filter-btn" data-category="iPhone">iPhone</button>
-                <button class="filter-btn" data-category="Mac">Mac</button>
-                <button class="filter-btn" data-category="iPad">iPad</button>
-                <button class="filter-btn" data-category="AirPods">AirPods</button>
-                <button class="filter-btn" data-category="Watch">Apple Watch</button>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Products</a>
+            <a href="orders.html" class="nav-link">Orders</a>
+        </div>
+
+        <a href="cart.html" class="nav-cart">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+
+        <button class="nav-burger" id="navBurger">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+        <a href="index.html">Products</a>
+        <a href="orders.html">Orders</a>
+        <a href="cart.html">Cart</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">New arrivals 2026</p>
+        <h1 class="hero-title">Think Different.<br>Shop Different.</h1>
+        <p class="hero-sub">Discover the full lineup of Apple products — iPhones, Macs, iPads, and more.</p>
+        <div class="hero-cta">
+            <a href="#products" class="btn-primary">Shop Now</a>
+            <a href="#categories" class="btn-ghost">Browse Categories</a>
+        </div>
+    </div>
+    <div class="hero-image-wrap">
+        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=85" alt="iPhone 15 Pro" class="hero-img">
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+    <div class="container">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="cat-grid">
+            <div class="cat-card" onclick="filterCategory('iPhone')">
+                <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&q=80" alt="iPhone">
+                <div class="cat-info">
+                    <h3>iPhone</h3>
+                    <p>From $599</p>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Products Grid -->
-    <section class="products-section">
-        <div class="container">
-            <h2>Our Collection</h2>
-            <div class="products-grid" id="productsGrid">
-                <!-- Products loaded by JavaScript -->
+            <div class="cat-card" onclick="filterCategory('Mac')">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80" alt="Mac">
+                <div class="cat-info">
+                    <h3>Mac</h3>
+                    <p>From $1,099</p>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Product Modal -->
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-body">
-                <img id="modalImage" src="" alt="Product" class="modal-image">
-                <div class="modal-info">
-                    <h2 id="modalTitle"></h2>
-                    <p id="modalDescription" class="product-description"></p>
-                    <div class="product-specs" id="modalSpecs"></div>
-                    <p class="price" id="modalPrice"></p>
-                    <input type="number" id="quantity" min="1" value="1" class="quantity-input">
-                    <button class="btn-add-to-cart" onclick="addToCartFromModal()">Add to Cart</button>
+            <div class="cat-card" onclick="filterCategory('iPad')">
+                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&q=80" alt="iPad">
+                <div class="cat-info">
+                    <h3>iPad</h3>
+                    <p>From $499</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('AirPods')">
+                <img src="https://images.unsplash.com/photo-1639134280203-a73a64f9e1b1?w=400&q=80" alt="AirPods">
+                <div class="cat-info">
+                    <h3>AirPods</h3>
+                    <p>From $179</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Watch')">
+                <img src="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=400&q=80" alt="Apple Watch">
+                <div class="cat-info">
+                    <h3>Apple Watch</h3>
+                    <p>From $249</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Accessories')">
+                <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&q=80" alt="Accessories">
+                <div class="cat-info">
+                    <h3>Accessories</h3>
+                    <p>From $89</p>
                 </div>
             </div>
         </div>
-    </modal>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Apple Store. Easy deployment on Hostinger/Inet. All rights reserved.</p>
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+    <div class="container">
+        <div class="products-header">
+            <h2 class="section-title" id="productsHeading">All Products</h2>
+            <div class="filter-bar">
+                <button class="filter-pill active" data-cat="all">All</button>
+                <button class="filter-pill" data-cat="iPhone">iPhone</button>
+                <button class="filter-pill" data-cat="Mac">Mac</button>
+                <button class="filter-pill" data-cat="iPad">iPad</button>
+                <button class="filter-pill" data-cat="AirPods">AirPods</button>
+                <button class="filter-pill" data-cat="Watch">Watch</button>
+                <button class="filter-pill" data-cat="Accessories">Accessories</button>
+            </div>
         </div>
-    </footer>
 
-    <script src="assets/js/main.js"></script>
+        <div class="products-grid" id="productsGrid">
+            <!-- injected by JS -->
+        </div>
+    </div>
+</section>
+
+<!-- WHY APPLE SECTION -->
+<section class="trust-section">
+    <div class="container">
+        <div class="trust-grid">
+            <div class="trust-item">
+                <div class="trust-icon">🚚</div>
+                <h4>Free Delivery</h4>
+                <p>Free shipping on all orders over $50</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🔒</div>
+                <h4>Secure Orders</h4>
+                <p>Your data is safe with us</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">↩️</div>
+                <h4>Easy Returns</h4>
+                <p>14-day hassle-free returns</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">💬</div>
+                <h4>24/7 Support</h4>
+                <p>We're here to help anytime</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg width="20" height="20" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+                    Apple Store
+                </div>
+                <p>Premium Apple products delivered to your door.</p>
+            </div>
+            <div class="footer-links">
+                <h5>Shop</h5>
+                <a href="index.html">All Products</a>
+                <a href="#" onclick="filterCategory('iPhone')">iPhone</a>
+                <a href="#" onclick="filterCategory('Mac')">Mac</a>
+                <a href="#" onclick="filterCategory('iPad')">iPad</a>
+            </div>
+            <div class="footer-links">
+                <h5>Support</h5>
+                <a href="orders.html">My Orders</a>
+                <a href="cart.html">Cart</a>
+                <a href="checkout.html">Checkout</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Apple Store. Not affiliated with Apple Inc. All product names are trademarks of Apple Inc.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="productModal">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div class="modal-inner">
+            <div class="modal-media">
+                <img id="modalImg" src="" alt="Product">
+            </div>
+            <div class="modal-details">
+                <span class="modal-badge" id="modalBadge"></span>
+                <p class="modal-cat" id="modalCat"></p>
+                <h2 id="modalTitle"></h2>
+                <p class="modal-desc" id="modalDesc"></p>
+                <ul class="modal-specs" id="modalSpecs"></ul>
+                <div class="modal-price-row">
+                    <span class="modal-price" id="modalPrice"></span>
+                    <div class="qty-wrap">
+                        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                        <input type="number" id="modalQty" value="1" min="1" max="10">
+                        <button class="qty-btn" onclick="changeQty(1)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add" id="btnAdd">Add to Cart</button>
+                <a href="cart.html" class="btn-cart-go">View Cart →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>
