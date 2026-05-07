@@ -57,7 +57,7 @@ function renderCart() {
             </div>
             <div class="cart-item-right">
                 <span class="cart-item-total">₫${(item.price * item.quantity).toLocaleString()}</span>
-                <button class="cart-item-remove" onclick="removeItem(${i})">Remove</button>
+                <button class="cart-item-remove" onclick="removeItem(${i})">Xóa</button>
             </div>
         `;
         itemsEl.appendChild(el);
@@ -96,6 +96,6 @@ function updateSummary() {
 }
 
 function goToCheckout() {
-    if (cart.length === 0) { alert('Your cart is empty.'); return; }
+    if (cart.length === 0) { alert('Giỏ hàng của bạn trống.'); return; }
     window.location.href = 'checkout.html';
 }

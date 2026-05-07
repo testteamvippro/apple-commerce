@@ -46,7 +46,7 @@ function renderOrders() {
                 </div>
                 <div class="order-meta">
                     <div class="order-meta-item"><strong>${order.firstName} ${order.lastName}</strong></div>
-                    <div class="order-meta-item">${order.items.length} item${order.items.length > 1 ? 's' : ''}</div>
+                    <div class="order-meta-item">${order.items.length} sản phẩm</div>
                     <div class="order-meta-item"><strong>₫${order.total.toLocaleString('en-US', {minimumFractionDigits:2})}</strong></div>
                     <span class="order-status">Đang Xử Lý</span>
                 </div>
@@ -103,14 +103,14 @@ function toggleDetails(i) {
 }
 
 function deleteOrder(i) {
-    if (!confirm('Delete this order?')) return;
+    if (!confirm('Xóa đơn hàng này?')) return;
     orders.splice(i, 1);
     localStorage.setItem('orders', JSON.stringify(orders));
     renderOrders();
 }
 
 function clearAllOrders() {
-    if (!confirm('Delete ALL orders? This cannot be undone.')) return;
+    if (!confirm('Xóa TẤT CẢ đơn hàng? Không thể hoàn tác.')) return;
     orders = [];
     localStorage.removeItem('orders');
     renderOrders();
@@ -126,7 +126,7 @@ function downloadOrder(i) {
 }
 
 function exportAllOrders() {
-    if (!orders.length) { alert('No orders to export'); return; }
+    if (!orders.length) { alert('Không có đơn hàng để xuất'); return; }
     const blob = new Blob([JSON.stringify(orders, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
