@@ -9,9 +9,13 @@ A beautiful, static-frontend phone/electronics e-commerce website featuring Appl
 - **Shopping Cart**: Add items to cart with quantity management
 - **Checkout System**: Customer information and shipping address collection
 - **Order Management**: Orders saved and retrievable through admin interface
+- **🆕 Admin Dashboard**: Real-time order tracking with statistics
+- **🆕 Real-Time Notifications**: Get notified when customers place orders
+- **🆕 Vietnamese Language**: Full Vietnamese translation throughout the app
 - **Responsive Design**: Beautiful mobile-friendly interface
+- **Modern Design System**: Glassmorphism effects, gradients, and smooth animations
 - **Static Frontend**: HTML, CSS, and JavaScript (no build process needed)
-- **PHP Backend**: Lightweight PHP for order processing
+- **PHP Backend**: Lightweight PHP for order processing (optional)
 
 ## 🚀 Quick Start
 
@@ -46,6 +50,53 @@ The orders directory must be writable:
 # Set permissions to 755 (through File Manager)
 ```
 
+## 📊 NEW: Admin Dashboard
+
+### Access Admin Dashboard
+```
+https://testteamvippro.github.io/apple-commerce/admin.html
+```
+
+### Admin Features
+- **📈 Real-Time Statistics**: View total orders, revenue, and customer metrics
+- **📋 Order Management**: View all orders with filtering and search
+- **🔔 Live Notifications**: Get instant alerts when customers place orders
+- **📥 Data Export**: Download orders as JSON for backup or analysis
+- **🔍 Advanced Filtering**: Filter by date range (today, week, month)
+- **👁️ Order Details**: View full customer info, shipping address, and items
+- **📋 Copy to Clipboard**: Quickly share order info via email/chat
+- **🗑️ Order Management**: Delete or manage individual orders
+
+### How Admin Notifications Work
+1. Dashboard automatically checks for new orders every 5 seconds
+2. Browser notification appears when order is placed
+3. Sound alert (if browser notifications are enabled)
+4. Admin can click notification to view order details
+5. Data persists in browser localStorage
+
+### Exporting Order Data
+- Click "📥 Xuất Dữ Liệu" to download all orders
+- Each order can be downloaded individually as JSON
+- Perfect for integration with accounting software or CRM
+
+For detailed admin guide: See [ADMIN_GUIDE.md](ADMIN_GUIDE.md)
+
+## 🌐 Vietnamese Localization
+
+All content has been translated to Vietnamese:
+- ✅ All UI text and labels
+- ✅ Form placeholders and validation messages
+- ✅ Product descriptions (original products)
+- ✅ Admin dashboard and notifications
+- ✅ Toast messages and alerts
+
+### 3. **Create Orders Directory**
+The orders directory must be writable:
+```bash
+# Through File Manager or FTP, create folder: orders/
+# Set permissions to 755 (through File Manager)
+```
+
 ## 📁 File Structure
 
 ```
@@ -53,16 +104,23 @@ apple-ecommerce/
 ├── index.html              # Main product listing page
 ├── cart.html               # Shopping cart page
 ├── checkout.html           # Checkout form page
+├── admin.html              # 🆕 Admin dashboard
 ├── products.json           # Product catalog
-├── submit-order.php        # Process and save orders
-├── process-order.php       # Admin order retrieval
+├── README.md               # Documentation
+├── ADMIN_GUIDE.md          # 🆕 Admin dashboard guide
+├── DESIGN_IMPROVEMENTS.md  # Design system documentation
+├── GITHUB_PAGES_SETUP.md   # Deployment guide
+├── submit-order.php        # Process and save orders (optional)
+├── process-order.php       # Admin order retrieval (optional)
 ├── assets/
 │   ├── css/
-│   │   └── style.css       # All styling
+│   │   └── style.css       # All styling (modern design system)
 │   └── js/
 │       ├── main.js         # Product listing logic
 │       ├── cart.js         # Cart management
-│       └── checkout.js     # Checkout form handling
+│       ├── checkout.js     # Checkout form handling
+│       ├── orders.js       # Customer orders page
+│       └── admin.js        # 🆕 Admin dashboard logic
 └── orders/                 # Order storage directory (auto-created)
 ```
 
