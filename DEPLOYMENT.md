@@ -103,7 +103,7 @@ ssh username@yourdomain.com
 cd public_html
 
 # Clone repository (if available on public repo)
-git clone https://github.com/testteamvippro/apple-commerce.git .
+git clone https://github.com/YOUR-GITHUB-USERNAME/apple-commerce.git .
 
 # Or upload via SCP
 scp -r /local/path/apple-commerce/* username@yourdomain.com:~/public_html/

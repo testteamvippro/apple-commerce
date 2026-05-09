@@ -112,7 +112,7 @@ apple-commerce/
 
 ```bash
 # Clone repository
-git clone https://github.com/testteamvippro/apple-commerce.git
+git clone https://github.com/YOUR-GITHUB-USERNAME/apple-commerce.git
 cd apple-commerce
 
 # Start PHP server
@@ -253,7 +253,7 @@ The orders directory must be writable:
 
 ### Access Admin Dashboard
 ```
-https://testteamvippro.github.io/apple-commerce/admin.html
+https://YOUR-GITHUB-USERNAME.github.io/apple-commerce/admin.html
 ```
 
 ### Admin Features
