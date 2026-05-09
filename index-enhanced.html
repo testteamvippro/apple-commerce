@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Store Việt Nam — Thiết Bị Apple Chính Hãng · Mới & Đã Dùng</title>
+    <meta name="description" content="Mua iPhone, Mac, iPad, AirPods, Apple Watch chính hãng. Máy mới 100% & đã dùng 99% với giá tốt nhất. Hỗ trợ thanh toán trả góp, bảo hành 30 ngày.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style-enhanced.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+            <span>Apple Store VN</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Sản Phẩm</a>
+            <a href="orders.html" class="nav-link">Đơn Hàng</a>
+        </div>
+
+        <a href="cart.html" class="nav-cart">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+
+        <button class="nav-burger" id="navBurger">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="nav-mobile" id="navMobile" style="display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: white; padding: 20px; border-bottom: 1px solid #e2e8f0;">
+        <a href="index.html">Sản Phẩm</a>
+        <a href="orders.html">Đơn Hàng</a>
+        <a href="cart.html">Giỏ Hàng</a>
+    </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-accent-bar"></div>
+        <p class="hero-eyebrow">✨ Mới & Đã Dùng · Mọi Phiên Bản</p>
+        <h1 class="hero-title">Mọi Apple.<br>Mọi Ngân Sách.</h1>
+        <p class="hero-sub">Từ iPhone 17 Pro Max đến AirPods Pro 3 — thiết bị Apple chính hãng mới 100%, đã dùng 99%, kiểm tra kỹ, giá tốt nhất Việt Nam. Bảo hành 30 ngày, hỗ trợ trả góp 0%.</p>
+        <div class="hero-cta">
+            <a href="#products" class="btn-primary">Mua Ngay</a>
+            <a href="#categories" class="btn-ghost">Xem Danh Mục</a>
+        </div>
+    </div>
+    <div class="hero-image-wrap">
+        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=85" alt="iPhone 17 Pro Max" loading="lazy">
+    </div>
+</section>
+
+<!-- CATEGORIES SECTION -->
+<section class="categories" id="categories">
+    <div class="container">
+        <h2 class="section-title">🛍️ Mua Theo Danh Mục</h2>
+        <div class="cat-grid">
+            <div class="cat-card" onclick="filterCategory('iPhone')">
+                <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&q=80" alt="iPhone" loading="lazy">
+                <div class="cat-info">
+                    <h3>iPhone</h3>
+                    <p>iPhone 17 Pro Max · từ $599</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Mac')">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80" alt="Mac" loading="lazy">
+                <div class="cat-info">
+                    <h3>Mac</h3>
+                    <p>MacBook Air M5 · từ $1,299</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('iPad')">
+                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&q=80" alt="iPad" loading="lazy">
+                <div class="cat-info">
+                    <h3>iPad</h3>
+                    <p>iPad Pro 13" M5 · từ $1,999</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('AirPods')">
+                <img src="https://images.unsplash.com/photo-1639134280203-a73a64f9e1b1?w=400&q=80" alt="AirPods" loading="lazy">
+                <div class="cat-info">
+                    <h3>AirPods</h3>
+                    <p>AirPods Pro 3 · từ $229</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Watch')">
+                <img src="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=400&q=80" alt="Apple Watch" loading="lazy">
+                <div class="cat-info">
+                    <h3>Apple Watch</h3>
+                    <p>Series 10 · từ $399</p>
+                </div>
+            </div>
+            <div class="cat-card" onclick="filterCategory('Accessories')">
+                <img src="https://images.unsplash.com/photo-1610822480189-4c9a88e47a8a?w=400&q=80" alt="Accessories" loading="lazy">
+                <div class="cat-info">
+                    <h3>Phụ Kiện</h3>
+                    <p>Magic Keyboard · từ $149</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTS SECTION -->
+<section class="products-section" id="products">
+    <div class="container">
+        <h2 class="section-title">📱 Sản Phẩm Nổi Bật</h2>
+
+        <!-- FILTERS HEADER -->
+        <div class="filters-header">
+            <div id="resultsInfo" style="font-size: 14px; color: #475569;">Showing all products</div>
+            <select id="sortDropdown" class="sort-dropdown">
+                <option value="newest">Mới Nhất</option>
+                <option value="price-low">Giá Thấp → Cao</option>
+                <option value="price-high">Giá Cao → Thấp</option>
+                <option value="rating">Đánh Giá Cao Nhất</option>
+            </select>
+        </div>
+
+        <!-- MAIN GRID WITH SIDEBAR FILTERS -->
+        <div class="filters-sidebar">
+            <!-- SIDEBAR FILTERS -->
+            <aside style="background: #f8fafc; padding: 24px; border-radius: 12px; height: fit-content;">
+                <h3 style="font-size: 18px; margin-bottom: 20px; color: #0a0e27;">🔍 Bộ Lọc</h3>
+
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <div class="filter-title">Danh Mục</div>
+                    <div class="filter-options" id="categoryFilter"></div>
+                </div>
+
+                <!-- Condition Filter -->
+                <div class="filter-group">
+                    <div class="filter-title">Tình Trạng</div>
+                    <div class="filter-options" id="conditionFilter"></div>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="filter-group">
+                    <div class="filter-title">Mức Giá</div>
+                    <input type="range" id="priceRange" class="price-range" style="width: 100%; cursor: pointer;">
+                    <div style="margin-top: 8px; font-size: 14px; color: #475569;">
+                        Tối đa: <span id="maxPriceDisplay">$5000</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- PRODUCTS GRID -->
+            <div class="product-grid" id="productGrid">
+                <div class="loading" style="grid-column: 1/-1;">⏳ Đang tải sản phẩm...</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODAL STYLES -->
+<style>
+    .modal {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        position: relative;
+        background: white;
+        border-radius: 16px;
+        max-width: 900px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 16px; right: 16px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #475569;
+        z-index: 1001;
+    }
+
+    .modal-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 40px;
+    }
+
+    .modal-image {
+        background: #f8fafc;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+    }
+
+    .modal-image img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .modal-details h2 {
+        font-size: 28px;
+        margin-bottom: 16px;
+    }
+
+    .modal-description {
+        color: #475569;
+        margin-bottom: 16px;
+    }
+
+    .modal-rating {
+        margin: 16px 0;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .modal-specs {
+        margin: 24px 0;
+    }
+
+    .modal-specs h3 {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        color: #E61E8A;
+    }
+
+    .modal-specs ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .modal-specs li {
+        font-size: 13px;
+        color: #475569;
+        padding-left: 16px;
+        position: relative;
+    }
+
+    .modal-specs li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #E61E8A;
+        font-weight: 700;
+    }
+
+    .variant-selector {
+        margin: 24px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .variant-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .variant-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #0a0e27;
+    }
+
+    .variant-select {
+        padding: 10px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        background: white;
+        accent-color: #E61E8A;
+    }
+
+    .modal-price {
+        margin: 24px 0;
+        font-size: 14px;
+        color: #475569;
+    }
+
+    .trade-in-info {
+        margin-top: 16px;
+        padding: 12px;
+        background: #f0fdf4;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #166534;
+    }
+
+    @media (max-width: 768px) {
+        .modal-body {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 24px;
+        }
+    }
+
+    .price-range {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #e2e8f0;
+        outline: none;
+    }
+
+    .price-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #E61E8A;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(230, 30, 138, 0.3);
+    }
+
+    .price-range::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #E61E8A;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 4px rgba(230, 30, 138, 0.3);
+    }
+
+    .nav-mobile {
+        flex-direction: column !important;
+    }
+</style>
+
+<!-- SCRIPTS -->
+<script src="assets/js/main-enhanced.js"></script>
+
+</body>
+</html>

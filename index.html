@@ -7,8 +7,55 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+    <!-- End Google Analytics 4 -->
+
+    <!-- Facebook Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', 'XXXXXXXXXXXXXXXXXX');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXXXX&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel -->
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- FLOATING CALL BUTTON -->
+<a href="tel:+84901234567" class="call-fab" id="callFab" aria-label="Gọi ngay">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.1 2.82 2 2 0 012.11 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    <span>Gọi Ngay</span>
+</a>
 
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
@@ -54,6 +101,31 @@
     </div>
     <div class="hero-image-wrap">
         <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=85" alt="iPhone 15 Pro" class="hero-img">
+    </div>
+</section>
+
+<!-- FEATURED CAROUSEL -->
+<section class="featured-section" id="featured">
+    <div class="container">
+        <div class="featured-header">
+            <div>
+                <p class="hero-eyebrow" style="margin-bottom:6px">Hot Deals &amp; New Arrivals</p>
+                <h2 class="section-title" style="margin-bottom:0">Sản Phẩm Nổi Bật</h2>
+            </div>
+            <div class="swiper-nav-btns">
+                <button class="swiper-nav-btn" id="featPrev" aria-label="Previous">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="swiper-nav-btn" id="featNext" aria-label="Next">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="swiper featured-swiper" id="featuredSwiper">
+            <div class="swiper-wrapper" id="featuredSwiperWrapper">
+                <!-- injected by JS -->
+            </div>
+        </div>
     </div>
 </section>
 
@@ -217,6 +289,8 @@
                 <h2 id="modalTitle"></h2>
                 <p class="modal-desc" id="modalDesc"></p>
                 <ul class="modal-specs" id="modalSpecs"></ul>
+                <!-- VARIANT SELECTOR -->
+                <div id="variantSelector"></div>
                 <div class="modal-price-row">
                     <span class="modal-price" id="modalPrice"></span>
                     <div class="qty-wrap">
@@ -235,6 +309,8 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="assets/js/api.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

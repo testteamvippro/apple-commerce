@@ -8,6 +8,16 @@
     "badge": "New",
     "image": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
     "gallery": [],
+    "variants": [
+      {"storage": "256GB", "color": "Natural Titanium", "region": "VN",   "price": 1299},
+      {"storage": "256GB", "color": "Black Titanium",   "region": "VN",   "price": 1299},
+      {"storage": "256GB", "color": "Desert Titanium", "region": "VN",   "price": 1299},
+      {"storage": "512GB", "color": "Natural Titanium", "region": "VN",   "price": 1499},
+      {"storage": "512GB", "color": "Black Titanium",   "region": "VN",   "price": 1499},
+      {"storage": "1TB",   "color": "Natural Titanium", "region": "VN",   "price": 1699},
+      {"storage": "256GB", "color": "Natural Titanium", "region": "LL/A", "price": 1329},
+      {"storage": "256GB", "color": "Natural Titanium", "region": "ZA/A", "price": 1289}
+    ],
     "description": "The most powerful iPhone ever. Titanium design, A19 Pro chip, and periscope zoom camera.",
     "specs": [
       "6.9\" ProMotion Super Retina XDR",
@@ -27,6 +37,16 @@
     "badge": "New",
     "image": "https://images.unsplash.com/photo-1695048071014-640980b58b97?w=600&q=80",
     "gallery": [],
+    "variants": [
+      {"storage": "256GB", "color": "Natural Titanium", "region": "VN",   "price": 1099},
+      {"storage": "256GB", "color": "White Titanium",  "region": "VN",   "price": 1099},
+      {"storage": "256GB", "color": "Black Titanium",   "region": "VN",   "price": 1099},
+      {"storage": "512GB", "color": "Natural Titanium", "region": "VN",   "price": 1299},
+      {"storage": "512GB", "color": "Black Titanium",   "region": "VN",   "price": 1299},
+      {"storage": "1TB",   "color": "Natural Titanium", "region": "VN",   "price": 1499},
+      {"storage": "256GB", "color": "Natural Titanium", "region": "LL/A", "price": 1119},
+      {"storage": "256GB", "color": "Natural Titanium", "region": "ZA/A", "price": 1079}
+    ],
     "description": "A19 Pro chip, titanium design, Action Button, and a triple-camera system with ProRAW and ProRes video.",
     "specs": [
       "6.3\" ProMotion Super Retina XDR",
@@ -46,6 +66,16 @@
     "badge": "New",
     "image": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&q=80",
     "gallery": [],
+    "variants": [
+      {"storage": "128GB", "color": "Black",       "region": "VN",   "price": 899},
+      {"storage": "128GB", "color": "White",       "region": "VN",   "price": 899},
+      {"storage": "128GB", "color": "Pink",        "region": "VN",   "price": 899},
+      {"storage": "128GB", "color": "Ultramarine", "region": "VN",   "price": 899},
+      {"storage": "256GB", "color": "Black",       "region": "VN",   "price": 999},
+      {"storage": "512GB", "color": "Black",       "region": "VN",   "price": 1199},
+      {"storage": "128GB", "color": "Black",       "region": "LL/A", "price": 919},
+      {"storage": "128GB", "color": "Black",       "region": "ZA/A", "price": 879}
+    ],
     "description": "Big screen, big battery. A19 chip with 48MP camera and Dynamic Island in a sleek aluminium design.",
     "specs": [
       "6.7\" Super Retina XDR",
@@ -65,6 +95,16 @@
     "badge": "New",
     "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80",
     "gallery": [],
+    "variants": [
+      {"storage": "128GB", "color": "Black",       "region": "VN",   "price": 799},
+      {"storage": "128GB", "color": "White",       "region": "VN",   "price": 799},
+      {"storage": "128GB", "color": "Pink",        "region": "VN",   "price": 799},
+      {"storage": "128GB", "color": "Ultramarine", "region": "VN",   "price": 799},
+      {"storage": "256GB", "color": "Black",       "region": "VN",   "price": 899},
+      {"storage": "512GB", "color": "Black",       "region": "VN",   "price": 1099},
+      {"storage": "128GB", "color": "Black",       "region": "LL/A", "price": 819},
+      {"storage": "128GB", "color": "Black",       "region": "ZA/A", "price": 779}
+    ],
     "description": "Powered by A19 chip with Dynamic Island, 48MP camera, and USB-C charging.",
     "specs": [
       "6.1\" Super Retina XDR",
@@ -84,6 +124,16 @@
     "badge": "Popular",
     "image": "https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=600&q=80",
     "gallery": [],
+    "variants": [
+      {"storage": "256GB", "color": "Black Titanium",   "region": "VN",   "price": 1199},
+      {"storage": "256GB", "color": "White Titanium",  "region": "VN",   "price": 1199},
+      {"storage": "256GB", "color": "Desert Titanium", "region": "VN",   "price": 1199},
+      {"storage": "256GB", "color": "Natural Titanium","region": "VN",   "price": 1199},
+      {"storage": "512GB", "color": "Black Titanium",   "region": "VN",   "price": 1399},
+      {"storage": "1TB",   "color": "Black Titanium",   "region": "VN",   "price": 1599},
+      {"storage": "256GB", "color": "Black Titanium",   "region": "LL/A", "price": 1219},
+      {"storage": "256GB", "color": "Black Titanium",   "region": "ZA/A", "price": 1179}
+    ],
     "description": "A18 Pro chip, 5x optical zoom, and Camera Control. The most sophisticated iPhone camera system ever.",
     "specs": [
       "6.9\" ProMotion Super Retina XDR",
@@ -103,6 +153,16 @@
     "badge": "",
     "image": "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=600&q=80",
     "gallery": [],
+    "variants": [
+      {"storage": "256GB", "color": "Black Titanium",   "region": "VN",   "price": 999},
+      {"storage": "256GB", "color": "White Titanium",  "region": "VN",   "price": 999},
+      {"storage": "256GB", "color": "Desert Titanium", "region": "VN",   "price": 999},
+      {"storage": "256GB", "color": "Natural Titanium","region": "VN",   "price": 999},
+      {"storage": "512GB", "color": "Black Titanium",   "region": "VN",   "price": 1199},
+      {"storage": "1TB",   "color": "Black Titanium",   "region": "VN",   "price": 1399},
+      {"storage": "256GB", "color": "Black Titanium",   "region": "LL/A", "price": 1019},
+      {"storage": "256GB", "color": "Black Titanium",   "region": "ZA/A", "price": 979}
+    ],
     "description": "A18 Pro chip, Camera Control, and a triple-camera system with 48MP ultra-wide.",
     "specs": [
       "6.3\" ProMotion Super Retina XDR",

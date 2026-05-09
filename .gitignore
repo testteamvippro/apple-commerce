@@ -3,6 +3,10 @@ submit-order.php
 process-order.php
 orders/
 
+# Node.js (local dev only — not deployed to PHP hosting)
+node_modules/
+package-lock.json
+
 # OS files
 .DS_Store
 Thumbs.db

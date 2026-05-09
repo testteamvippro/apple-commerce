@@ -51,35 +51,49 @@ function setupForm() {
     document.getElementById('checkoutForm').addEventListener('submit', submitOrder);
 }
 
-function submitOrder(e) {
+async function submitOrder(e) {
     e.preventDefault();
-    const data = new FormData(e.target);
-    const sub = cart.reduce((s, i) => s + i.price * i.quantity, 0);
-    const order = {
-        orderNumber: 'ORD-' + Date.now(),
-        orderDate: new Date().toLocaleString(),
-        firstName: data.get('firstName'),
-        lastName: data.get('lastName'),
-        email: data.get('email'),
-        phone: data.get('phone'),
-        address: data.get('address'),
-        city: data.get('city'),
-        state: data.get('state'),
-        postal: data.get('postal'),
-        country: data.get('country'),
-        notes: data.get('notes'),
-        items: cart,
+    const data    = new FormData(e.target);
+    const sub     = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+    const shipping = sub >= 500000 ? 0 : 30000;
+    const total    = sub + shipping;
+
+    const payload = {
+        customer: {
+            name:    `${data.get('firstName')} ${data.get('lastName')}`.trim(),
+            email:   data.get('email'),
+            phone:   data.get('phone'),
+            address: data.get('address'),
+            city:    data.get('city'),
+            note:    data.get('notes') || ''
+        },
+        items:    cart,
+        payment:  data.get('payment') || 'cod',
         subtotal: sub,
-        tax: sub * 0.1,
-        total: sub * 1.1
+        shipping,
+        total
     };
 
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push(order);
-    localStorage.setItem('orders', JSON.stringify(orders));
-    localStorage.removeItem('cart');
+    const btn = e.target.querySelector('[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Đang xử lý...'; }
 
-    showSuccess(order.orderNumber);
+    try {
+        const result = await window.AppleStoreAPI.createOrder(payload);
+
+        // Track purchase event
+        if (window.gtag) {
+            gtag('event', 'purchase', { currency: 'VND', value: total, transaction_id: result.data.orderId, items: cart.map(i => ({ item_id: String(i.id), item_name: i.name, quantity: i.quantity, price: i.price })) });
+        }
+        if (window.fbq) {
+            fbq('track', 'Purchase', { value: total, currency: 'VND', num_items: cart.length });
+        }
+
+        localStorage.removeItem('cart');
+        showSuccess(result.data.orderId);
+    } catch (err) {
+        if (btn) { btn.disabled = false; btn.textContent = 'Đặt Hàng Ngay'; }
+        alert('Có lỗi xảy ra: ' + err.message);
+    }
 }
 
 function showSuccess(num) {
