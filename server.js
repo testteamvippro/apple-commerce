@@ -471,13 +471,15 @@ app.get('*', (req, res) => {
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-    console.log(`\n  Apple Store VN Backend`);
-    console.log(`  ├─ Server:    http://localhost:${PORT}`);
-    console.log(`  ├─ Products:  http://localhost:${PORT}/api/products`);
-    console.log(`  ├─ Orders:    http://localhost:${PORT}/api/orders`);
-    console.log(`  ├─ Track:     http://localhost:${PORT}/api/track`);
-    console.log(`  └─ Stats:     http://localhost:${PORT}/api/admin/stats\n`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`\n  Apple Store VN Backend`);
+        console.log(`  ├─ Server:    http://localhost:${PORT}`);
+        console.log(`  ├─ Products:  http://localhost:${PORT}/api/products`);
+        console.log(`  ├─ Orders:    http://localhost:${PORT}/api/orders`);
+        console.log(`  ├─ Track:     http://localhost:${PORT}/api/track`);
+        console.log(`  └─ Stats:     http://localhost:${PORT}/api/admin/stats\n`);
+    });
+}
 
 module.exports = app; // for testing

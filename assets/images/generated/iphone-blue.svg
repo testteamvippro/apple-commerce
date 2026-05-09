@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0f7ff"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+    <linearGradient id="device" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+  </defs>
+  <rect width="900" height="620" rx="0" fill="url(#bg)"/>
+  <circle cx="158" cy="116" r="76" fill="#60a5fa" opacity=".24"/>
+  <circle cx="746" cy="156" r="96" fill="#2563eb" opacity=".10"/>
+  <g transform="translate(0 0)">
+    <rect x="315" y="68" width="270" height="390" rx="44" fill="url(#device)"/>
+    <rect x="335" y="103" width="230" height="305" rx="26" fill="#ffffff" opacity=".92"/>
+    <rect x="404" y="84" width="92" height="16" rx="8" fill="#111827" opacity=".35"/>
+    <circle cx="450" cy="431" r="10" fill="#111827" opacity=".38"/>
+    <circle cx="505" cy="145" r="28" fill="#2563eb" opacity=".82"/>
+    <circle cx="505" cy="145" r="12" fill="#ffffff" opacity=".75"/>
+  </g>
+  <text x="450" y="528" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="850" fill="#111827">iPhone Plus</text>
+  <text x="450" y="570" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="750" fill="#2563eb">Ocean Blue</text>
+</svg>

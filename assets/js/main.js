@@ -11,6 +11,10 @@ let selectedVariant = null;
 let cart = loadCart();
 let activeCat = 'all';
 let activeCond = 'all';
+let searchTerm = '';
+let sortMode = 'featured';
+let priceBand = 'all';
+let compareList = loadCompareList();
 
 // ===================== BOOT =====================
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,7 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     readUrlParams();      // restore filters from URL before rendering
     applyFilters();
     setupFilters();
+    setupCatalogTools();
+    setupNavSearch();
     setupModal();
+    setupCompare();
     setupMobileNav();
     setupStickyNav();
     initCarousel();
@@ -88,14 +95,23 @@ function readUrlParams() {
     const params = new URLSearchParams(window.location.search);
     const cat  = params.get('cat');
     const cond = params.get('cond');
+    const search = params.get('search');
+    const sort = params.get('sort');
+    const price = params.get('price');
     if (cat)  activeCat  = cat;
     if (cond) activeCond = cond;
+    if (search) searchTerm = search;
+    if (sort) sortMode = sort;
+    if (price) priceBand = price;
 }
 
 function updateUrlParams() {
     const params = new URLSearchParams();
     if (activeCat  !== 'all') params.set('cat',  activeCat);
     if (activeCond !== 'all') params.set('cond', activeCond);
+    if (searchTerm) params.set('search', searchTerm);
+    if (sortMode !== 'featured') params.set('sort', sortMode);
+    if (priceBand !== 'all') params.set('price', priceBand);
     const qs = params.toString();
     history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
 }
@@ -116,22 +132,111 @@ function formatVND(price) {
     return price.toLocaleString('vi-VN') + '₫';
 }
 
-function getOriginalPrice(salePrice) {
-    return Math.round(salePrice * 1.25 / 500000) * 500000;
-}
-
 function getInstallmentPrice(salePrice) {
     return Math.round(salePrice / 6 / 100000) * 100000;
-}
-
-function getPromoEnd(badge) {
-    const hours = badge === 'Sale' ? 48 : 24;
-    return Date.now() + hours * 3600000;
 }
 
 function getPriceDisplay(p) {
     return formatVND(getMinPrice(p));
 }
+
+function escapeAttr(value) {
+    return String(value || '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
+
+function createProductFallbackImage(title = 'Apple Store VN', category = 'Apple') {
+    const cleanTitle = escapeAttr(title);
+    const cleanCategory = escapeAttr(category);
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620">
+            <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#f8fafc"/>
+                    <stop offset="1" stop-color="#dbeafe"/>
+                </linearGradient>
+                <linearGradient id="device" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#111827"/>
+                    <stop offset="1" stop-color="#334155"/>
+                </linearGradient>
+            </defs>
+            <rect width="900" height="620" fill="url(#bg)"/>
+            <rect x="310" y="86" width="280" height="390" rx="42" fill="url(#device)"/>
+            <rect x="331" y="121" width="238" height="308" rx="24" fill="#f8fafc"/>
+            <circle cx="450" cy="454" r="10" fill="#64748b"/>
+            <text x="450" y="532" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">${cleanTitle}</text>
+            <text x="450" y="570" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#2563eb">${cleanCategory}</text>
+        </svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function getLocalProductImage(product = {}) {
+    const name = `${product.name || ''} ${product.category || ''}`.toLowerCase();
+    const palette = [
+        'iphone-red.svg',
+        'iphone-blue.svg',
+        'iphone-black.svg',
+        'iphone-gold.svg',
+        'iphone-green.svg',
+        'iphone-purple.svg'
+    ];
+
+    if (name.includes('mac')) return 'assets/images/generated/macbook.svg';
+    if (name.includes('ipad')) return 'assets/images/generated/ipad.svg';
+    if (name.includes('airpod')) return 'assets/images/generated/airpods.svg';
+    if (name.includes('watch')) return 'assets/images/generated/watch.svg';
+
+    const seed = String(product.id || product.name || '').split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return `assets/images/generated/${palette[seed % palette.length]}`;
+}
+
+function getOfficialAppleIphoneImage(product = {}) {
+    const name = String(product.name || '').toLowerCase();
+    const officialImages = {
+        iphone16pro: 'https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/article/Apple-iPhone-16-Pro-hero-geo-240909_inline.jpg.large.jpg',
+        iphone16lineup: 'https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/article/Apple-iPhone-16-Pro-finish-lineup-240909_big.jpg.large.jpg',
+        iphone16camera: 'https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/article/Apple-iPhone-16-Pro-camera-system-240909_inline.jpg.large.jpg',
+        iphone15hero: 'https://www.apple.com/newsroom/images/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/article/Apple-iPhone-15-lineup-hero-230912_inline.jpg.large.jpg',
+        iphone15colors: 'https://www.apple.com/newsroom/images/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/article/Apple-iPhone-15-lineup-color-lineup-230912_big.jpg.large.jpg',
+        iphone15blue: 'https://www.apple.com/newsroom/images/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/article/Apple-iPhone-15-lineup-design-230912_big.jpg.large.jpg'
+    };
+
+    if (!name.includes('iphone')) return '';
+    if (name.includes('16 pro')) return officialImages.iphone16pro;
+    if (name.includes('16')) return officialImages.iphone16lineup;
+    if (name.includes('15')) return officialImages.iphone15colors;
+    if (name.includes('14') || name.includes('13') || name.includes('12')) return officialImages.iphone15blue;
+
+    const pool = [
+        officialImages.iphone16pro,
+        officialImages.iphone16lineup,
+        officialImages.iphone16camera,
+        officialImages.iphone15hero,
+        officialImages.iphone15colors,
+        officialImages.iphone15blue
+    ];
+    const seed = String(product.id || product.name || '').split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return pool[seed % pool.length];
+}
+
+function getProductImage(product = {}) {
+    return getOfficialAppleIphoneImage(product) || getLocalProductImage(product) || product.image || createProductFallbackImage(product.name, product.category);
+}
+
+function handleImageError(img) {
+    if (!img || img.dataset.fallbackApplied === 'true') return;
+    img.dataset.fallbackApplied = 'true';
+    img.src = createProductFallbackImage(img.alt, img.dataset.category || 'Apple');
+    img.removeAttribute('data-src');
+    img.classList.add('img-loaded', 'img-fallback');
+}
+
+window.handleImageError = handleImageError;
 
 // ===================== LAZY LOADING =====================
 
@@ -143,7 +248,7 @@ function initLazyLoad() {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
                 const img = entry.target;
-                img.src = img.dataset.src;
+                img.src = img.dataset.src || createProductFallbackImage(img.alt, img.dataset.category || 'Apple');
                 img.removeAttribute('data-src');
                 img.classList.add('img-loaded');
                 obs.unobserve(img);
@@ -151,7 +256,11 @@ function initLazyLoad() {
         }, { rootMargin: '200px 0px' });
         images.forEach(img => io.observe(img));
     } else {
-        images.forEach(img => { img.src = img.dataset.src; img.removeAttribute('data-src'); });
+        images.forEach(img => {
+            img.src = img.dataset.src || createProductFallbackImage(img.alt, img.dataset.category || 'Apple');
+            img.removeAttribute('data-src');
+            img.classList.add('img-loaded');
+        });
     }
 }
 
@@ -178,9 +287,9 @@ function initCarousel() {
                  onclick="openModal(${p.id})"
                  onkeydown="if(event.key==='Enter')openModal(${p.id})">
                 <div class="feat-img-wrap">
-                    <img data-src="${p.image}" src="${blank}" alt="${p.name}" class="lazy-img"
-                         onerror="this.src='https://placehold.co/320x240/f5f5f5/ccc?text=${encodeURIComponent(p.name)}'">
-                    ${p.badge ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
+                    <img data-src="${escapeAttr(getProductImage(p))}" src="${blank}" alt="${escapeAttr(p.name)}" data-category="${escapeAttr(p.category)}" class="lazy-img"
+                         onerror="handleImageError(this)">
+                    ${p.badge && p.badge !== 'Sale' ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
                     <span class="condition-tag condition-${(p.condition || 'new').toLowerCase()}">${p.condition === 'Used' ? '✅ Cũ' : '🟢 Mới'}</span>
                 </div>
                 <div class="feat-info">
@@ -242,10 +351,20 @@ function renderGrid(list) {
 
 function renderSections(list, container) {
     container.innerHTML = '';
+    const groupedIds = new Set();
+    const newestIphones = list.filter(p => p.name.includes('iPhone 17') && p.condition === 'New');
+    newestIphones.forEach(p => groupedIds.add(p.id));
+    const popularIphones = list.filter(p => p.name.includes('iPhone 16') && p.condition === 'New');
+    popularIphones.forEach(p => groupedIds.add(p.id));
+    const usedDevices = list.filter(p => p.condition === 'Used');
+    usedDevices.forEach(p => groupedIds.add(p.id));
+    const remaining = list.filter(p => !groupedIds.has(p.id));
+
     const groups = [
-        { key: 'iphone17', label: 'iPhone 17 Series', eyebrow: '🔥 Mới nhất 2025', items: list.filter(p => p.name.includes('iPhone 17') && p.condition === 'New') },
-        { key: 'iphone16', label: 'iPhone 16 Series', eyebrow: '⭐ Bán chạy nhất', items: list.filter(p => p.name.includes('iPhone 16') && p.condition === 'New') },
-        { key: 'used',     label: 'Điện Thoại Đã Dùng', eyebrow: '✅ Đã kiểm tra kỹ • Giá tốt nhất', items: list.filter(p => p.condition === 'Used') },
+        { key: 'iphone17', label: 'iPhone 17 Series', eyebrow: '🔥 Mới nhất 2025', items: newestIphones },
+        { key: 'iphone16', label: 'iPhone 16 Series', eyebrow: '⭐ Bán chạy nhất', items: popularIphones },
+        { key: 'used',     label: 'Điện Thoại Đã Dùng', eyebrow: '✅ Đã kiểm tra kỹ • Giá tốt nhất', items: usedDevices },
+        { key: 'more',     label: 'Mac, iPad, Watch & Phụ Kiện', eyebrow: 'Thiết bị Apple nổi bật', items: remaining },
     ];
 
     groups.filter(g => g.items.length > 0).forEach(g => {
@@ -266,12 +385,12 @@ function renderSections(list, container) {
         sec.querySelector('.section-view-all').addEventListener('click', e => {
             e.preventDefault();
             if (g.key === 'used') { activeCond = 'Used'; activeCat = 'all'; }
+            else if (g.key === 'more') { activeCond = 'all'; activeCat = 'all'; searchTerm = ''; priceBand = 'all'; }
             else { activeCond = 'New'; activeCat = 'iPhone'; }
             applyFilters();
             document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
         });
     });
-    startCountdowns();
     initLazyLoad();
 }
 
@@ -281,19 +400,17 @@ function renderCards(list, grid) {
     list.forEach(p => {
         const isUsed = p.condition === 'Used';
         const minPrice = getMinPrice(p);
-        const originalPrice = getOriginalPrice(minPrice);
         const installment = getInstallmentPrice(minPrice);
         const storageList = p.variants ? [...new Set(p.variants.map(v => v.storage))] : [];
-        const hasCountdown = p.badge === 'New' || p.badge === 'Sale';
+        const isCompared = compareList.includes(p.id);
         const el = document.createElement('div');
         el.className = 'product-card';
         el.innerHTML = `
             <div class="card-img-wrap">
-                ${hasCountdown ? `<div class="countdown-badge"><span class="countdown-label">${p.badge === 'Sale' ? '🔥 SALE' : '🆕 HOT'}</span><span class="countdown-time" data-end="${getPromoEnd(p.badge)}"></span></div>` : ''}
-                ${p.badge && !hasCountdown ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
+                ${p.badge && p.badge !== 'Sale' ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
                 <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${isUsed ? '✅ Đã Dùng' : '🟢 Mới'}</span>
-                <img data-src="${p.image}" src="${blank}" alt="${p.name}" class="lazy-img"
-                     onerror="this.src='https://placehold.co/600x400/f5f5f5/ccc?text=${encodeURIComponent(p.name)}'">
+                <img data-src="${escapeAttr(getProductImage(p))}" src="${blank}" alt="${escapeAttr(p.name)}" data-category="${escapeAttr(p.category)}" class="lazy-img"
+                     onerror="handleImageError(this)">
             </div>
             <div class="card-body">
                 <p class="card-cat">${p.category}</p>
@@ -302,11 +419,17 @@ function renderCards(list, grid) {
                 <div class="card-pricing">
                     <div class="price-row">
                         <span class="card-price-sale">${formatVND(minPrice)}</span>
-                        <span class="card-price-original">${formatVND(originalPrice)}</span>
                     </div>
                     <p class="card-installment">Trả trước: <strong>${formatVND(installment)}</strong></p>
                 </div>
-                <button class="card-add-btn" onclick="quickAdd(event, ${p.id})">🛒 Thêm Vào Giỏ</button>
+                <div class="card-benefits">
+                    <span>Trả góp 0%</span>
+                    <span>Giao nhanh 48h</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-add-btn" onclick="quickAdd(event, ${p.id})">🛒 Thêm Vào Giỏ</button>
+                    <button class="card-compare-btn${isCompared ? ' active' : ''}" onclick="toggleCompare(event, ${p.id})">${isCompared ? 'Đã chọn' : 'So sánh'}</button>
+                </div>
             </div>
         `;
         el.querySelector('.card-img-wrap').addEventListener('click', () => openModal(p.id));
@@ -315,30 +438,37 @@ function renderCards(list, grid) {
     });
 }
 
-function startCountdowns() {
-    function tick() {
-        const now = Date.now();
-        document.querySelectorAll('.countdown-time[data-end]').forEach(el => {
-            const end = parseInt(el.dataset.end);
-            const diff = Math.max(0, end - now);
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
-            el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        });
-    }
-    tick();
-    clearInterval(window._countdownInterval);
-    window._countdownInterval = setInterval(tick, 1000);
-}
-
 // ===================== FILTERS =====================
 function getFiltered() {
-    return products.filter(p => {
+    const ranges = {
+        budget: [0, 15000000],
+        mid: [15000000, 25000000],
+        premium: [25000000, Infinity]
+    };
+
+    const q = searchTerm.trim().toLowerCase();
+    const selectedRange = ranges[priceBand];
+
+    const filtered = products.filter(p => {
         const catOk  = activeCat  === 'all' || p.category  === activeCat;
         const condOk = activeCond === 'all' || p.condition === activeCond;
-        return catOk && condOk;
+        const textOk = !q || [p.name, p.category, p.description, ...(p.specs || [])].join(' ').toLowerCase().includes(q);
+        const priceOk = !selectedRange || (getMaxPrice(p) >= selectedRange[0] && getMinPrice(p) <= selectedRange[1]);
+        return catOk && condOk && textOk && priceOk;
     });
+
+    const sorters = {
+        price_asc: (a, b) => getMinPrice(a) - getMinPrice(b),
+        price_desc: (a, b) => getMaxPrice(b) - getMaxPrice(a),
+        name_asc: (a, b) => a.name.localeCompare(b.name),
+        newest: (a, b) => (b.badge === 'New' ? 1 : 0) - (a.badge === 'New' ? 1 : 0),
+        featured: (a, b) => {
+            const rank = { New: 3, Sale: 2, Popular: 1 };
+            return (rank[b.badge] || 0) - (rank[a.badge] || 0);
+        }
+    };
+
+    return filtered.sort(sorters[sortMode] || sorters.featured);
 }
 
 function applyFilters() {
@@ -352,10 +482,11 @@ function applyFilters() {
     // Sync pills
     document.querySelectorAll('.filter-pill[data-cat]').forEach(b  => b.classList.toggle('active', b.dataset.cat  === activeCat));
     document.querySelectorAll('.filter-pill[data-cond]').forEach(b => b.classList.toggle('active', b.dataset.cond === activeCond));
+    syncCatalogControls();
 
     renderGrid(filtered);
     updateUrlParams();
-    gaEvent('filter_products', { category: activeCat, condition: activeCond, result_count: filtered.length });
+    gaEvent('filter_products', { category: activeCat, condition: activeCond, search: searchTerm, priceBand, sortMode, result_count: filtered.length });
 }
 
 function setupFilters() {
@@ -370,6 +501,64 @@ function setupFilters() {
             activeCond = btn.dataset.cond;
             applyFilters();
         });
+    });
+}
+
+function setupCatalogTools() {
+    const searchInput = document.getElementById('productSearch');
+    const sortSelect = document.getElementById('sortSelect');
+
+    if (searchInput) {
+        searchInput.value = searchTerm;
+        searchInput.addEventListener('input', () => {
+            searchTerm = searchInput.value.trim();
+            applyFilters();
+        });
+    }
+
+    if (sortSelect) {
+        sortSelect.value = sortMode;
+        sortSelect.addEventListener('change', () => {
+            sortMode = sortSelect.value;
+            applyFilters();
+        });
+    }
+
+    document.querySelectorAll('.price-chip[data-price]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.price === priceBand);
+        btn.addEventListener('click', () => {
+            priceBand = btn.dataset.price;
+            document.querySelectorAll('.price-chip[data-price]').forEach(b => b.classList.toggle('active', b.dataset.price === priceBand));
+            applyFilters();
+        });
+    });
+}
+
+function syncCatalogControls() {
+    const searchInput = document.getElementById('productSearch');
+    const sortSelect = document.getElementById('sortSelect');
+    const navSearch = document.getElementById('navSearchInput');
+    if (searchInput && searchInput.value !== searchTerm) searchInput.value = searchTerm;
+    if (navSearch && navSearch.value !== searchTerm) navSearch.value = searchTerm;
+    if (sortSelect && sortSelect.value !== sortMode) sortSelect.value = sortMode;
+    document.querySelectorAll('.price-chip[data-price]').forEach(b => b.classList.toggle('active', b.dataset.price === priceBand));
+}
+
+function setupNavSearch() {
+    const navSearch = document.getElementById('navSearchInput');
+    const productSearch = document.getElementById('productSearch');
+    if (!navSearch) return;
+
+    navSearch.value = searchTerm;
+    navSearch.addEventListener('input', () => {
+        searchTerm = navSearch.value.trim();
+        if (productSearch && productSearch.value !== searchTerm) productSearch.value = searchTerm;
+        applyFilters();
+    });
+    navSearch.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
     });
 }
 // ===================== FILTER CATEGORY (from category cards) =====================
@@ -389,6 +578,110 @@ function quickAdd(e, id) {
     addToCart(p, 1, null);
     trackAddToCart(p, 1);
     showToast(`${p.name} đã thêm vào giỏ 🛒`);
+}
+
+// ===================== COMPARE =====================
+function loadCompareList() {
+    try { return JSON.parse(localStorage.getItem('compareList') || '[]'); } catch { return []; }
+}
+
+function saveCompareList() {
+    localStorage.setItem('compareList', JSON.stringify(compareList));
+    updateCompareDrawer();
+}
+
+function setupCompare() {
+    const closeBtn = document.getElementById('compareModalClose');
+    const overlay = document.getElementById('compareModalOverlay');
+    const compareBtn = document.getElementById('btnCompare');
+    const clearBtn = document.getElementById('btnClearCompare');
+
+    if (closeBtn) closeBtn.addEventListener('click', closeCompareModal);
+    if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) closeCompareModal(); });
+    if (compareBtn) compareBtn.addEventListener('click', openCompareModal);
+    if (clearBtn) clearBtn.addEventListener('click', () => {
+        compareList = [];
+        saveCompareList();
+        applyFilters();
+    });
+    updateCompareDrawer();
+}
+
+function toggleCompare(e, id) {
+    e.stopPropagation();
+    const exists = compareList.includes(id);
+    if (exists) {
+        compareList = compareList.filter(itemId => itemId !== id);
+    } else {
+        if (compareList.length >= 3) {
+            showToast('Chỉ so sánh tối đa 3 sản phẩm cùng lúc');
+            return;
+        }
+        compareList.push(id);
+    }
+    saveCompareList();
+    applyFilters();
+}
+
+function updateCompareDrawer() {
+    const drawer = document.getElementById('compareDrawer');
+    const itemsEl = document.getElementById('compareItems');
+    const countEl = document.getElementById('compareCount');
+    const compareBtn = document.getElementById('btnCompare');
+    if (!drawer || !itemsEl) return;
+
+    const selected = compareList.map(id => products.find(p => p.id === id)).filter(Boolean);
+    drawer.classList.toggle('open', selected.length > 0);
+    if (countEl) countEl.textContent = `${selected.length}/3 đã chọn`;
+    if (compareBtn) compareBtn.disabled = selected.length < 2;
+
+    itemsEl.innerHTML = selected.map(p => `
+        <button class="compare-pill" onclick="toggleCompare(event, ${p.id})" title="Bỏ ${escapeAttr(p.name)}">
+            <img src="${escapeAttr(getProductImage(p))}" alt="${escapeAttr(p.name)}" data-category="${escapeAttr(p.category)}" onerror="handleImageError(this)">
+            <span>${p.name}</span>
+        </button>
+    `).join('');
+}
+
+function openCompareModal() {
+    const selected = compareList.map(id => products.find(p => p.id === id)).filter(Boolean);
+    if (selected.length < 2) return;
+
+    const table = document.getElementById('compareTable');
+    if (!table) return;
+
+    table.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Tiêu chí</th>
+                    ${selected.map(p => `<th>${p.name}</th>`).join('')}
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Giá từ</td>${selected.map(p => `<td>${formatVND(getMinPrice(p))}</td>`).join('')}</tr>
+                <tr><td>Tình trạng</td>${selected.map(p => `<td>${p.condition === 'Used' ? 'Đã dùng' : 'Mới'}</td>`).join('')}</tr>
+                <tr><td>Dung lượng</td>${selected.map(p => `<td>${getVariantValues(p, 'storage')}</td>`).join('')}</tr>
+                <tr><td>Xuất xứ</td>${selected.map(p => `<td>${getVariantValues(p, 'region')}</td>`).join('')}</tr>
+                <tr><td>Điểm nổi bật</td>${selected.map(p => `<td>${(p.specs || []).slice(0, 3).join('<br>')}</td>`).join('')}</tr>
+            </tbody>
+        </table>
+    `;
+
+    document.getElementById('compareModalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    gaEvent('compare_products', { product_ids: selected.map(p => p.id).join(',') });
+}
+
+function closeCompareModal() {
+    const overlay = document.getElementById('compareModalOverlay');
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function getVariantValues(product, key) {
+    if (!product.variants || product.variants.length === 0) return 'Tiêu chuẩn';
+    return [...new Set(product.variants.map(v => v[key]).filter(Boolean))].slice(0, 4).join(', ');
 }
 
 // ===================== VARIANT SELECTOR =====================
@@ -473,7 +766,12 @@ function setupModal() {
 
     btnClose.addEventListener('click', closeModal);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closeModal();
+            closeCompareModal();
+        }
+    });
 
     document.getElementById('btnAdd').addEventListener('click', () => {
         if (!currentProduct) return;
@@ -491,10 +789,12 @@ function openModal(id) {
     currentProduct = p;
     selectedVariant = null;
 
-    document.getElementById('modalImg').src = p.image;
-    document.getElementById('modalImg').onerror = function () {
-        this.src = `https://placehold.co/600x400/f2f2f7/999?text=${encodeURIComponent(p.name)}`;
-    };
+    const modalImg = document.getElementById('modalImg');
+    modalImg.alt = p.name;
+    modalImg.dataset.category = p.category;
+    modalImg.dataset.fallbackApplied = 'false';
+    modalImg.src = getProductImage(p);
+    modalImg.onerror = function () { handleImageError(this); };
 
     const badge = document.getElementById('modalBadge');
     badge.textContent = p.badge || '';

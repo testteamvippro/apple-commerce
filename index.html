@@ -51,6 +51,18 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- SEARCH TRENDS -->
+<div class="top-trends" aria-label="Xu hướng tìm kiếm">
+    <div class="trend-container">
+        <span>Xu hướng tìm kiếm</span>
+        <a href="#products" onclick="filterCategory('iPhone')">iPhone 17 sẵn hàng</a>
+        <a href="#products" onclick="filterCategory('Mac')">MacBook M Series</a>
+        <a href="#products" onclick="filterCategory('AirPods')">AirPods 4</a>
+        <a href="#products" onclick="filterCategory('Watch')">Apple Watch</a>
+        <a href="#products" onclick="filterCategory('Accessories')">Cốc sạc Apple</a>
+    </div>
+</div>
+
 <!-- FLOATING CALL BUTTON -->
 <a href="tel:+84901234567" class="call-fab" id="callFab" aria-label="Gọi ngay">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.1 2.82 2 2 0 012.11 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
@@ -67,7 +79,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="nav-links">
             <a href="index.html" class="nav-link active">Sản Phẩm</a>
+            <a href="wishlist.html" class="nav-link">Yêu Thích</a>
             <a href="orders.html" class="nav-link">Đơn Hàng</a>
+            <a href="profile.html" class="nav-link">Tài Khoản</a>
+        </div>
+
+        <div class="nav-search">
+            <input type="search" id="navSearchInput" placeholder="Bạn cần tìm gì?" autocomplete="off">
+        </div>
+
+        <div class="nav-actions">
+            <a href="tel:+84901234567" class="nav-action"><strong>1800 3355</strong><span>Hotline</span></a>
+            <a href="orders.html" class="nav-action"><strong>Kiểm tra</strong><span>Đơn hàng</span></a>
+            <a href="profile.html" class="nav-action"><strong>Tài khoản</strong><span>Đăng nhập</span></a>
         </div>
 
         <a href="cart.html" class="nav-cart">
@@ -81,26 +105,134 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="nav-mobile" id="navMobile">
         <a href="index.html">Sản Phẩm</a>
+        <a href="wishlist.html">Yêu Thích</a>
         <a href="orders.html">Đơn Hàng</a>
+        <a href="profile.html">Tài Khoản</a>
         <a href="cart.html">Giỏ Hàng</a>
     </div>
 </nav>
+
+<!-- CATEGORY NAV -->
+<div class="category-nav" aria-label="Danh mục chính">
+    <div class="category-nav-inner">
+        <button onclick="filterCategory('iPhone')">iPhone</button>
+        <button onclick="filterCategory('Mac')">Mac</button>
+        <button onclick="filterCategory('iPad')">iPad</button>
+        <button onclick="filterCategory('Watch')">Apple Watch</button>
+        <button onclick="filterCategory('AirPods')">AirPods</button>
+        <button onclick="filterCategory('Accessories')">Phụ kiện</button>
+        <button onclick="activeCond='Used';activeCat='all';applyFilters();document.getElementById('products').scrollIntoView({behavior:'smooth'});">Hàng cũ</button>
+        <a href="cart.html">Giỏ hàng</a>
+    </div>
+</div>
+
+<!-- MARKETPLACE SHOWCASE -->
+<section class="retail-showcase">
+    <div class="container retail-layout">
+        <aside class="retail-menu" aria-label="Danh mục mua sắm">
+            <button onclick="filterCategory('iPhone')"><span>iPhone</span><small>17, 16, 15, máy cũ</small></button>
+            <button onclick="filterCategory('Mac')"><span>MacBook</span><small>Air, Pro, iMac, Mac mini</small></button>
+            <button onclick="filterCategory('iPad')"><span>iPad</span><small>Air, Pro, mini, Wi-Fi</small></button>
+            <button onclick="filterCategory('Watch')"><span>Apple Watch</span><small>Series, SE, Ultra</small></button>
+            <button onclick="filterCategory('AirPods')"><span>Âm thanh</span><small>AirPods, loa, phụ kiện</small></button>
+            <button onclick="filterCategory('Accessories')"><span>Phụ kiện Apple</span><small>Sạc, cáp, ốp, Airtag</small></button>
+            <button onclick="activeCond='Used';activeCat='all';applyFilters();document.getElementById('products').scrollIntoView({behavior:'smooth'});"><span>Hàng cũ</span><small>Đã kiểm tra, giá tốt</small></button>
+            <a href="orders.html"><span>Kiểm tra đơn hàng</span><small>Theo dõi trạng thái</small></a>
+        </aside>
+
+        <div class="retail-main retail-main-wide">
+            <div class="retail-banner">
+                <p>Ưu đãi Apple tháng 05/2026</p>
+                <h1>iPhone 17 sẵn hàng, trả góp linh hoạt</h1>
+                <span>Giao nhanh 48h · kiểm tra máy trước khi nhận · hỗ trợ thu cũ đổi mới</span>
+                <div>
+                    <a href="#products" class="btn-primary">Xem sản phẩm</a>
+                    <a href="#featured" class="btn-ghost">Deal nổi bật</a>
+                </div>
+            </div>
+            <div class="retail-image-strip" aria-label="Thiết bị nổi bật">
+                <img src="assets/images/generated/iphone-red.svg" alt="iPhone Pro">
+                <img src="assets/images/generated/iphone-blue.svg" alt="iPhone Plus">
+                <img src="assets/images/generated/iphone-gold.svg" alt="iPhone Pro Max">
+                <img src="assets/images/generated/iphone-green.svg" alt="iPhone Air">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROMO TILES -->
+<section class="promo-tiles-section">
+    <div class="container">
+        <div class="promo-title-row">
+            <h2>Khuyến mãi tại Apple Store VN</h2>
+            <a href="#products">Xem tất cả</a>
+        </div>
+        <div class="promo-tiles">
+            <button onclick="filterCategory('iPhone')">iPhone sẵn hàng</button>
+            <button onclick="filterCategory('Mac')">MacBook M Series</button>
+            <button onclick="filterCategory('iPad')">iPad cho học tập</button>
+            <button onclick="filterCategory('AirPods')">Âm thanh Apple</button>
+            <button onclick="filterCategory('Accessories')">Phụ kiện chính hãng</button>
+        </div>
+    </div>
+</section>
 
 <!-- HERO -->
 <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
         <div class="hero-accent-bar"></div>
-        <p class="hero-eyebrow">Mới & Đã Dùng · Mọi Phiên Bản</p>
-        <h1 class="hero-title">Mọi iPhone.<br>Mọi Ngân Sách.</h1>
-        <p class="hero-sub">Từ iPhone X đến iPhone 17 Pro Max — thiết bị Apple mới, đã dùng được kiểm tra, giá tốt nhất.</p>
+        <p class="hero-eyebrow">Đại lý bán lẻ thiết bị Apple</p>
+        <h1 class="hero-title">iPhone 17<br>sẵn hàng hôm nay</h1>
+        <p class="hero-sub">Giá tốt, nhiều phiên bản VN/A, LL/A, ZA/A. Hỗ trợ trả góp, giao nhanh và kiểm tra máy trước khi nhận.</p>
         <div class="hero-cta">
-            <a href="#products" class="btn-primary">Mua Ngay</a>
-            <a href="#categories" class="btn-ghost">Danh Mục</a>
+            <a href="#products" class="btn-primary">Mua ngay</a>
+            <a href="#categories" class="btn-ghost">Xem danh mục</a>
+        </div>
+        <div class="hero-stats" aria-label="Điểm nổi bật cửa hàng">
+            <div><strong>48h</strong><span>giao nhanh</span></div>
+            <div><strong>14 ngày</strong><span>đổi trả</span></div>
+            <div><strong>100%</strong><span>kiểm tra máy</span></div>
         </div>
     </div>
-    <div class="hero-image-wrap">
-        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=85" alt="iPhone 15 Pro" class="hero-img">
+</section>
+
+<!-- QUICK SERVICE BAR -->
+<section class="quick-services">
+    <div class="container quick-services-grid">
+        <a href="tel:+84901234567"><strong>Gọi mua hàng</strong><span>1800 3355</span></a>
+        <a href="orders.html"><strong>Đơn hàng của tôi</strong><span>Kiểm tra trạng thái</span></a>
+        <a href="#products"><strong>Thu cũ đổi mới</strong><span>Định giá tại cửa hàng</span></a>
+        <a href="checkout.html"><strong>Trả góp 0%</strong><span>Hồ sơ nhanh</span></a>
+    </div>
+</section>
+
+<!-- SHOPPING TOOLS -->
+<section class="shopping-tools" aria-label="Công cụ mua sắm">
+    <div class="container">
+        <div class="tools-grid">
+            <div class="tool-item">
+                <span class="tool-icon">0%</span>
+                <div>
+                    <h3>Trả góp linh hoạt</h3>
+                    <p>Dự tính trả trước ngay trên từng sản phẩm.</p>
+                </div>
+            </div>
+            <div class="tool-item">
+                <span class="tool-icon">VN</span>
+                <div>
+                    <h3>Máy VN/A, LL/A, ZA/A</h3>
+                    <p>Chọn phiên bản theo nhu cầu và ngân sách.</p>
+                </div>
+            </div>
+            <div class="tool-item">
+                <span class="tool-icon">14</span>
+                <div>
+                    <h3>Bảo hành rõ ràng</h3>
+                    <p>Kiểm tra ngoại hình, pin, màn hình trước khi giao.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -208,6 +340,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <button class="filter-pill" data-cond="Used">🟡 Đã Dùng</button>
                 </div>
             </div>
+            <div class="catalog-toolbar" aria-label="Tìm kiếm và sắp xếp sản phẩm">
+                <label class="search-box">
+                    <span>Tìm</span>
+                    <input type="search" id="productSearch" placeholder="Tìm iPhone, Mac, AirPods..." autocomplete="off">
+                </label>
+                <label class="select-box">
+                    <span>Sắp xếp</span>
+                    <select id="sortSelect">
+                        <option value="featured">Nổi bật</option>
+                        <option value="price_asc">Giá thấp đến cao</option>
+                        <option value="price_desc">Giá cao đến thấp</option>
+                        <option value="name_asc">Tên A-Z</option>
+                        <option value="newest">Hàng mới</option>
+                    </select>
+                </label>
+                <div class="price-chips" role="group" aria-label="Lọc nhanh theo giá">
+                    <button class="price-chip active" data-price="all">Tất cả giá</button>
+                    <button class="price-chip" data-price="budget">Dưới 15 triệu</button>
+                    <button class="price-chip" data-price="mid">15-25 triệu</button>
+                    <button class="price-chip" data-price="premium">Trên 25 triệu</button>
+                </div>
+            </div>
         </div>
 
         <div class="products-grid" id="productsGrid">
@@ -216,6 +370,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div id="productsContainer"></div>
     </div>
 </section>
+
+<!-- COMPARE DRAWER -->
+<aside class="compare-drawer" id="compareDrawer" aria-live="polite">
+    <div>
+        <strong>So sánh sản phẩm</strong>
+        <span id="compareCount">0/3 đã chọn</span>
+    </div>
+    <div class="compare-items" id="compareItems"></div>
+    <div class="compare-actions">
+        <button class="btn-compare" id="btnCompare" disabled>So sánh</button>
+        <button class="btn-clear-compare" id="btnClearCompare">Xóa</button>
+    </div>
+</aside>
 
 <!-- WHY APPLE SECTION -->
 <section class="trust-section">
@@ -300,9 +467,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <button class="qty-btn" onclick="changeQty(1)">+</button>
                     </div>
                 </div>
-                <button class="btn-add" id="btnAdd">Add to Cart</button>
-                <a href="cart.html" class="btn-cart-go">View Cart →</a>
+                <button class="btn-add" id="btnAdd">Thêm Vào Giỏ</button>
+                <a href="cart.html" class="btn-cart-go">Xem Giỏ Hàng →</a>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- COMPARE MODAL -->
+<div class="modal-overlay" id="compareModalOverlay">
+    <div class="modal compare-modal">
+        <button class="modal-close" id="compareModalClose">&times;</button>
+        <div class="compare-modal-content">
+            <p class="modal-cat">Bảng so sánh</p>
+            <h2>Chọn đúng thiết bị nhanh hơn</h2>
+            <div class="compare-table-wrap" id="compareTable"></div>
         </div>
     </div>
 </div>
@@ -311,6 +490,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="assets/js/products-data.js"></script>
 <script src="assets/js/api.js"></script>
 <script src="assets/js/main.js"></script>
 </body>

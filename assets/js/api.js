@@ -207,8 +207,17 @@ let _staticCache = null;
 
 async function fetchStaticProducts() {
     if (_staticCache) return _staticCache;
-    const res   = await fetch('products.json');
-    _staticCache = await res.json();
+    try {
+        const res = await fetch('products.json');
+        if (!res.ok) throw new Error(`Static products fetch failed: ${res.status}`);
+        _staticCache = await res.json();
+    } catch {
+        if (Array.isArray(window.APPLE_STORE_PRODUCTS)) {
+            _staticCache = window.APPLE_STORE_PRODUCTS;
+        } else {
+            throw new Error('Static product data is unavailable');
+        }
+    }
     return _staticCache;
 }
 
