@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Status & Data Visualization - Admin</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin-panel.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .status-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .status-card.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .status-card.success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+    .status-card.warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .status-card.info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+
+    .status-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .status-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .status-detail {
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      opacity: 0.8;
+    }
+
+    .chart-container {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .db-info {
+      background: #f0f4ff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      border-left: 4px solid #667eea;
+    }
+
+    .db-info h3 {
+      margin-top: 0;
+      color: #667eea;
+    }
+
+    .db-stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .db-stat:last-child {
+      border-bottom: none;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .data-table th {
+      background: #f5f5f5;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .data-table tr:hover {
+      background: #f9f9f9;
+    }
+
+    .sample-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn.primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .action-btn.primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #eee;
+    }
+
+    .tab-btn {
+      padding: 1rem 1.5rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: #667eea;
+      border-bottom-color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <h2>🍎 Admin</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="products.html">📱 Products</a>
+        <a href="orders.html">📦 Orders</a>
+        <a href="analytics.html">📈 Analytics</a>
+        <a href="system-status.html" class="active">⚙️ System Status</a>
+        <button id="logout-btn">🚪 Logout</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1>⚙️ System Status & Data Visualization</h1>
+        <div class="header-controls">
+          <button id="refresh-btn" class="btn-primary">🔄 Refresh</button>
+          <button id="export-btn" class="btn-secondary">📥 Export</button>
+        </div>
+      </header>
+
+      <!-- Database Info -->
+      <div class="db-info" id="db-info">
+        <h3>📊 Database Information</h3>
+        <div class="db-stat">
+          <span>Storage Type:</span>
+          <strong id="db-type">Loading...</strong>
+        </div>
+        <div class="db-stat">
+          <span>Last Updated:</span>
+          <strong id="db-updated">Loading...</strong>
+        </div>
+        <div class="db-stat">
+          <span>Total Data Size:</span>
+          <strong id="db-size">Loading...</strong>
+        </div>
+        <div class="db-stat">
+          <span>Connection Status:</span>
+          <strong id="db-status" style="color: #11998e;">✓ Connected</strong>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="status-grid" id="kpi-cards">
+        <div class="status-card primary">
+          <div class="status-label">📱 Total Products</div>
+          <div class="status-value" id="total-products">0</div>
+          <div class="status-detail" id="low-stock-detail">0 low stock</div>
+        </div>
+
+        <div class="status-card success">
+          <div class="status-label">📦 Total Orders</div>
+          <div class="status-value" id="total-orders">0</div>
+          <div class="status-detail" id="pending-orders">0 pending</div>
+        </div>
+
+        <div class="status-card info">
+          <div class="status-label">👥 Total Users</div>
+          <div class="status-value" id="total-users">0</div>
+          <div class="status-detail" id="admin-count">Admins: 0</div>
+        </div>
+
+        <div class="status-card warning">
+          <div class="status-label">💰 Total Revenue</div>
+          <div class="status-value" id="total-revenue">₫0</div>
+          <div class="status-detail" id="avg-order">Avg: ₫0</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('overview')">📈 Overview</button>
+        <button class="tab-btn" onclick="switchTab('products')">📱 Products</button>
+        <button class="tab-btn" onclick="switchTab('orders')">📦 Orders</button>
+        <button class="tab-btn" onclick="switchTab('users')">👥 Users</button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div id="overview" class="tab-content active">
+        <div class="chart-row">
+          <div class="chart-container">
+            <h3>Orders by Status</h3>
+            <canvas id="ordersStatusChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <h3>Products by Category</h3>
+            <canvas id="productsChartChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Revenue Trend (Last 7 Days)</h3>
+          <canvas id="revenueTrendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Products Tab -->
+      <div id="products" class="tab-content">
+        <div class="sample-section">
+          <h3>📱 Product Summary</h3>
+          <div class="db-stat">
+            <span>Total Products:</span>
+            <strong id="prod-count">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Low Stock (&lt;10):</span>
+            <strong id="prod-low-stock">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Out of Stock:</span>
+            <strong id="prod-out-of-stock">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Avg Price:</span>
+            <strong id="prod-avg-price">₫0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Total Inventory Value:</span>
+            <strong id="prod-total-value">₫0</strong>
+          </div>
+
+          <h4 style="margin-top: 2rem;">Recent Products</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody id="products-table">
+              <tr>
+                <td colspan="5" class="empty-state">No products yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Orders Tab -->
+      <div id="orders" class="tab-content">
+        <div class="sample-section">
+          <h3>📦 Orders Summary</h3>
+          <div class="db-stat">
+            <span>Total Orders:</span>
+            <strong id="order-count">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Pending:</span>
+            <strong id="order-pending">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Processing:</span>
+            <strong id="order-processing">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Shipped:</span>
+            <strong id="order-shipped">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Delivered:</span>
+            <strong id="order-delivered">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Total Revenue:</span>
+            <strong id="order-revenue">₫0</strong>
+          </div>
+
+          <h4 style="margin-top: 2rem;">Recent Orders</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table">
+              <tr>
+                <td colspan="5" class="empty-state">No orders yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users Tab -->
+      <div id="users" class="tab-content">
+        <div class="sample-section">
+          <h3>👥 Users Summary</h3>
+          <div class="db-stat">
+            <span>Total Users:</span>
+            <strong id="user-count">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Admins:</span>
+            <strong id="user-admins">0</strong>
+          </div>
+          <div class="db-stat">
+            <span>Customers:</span>
+            <strong id="user-customers">0</strong>
+          </div>
+
+          <h4 style="margin-top: 2rem;">Recent Users</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="users-table">
+              <tr>
+                <td colspan="4" class="empty-state">No users yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    let chartsInitialized = false;
+
+    function switchTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    async function loadSystemStatus() {
+      try {
+        const response = await fetch('/api/admin?action=stats');
+        const result = await response.json();
+
+        if (result.success) {
+          const stats = result.data;
+          
+          // Update KPI cards
+          document.getElementById('total-products').textContent = stats.totalProducts;
+          document.getElementById('total-orders').textContent = stats.totalOrders;
+          document.getElementById('total-users').textContent = stats.totalUsers;
+          document.getElementById('total-revenue').textContent = '₫' + Math.round(stats.totalRevenue).toLocaleString();
+          document.getElementById('low-stock-detail').textContent = stats.lowStockProducts + ' low stock';
+          document.getElementById('avg-order').textContent = 'Avg: ₫' + Math.round(stats.avgOrderValue).toLocaleString();
+
+          // Update DB info
+          document.getElementById('db-type').textContent = result.dbType === 'mysql' ? 'MySQL' : 'JSON Files';
+          document.getElementById('db-size').textContent = stats.dataSize;
+          document.getElementById('db-updated').textContent = new Date(result.timestamp).toLocaleString();
+        }
+      } catch (error) {
+        console.error('Error loading stats:', error);
+        showToast('Failed to load system status', 'error');
+      }
+    }
+
+    async function loadProductsData() {
+      try {
+        const response = await fetch('/api/admin?action=products');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          const products = result.data;
+          
+          // Calculate stats
+          const lowStock = products.filter(p => p.quantity < 10).length;
+          const outOfStock = products.filter(p => p.quantity === 0).length;
+          const avgPrice = products.length > 0 
+            ? products.reduce((a, b) => a + b.price, 0) / products.length 
+            : 0;
+          const totalValue = products.reduce((a, b) => a + (b.price * b.quantity), 0);
+
+          document.getElementById('prod-count').textContent = products.length;
+          document.getElementById('prod-low-stock').textContent = lowStock;
+          document.getElementById('prod-out-of-stock').textContent = outOfStock;
+          document.getElementById('prod-avg-price').textContent = '₫' + Math.round(avgPrice).toLocaleString();
+          document.getElementById('prod-total-value').textContent = '₫' + Math.round(totalValue).toLocaleString();
+
+          // Show recent products
+          const tbody = document.getElementById('products-table');
+          tbody.innerHTML = products.slice(0, 10).map(p => `
+            <tr>
+              <td><strong>${p.name}</strong></td>
+              <td>${p.category || 'N/A'}</td>
+              <td>₫${Math.round(p.price).toLocaleString()}</td>
+              <td>${p.quantity || 0}</td>
+              <td>${p.rating ? '⭐ ' + p.rating.toFixed(1) : '-'}</td>
+            </tr>
+          `).join('');
+
+          // Update chart
+          if (chartsInitialized) {
+            updateProductsCategoryChart(products);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading products:', error);
+      }
+    }
+
+    async function loadOrdersData() {
+      try {
+        const response = await fetch('/api/admin?action=orders');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          const orders = result.data;
+          
+          // Count by status
+          const statuses = {};
+          let totalRevenue = 0;
+          orders.forEach(o => {
+            statuses[o.status || 'pending'] = (statuses[o.status || 'pending'] || 0) + 1;
+            totalRevenue += o.total || 0;
+          });
+
+          document.getElementById('order-count').textContent = orders.length;
+          document.getElementById('order-pending').textContent = statuses.pending || 0;
+          document.getElementById('order-processing').textContent = statuses.processing || 0;
+          document.getElementById('order-shipped').textContent = statuses.shipped || 0;
+          document.getElementById('order-delivered').textContent = statuses.delivered || 0;
+          document.getElementById('order-revenue').textContent = '₫' + Math.round(totalRevenue).toLocaleString();
+
+          // Show recent orders
+          const tbody = document.getElementById('orders-table');
+          tbody.innerHTML = orders.slice(0, 10).map(o => `
+            <tr>
+              <td><strong>${o.id.substring(0, 8)}...</strong></td>
+              <td>${o.userId || 'Guest'}</td>
+              <td>₫${Math.round(o.total || 0).toLocaleString()}</td>
+              <td><span class="status-badge">${o.status || 'pending'}</span></td>
+              <td>${new Date(o.created_at || o.createdAt).toLocaleDateString()}</td>
+            </tr>
+          `).join('');
+
+          // Update chart
+          if (chartsInitialized) {
+            updateOrdersStatusChart(statuses);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading orders:', error);
+      }
+    }
+
+    async function loadUsersData() {
+      try {
+        const response = await fetch('/api/admin?action=users');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          const users = result.data;
+          const admins = users.filter(u => u.role === 'admin').length;
+          const customers = users.filter(u => u.role === 'customer').length;
+
+          document.getElementById('user-count').textContent = users.length;
+          document.getElementById('user-admins').textContent = admins;
+          document.getElementById('user-customers').textContent = customers;
+
+          // Show recent users
+          const tbody = document.getElementById('users-table');
+          tbody.innerHTML = users.slice(0, 10).map(u => `
+            <tr>
+              <td>${u.email}</td>
+              <td>${u.name || 'N/A'}</td>
+              <td><strong>${u.role || 'customer'}</strong></td>
+              <td>${new Date(u.created_at || u.createdAt).toLocaleDateString()}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (error) {
+        console.error('Error loading users:', error);
+      }
+    }
+
+    function updateOrdersStatusChart(statuses) {
+      const ctx = document.getElementById('ordersStatusChart');
+      if (!ctx) return;
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+          datasets: [{
+            data: [
+              statuses.pending || 0,
+              statuses.processing || 0,
+              statuses.shipped || 0,
+              statuses.delivered || 0
+            ],
+            backgroundColor: ['#f5576c', '#ffa502', '#667eea', '#11998e']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+    }
+
+    function updateProductsCategoryChart(products) {
+      const ctx = document.getElementById('productsChartChart');
+      if (!ctx) return;
+
+      const categories = {};
+      products.forEach(p => {
+        categories[p.category || 'Other'] = (categories[p.category || 'Other'] || 0) + 1;
+      });
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(categories),
+          datasets: [{
+            label: 'Products',
+            data: Object.values(categories),
+            backgroundColor: '#667eea'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    }
+
+    async function loadAllData() {
+      await loadSystemStatus();
+      await loadProductsData();
+      await loadOrdersData();
+      await loadUsersData();
+      chartsInitialized = true;
+    }
+
+    // Setup event listeners
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      auth.logout();
+      window.location.href = '/';
+    });
+
+    document.getElementById('refresh-btn')?.addEventListener('click', loadAllData);
+
+    document.getElementById('export-btn')?.addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/admin?action=export-system-status');
+        const result = await response.json();
+        
+        const dataStr = JSON.stringify(result, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'system-status-' + new Date().toISOString().slice(0, 10) + '.json';
+        a.click();
+        
+        showToast('Export successful', 'success');
+      } catch (error) {
+        showToast('Export failed', 'error');
+      }
+    });
+
+    // Load data on page load
+    if (!auth.isAdmin()) {
+      window.location.href = '/login.html';
+    } else {
+      loadAllData();
+    }
+  </script>
+</body>
+</html>

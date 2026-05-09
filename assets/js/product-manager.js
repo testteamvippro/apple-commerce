@@ -48,16 +48,30 @@ class ProductManager {
         <td>
           <div class="product-preview">
             <span class="product-icon">📱</span>
-            ${product.name}
+            <div>
+              <strong>${product.name}</strong>
+              ${product.sku ? '<br><small style="color: #666;">SKU: ' + product.sku + '</small>' : ''}
+              ${product.colors ? '<br><small style="color: #999;">Colors: ' + product.colors + '</small>' : ''}
+            </div>
           </div>
         </td>
-        <td>${product.category || 'N/A'}</td>
-        <td>₫${product.price.toLocaleString()}</td>
-        <td>${product.stock || 0}</td>
         <td>
-          <span class="stock-badge ${product.stock > 10 ? 'in-stock' : product.stock > 0 ? 'low-stock' : 'out-of-stock'}">
-            ${product.stock > 10 ? 'In Stock' : product.stock > 0 ? 'Low Stock' : 'Out of Stock'}
+          <span>${product.category || 'N/A'}</span>
+          ${product.brand ? '<br><small style="color: #666;">' + product.brand + '</small>' : ''}
+        </td>
+        <td>
+          ₫${product.price.toLocaleString()}
+          ${product.discount ? '<br><small style="color: #e74c3c;">-' + product.discount + '%</small>' : ''}
+        </td>
+        <td>
+          <div>${product.quantity || 0}</div>
+          ${product.warranty ? '<small style="color: #666;">' + product.warranty + 'mo warranty</small>' : ''}
+        </td>
+        <td>
+          <span class="stock-badge ${product.quantity > 10 ? 'in-stock' : product.quantity > 0 ? 'low-stock' : 'out-of-stock'}">
+            ${product.quantity > 10 ? 'In Stock' : product.quantity > 0 ? 'Low Stock' : 'Out of Stock'}
           </span>
+          ${product.rating ? '<br><small>⭐ ' + product.rating.toFixed(1) + ' (' + product.reviews + ' reviews)</small>' : ''}
         </td>
         <td>
           <button onclick="productManager.openEditModal('${product.id}')" class="action-btn">✏️ Edit</button>
@@ -115,7 +129,9 @@ class ProductManager {
     const q = query.toLowerCase();
     this.filteredProducts = this.products.filter(p =>
       p.name.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q)
+      p.category.toLowerCase().includes(q) ||
+      (p.sku && p.sku.toLowerCase().includes(q)) ||
+      (p.brand && p.brand.toLowerCase().includes(q))
     );
     this.renderProductsTable();
   }
@@ -126,6 +142,9 @@ class ProductManager {
       document.getElementById('modal-title').textContent = 'Add New Product';
       document.getElementById('product-form').reset();
       document.getElementById('product-id').value = '';
+      // Set default brand
+      const brandField = document.getElementById('product-brand');
+      if (brandField) brandField.value = 'Apple';
       modal.style.display = 'flex';
     }
   }
@@ -139,10 +158,57 @@ class ProductManager {
       document.getElementById('modal-title').textContent = 'Edit Product';
       document.getElementById('product-id').value = product.id;
       document.getElementById('product-name').value = product.name;
-      document.getElementById('product-category').value = product.category;
+      document.getElementById('product-category').value = product.category || '';
       document.getElementById('product-description').value = product.description || '';
       document.getElementById('product-price').value = product.price;
-      document.getElementById('product-stock').value = product.stock;
+      document.getElementById('product-stock').value = product.quantity || 0;
+      
+      // Enhanced fields
+      const colorField = document.getElementById('product-color');
+      if (colorField) {
+        colorField.value = Array.isArray(product.colors) 
+          ? product.colors.join(', ')
+          : product.colors || '';
+      }
+
+      const storageField = document.getElementById('product-storage');
+      if (storageField) {
+        storageField.value = Array.isArray(product.storage)
+          ? product.storage.join(', ')
+          : product.storage || '';
+      }
+
+      const specsField = document.getElementById('product-specs');
+      if (specsField) {
+        specsField.value = typeof product.specs === 'object'
+          ? JSON.stringify(product.specs, null, 2)
+          : product.specs || '';
+      }
+
+      const skuField = document.getElementById('product-sku');
+      if (skuField) skuField.value = product.sku || '';
+
+      const brandField = document.getElementById('product-brand');
+      if (brandField) brandField.value = product.brand || 'Apple';
+
+      const ratingField = document.getElementById('product-rating');
+      if (ratingField) ratingField.value = product.rating || '';
+
+      const reviewsField = document.getElementById('product-reviews');
+      if (reviewsField) reviewsField.value = product.reviews || 0;
+
+      const discountField = document.getElementById('product-discount');
+      if (discountField) discountField.value = product.discount || 0;
+
+      const imageField = document.getElementById('product-image');
+      if (imageField) imageField.value = product.image || '';
+
+      const warrantyField = document.getElementById('product-warranty');
+      if (warrantyField) warrantyField.value = product.warranty || 12;
+
+      const availabilityField = document.getElementById('product-availability');
+      if (availabilityField) availabilityField.value = product.availability || 'in-stock';
+
       modal.style.display = 'flex';
     }
   }
@@ -154,14 +220,52 @@ class ProductManager {
     }
   }
 
+  parseColors() {
+    const colorField = document.getElementById('product-color');
+    if (!colorField || !colorField.value) return [];
+    return colorField.value.split(',').map(c => c.trim()).filter(c => c);
+  }
+
+  parseStorage() {
+    const storageField = document.getElementById('product-storage');
+    if (!storageField || !storageField.value) return [];
+    return storageField.value.split(',').map(s => s.trim()).filter(s => s);
+  }
+
+  parseSpecs() {
+    const specsField = document.getElementById('product-specs');
+    if (!specsField || !specsField.value) return {};
+    
+    try {
+      return JSON.parse(specsField.value);
+    } catch (e) {
+      console.warn('Invalid JSON in specs field');
+      return {};
+    }
+  }
+
   async saveProduct() {
     const productId = document.getElementById('product-id').value;
+    
     const product = {
       name: document.getElementById('product-name').value,
       category: document.getElementById('product-category').value,
       description: document.getElementById('product-description').value,
       price: parseFloat(document.getElementById('product-price').value),
-      stock: parseInt(document.getElementById('product-stock').value)
+      quantity: parseInt(document.getElementById('product-stock').value),
+      
+      // Enhanced fields
+      colors: this.parseColors(),
+      storage: this.parseStorage(),
+      specs: this.parseSpecs(),
+      sku: document.getElementById('product-sku').value,
+      brand: document.getElementById('product-brand').value,
+      rating: parseFloat(document.getElementById('product-rating').value || 0),
+      reviews: parseInt(document.getElementById('product-reviews').value || 0),
+      discount: parseInt(document.getElementById('product-discount').value || 0),
+      image: document.getElementById('product-image').value,
+      warranty: parseInt(document.getElementById('product-warranty').value || 12),
+      availability: document.getElementById('product-availability').value
     };
 
     try {
