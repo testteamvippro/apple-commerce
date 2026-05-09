@@ -548,6 +548,175 @@ a { text-decoration: none; color: inherit; }
     transform: scale(1.08);
 }
 
+/* ===================== PRODUCT SECTIONS (minhtuanmobile style) ===================== */
+.product-section-group {
+    margin-bottom: 72px;
+}
+
+.section-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.section-title-sm {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+}
+
+.section-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 8px 18px;
+    border: 1.5px solid var(--primary);
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.section-view-all:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.section-view-all svg {
+    transition: transform 0.2s;
+}
+
+.section-view-all:hover svg {
+    transform: translateX(3px);
+}
+
+/* ===================== COUNTDOWN BADGE ===================== */
+.countdown-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: rgba(220, 38, 38, 0.92);
+    border-radius: 8px;
+    padding: 6px 10px;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.countdown-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: white;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 3px;
+}
+
+.countdown-time {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+}
+
+/* ===================== NEW CARD PRICING ===================== */
+.card-pricing {
+    margin-top: auto;
+    margin-bottom: 14px;
+}
+
+.price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+
+.card-price-sale {
+    font-size: 20px;
+    font-weight: 800;
+    color: #dc2626;
+}
+
+.card-price-original {
+    font-size: 13px;
+    color: var(--gray-400);
+    text-decoration: line-through;
+}
+
+.card-installment {
+    font-size: 12px;
+    color: var(--gray-600);
+    line-height: 1.4;
+}
+
+.card-installment strong {
+    color: var(--primary);
+}
+
+.card-storage-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin: 8px 0;
+}
+
+.storage-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    border: 1px solid var(--gray-200);
+}
+
+.card-add-btn {
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: var(--radius-md);
+    background: var(--blue-gradient);
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.card-add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.card-add-btn:active {
+    transform: none;
+}
+
 /* ===================== TRUST SECTION ===================== */
 .trust-section { 
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 

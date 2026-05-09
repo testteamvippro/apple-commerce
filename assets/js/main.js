@@ -66,20 +66,20 @@ function fbEvent(name, params) {
 function trackViewItem(p) {
     const price = getMinPrice(p);
     gaEvent('view_item', {
-        currency: 'USD', value: price,
+        currency: 'VND', value: price,
         items: [{ item_id: String(p.id), item_name: p.name, item_category: p.category, item_variant: p.condition, price }]
     });
-    fbEvent('ViewContent', { content_ids: [String(p.id)], content_name: p.name, content_type: 'product', value: price, currency: 'USD' });
+    fbEvent('ViewContent', { content_ids: [String(p.id)], content_name: p.name, content_type: 'product', value: price, currency: 'VND' });
 }
 
 function trackAddToCart(p, qty) {
     const price = selectedVariant ? selectedVariant.price : getMinPrice(p);
     const variantLabel = selectedVariant ? `${selectedVariant.storage} ${selectedVariant.color}` : p.condition;
     gaEvent('add_to_cart', {
-        currency: 'USD', value: price * qty,
+        currency: 'VND', value: price * qty,
         items: [{ item_id: String(p.id), item_name: p.name, item_category: p.category, item_variant: variantLabel, price, quantity: qty }]
     });
-    fbEvent('AddToCart', { content_ids: [String(p.id)], content_name: p.name, value: price * qty, currency: 'USD', num_items: qty });
+    fbEvent('AddToCart', { content_ids: [String(p.id)], content_name: p.name, value: price * qty, currency: 'VND', num_items: qty });
 }
 
 // ===================== URL PARAMS =====================
@@ -112,11 +112,25 @@ function getMaxPrice(p) {
     return p.price;
 }
 
+function formatVND(price) {
+    return price.toLocaleString('vi-VN') + '₫';
+}
+
+function getOriginalPrice(salePrice) {
+    return Math.round(salePrice * 1.25 / 500000) * 500000;
+}
+
+function getInstallmentPrice(salePrice) {
+    return Math.round(salePrice / 6 / 100000) * 100000;
+}
+
+function getPromoEnd(badge) {
+    const hours = badge === 'Sale' ? 48 : 24;
+    return Date.now() + hours * 3600000;
+}
+
 function getPriceDisplay(p) {
-    const min = getMinPrice(p);
-    const max = getMaxPrice(p);
-    if (min !== max) return `từ $${min.toLocaleString()} – $${max.toLocaleString()}`;
-    return `$${min.toLocaleString()}`;
+    return formatVND(getMinPrice(p));
 }
 
 // ===================== LAZY LOADING =====================
@@ -198,31 +212,85 @@ function initCarousel() {
 // ===================== RENDER GRID =====================
 function renderGrid(list) {
     const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-    grid.innerHTML = '';
-
+    const container = document.getElementById('productsContainer');
     const count = document.getElementById('productsCount');
     if (count) count.textContent = `${list.length} sản phẩm`;
 
-    if (list.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray-400)">
-            <div style="font-size:48px;margin-bottom:16px">🔍</div>
-            <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Không tìm thấy sản phẩm</h3>
-            <p>Hãy thay đổi các bộ lọc phía trên.</p>
-        </div>`;
-        return;
+    const emptyHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray-400)">
+        <div style="font-size:48px;margin-bottom:16px">🔍</div>
+        <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Không tìm thấy sản phẩm</h3>
+        <p>Hãy thay đổi các bộ lọc phía trên.</p>
+    </div>`;
+
+    const isAllView = activeCat === 'all' && activeCond === 'all';
+    if (isAllView) {
+        if (grid) grid.style.display = 'none';
+        if (container) {
+            container.style.display = 'block';
+            if (list.length === 0) { container.innerHTML = emptyHTML; return; }
+            renderSections(list, container);
+        }
+    } else {
+        if (container) container.style.display = 'none';
+        if (grid) {
+            grid.style.display = 'grid';
+            if (list.length === 0) { grid.innerHTML = emptyHTML; return; }
+            renderCards(list, grid);
+        }
     }
+}
 
+function renderSections(list, container) {
+    container.innerHTML = '';
+    const groups = [
+        { key: 'iphone17', label: 'iPhone 17 Series', eyebrow: '🔥 Mới nhất 2025', items: list.filter(p => p.name.includes('iPhone 17') && p.condition === 'New') },
+        { key: 'iphone16', label: 'iPhone 16 Series', eyebrow: '⭐ Bán chạy nhất', items: list.filter(p => p.name.includes('iPhone 16') && p.condition === 'New') },
+        { key: 'used',     label: 'Điện Thoại Đã Dùng', eyebrow: '✅ Đã kiểm tra kỹ • Giá tốt nhất', items: list.filter(p => p.condition === 'Used') },
+    ];
+
+    groups.filter(g => g.items.length > 0).forEach(g => {
+        const sec = document.createElement('div');
+        sec.className = 'product-section-group';
+        sec.innerHTML = `
+            <div class="section-header-row">
+                <div>
+                    <p class="section-eyebrow">${g.eyebrow}</p>
+                    <h2 class="section-title-sm">${g.label}</h2>
+                </div>
+                <a href="#" class="section-view-all" data-group="${g.key}">Xem tất cả <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+            </div>
+            <div class="products-grid" id="grid-${g.key}"></div>
+        `;
+        container.appendChild(sec);
+        renderCards(g.items, sec.querySelector('.products-grid'));
+        sec.querySelector('.section-view-all').addEventListener('click', e => {
+            e.preventDefault();
+            if (g.key === 'used') { activeCond = 'Used'; activeCat = 'all'; }
+            else { activeCond = 'New'; activeCat = 'iPhone'; }
+            applyFilters();
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    startCountdowns();
+    initLazyLoad();
+}
+
+function renderCards(list, grid) {
     const blank = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-
+    grid.innerHTML = '';
     list.forEach(p => {
         const isUsed = p.condition === 'Used';
-        const storageList = p.variants ? [...new Set(p.variants.map(v => v.storage))].join(' · ') : '';
+        const minPrice = getMinPrice(p);
+        const originalPrice = getOriginalPrice(minPrice);
+        const installment = getInstallmentPrice(minPrice);
+        const storageList = p.variants ? [...new Set(p.variants.map(v => v.storage))] : [];
+        const hasCountdown = p.badge === 'New' || p.badge === 'Sale';
         const el = document.createElement('div');
         el.className = 'product-card';
         el.innerHTML = `
             <div class="card-img-wrap">
-                ${p.badge ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
+                ${hasCountdown ? `<div class="countdown-badge"><span class="countdown-label">${p.badge === 'Sale' ? '🔥 SALE' : '🆕 HOT'}</span><span class="countdown-time" data-end="${getPromoEnd(p.badge)}"></span></div>` : ''}
+                ${p.badge && !hasCountdown ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
                 <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${isUsed ? '✅ Đã Dùng' : '🟢 Mới'}</span>
                 <img data-src="${p.image}" src="${blank}" alt="${p.name}" class="lazy-img"
                      onerror="this.src='https://placehold.co/600x400/f5f5f5/ccc?text=${encodeURIComponent(p.name)}'">
@@ -230,23 +298,38 @@ function renderGrid(list) {
             <div class="card-body">
                 <p class="card-cat">${p.category}</p>
                 <h3 class="card-name">${p.name}</h3>
-                <p class="card-desc">${p.description}</p>
-                <div class="card-footer">
-                    <div class="card-price-wrap">
-                        <span class="card-price">${getPriceDisplay(p)}</span>
-                        ${isUsed ? '<span class="card-condition-note">Chứng Thực Tuyệt Vời</span>' : ''}
-                        ${storageList ? `<span class="card-variants-note">${storageList}</span>` : ''}
+                ${storageList.length > 0 ? `<p class="card-storage-tags">${storageList.map(s => `<span class="storage-tag">${s}</span>`).join('')}</p>` : ''}
+                <div class="card-pricing">
+                    <div class="price-row">
+                        <span class="card-price-sale">${formatVND(minPrice)}</span>
+                        <span class="card-price-original">${formatVND(originalPrice)}</span>
                     </div>
-                    <button class="card-add" title="Thêm vào giỏ" onclick="quickAdd(event, ${p.id})">+</button>
+                    <p class="card-installment">Trả trước: <strong>${formatVND(installment)}</strong></p>
                 </div>
+                <button class="card-add-btn" onclick="quickAdd(event, ${p.id})">🛒 Thêm Vào Giỏ</button>
             </div>
         `;
         el.querySelector('.card-img-wrap').addEventListener('click', () => openModal(p.id));
         el.querySelector('.card-name').addEventListener('click', () => openModal(p.id));
         grid.appendChild(el);
     });
+}
 
-    initLazyLoad();
+function startCountdowns() {
+    function tick() {
+        const now = Date.now();
+        document.querySelectorAll('.countdown-time[data-end]').forEach(el => {
+            const end = parseInt(el.dataset.end);
+            const diff = Math.max(0, end - now);
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        });
+    }
+    tick();
+    clearInterval(window._countdownInterval);
+    window._countdownInterval = setInterval(tick, 1000);
 }
 
 // ===================== FILTERS =====================
@@ -373,13 +456,13 @@ function renderVariantSelector(p) {
         const priceEl = document.getElementById('modalPrice');
         if (priceEl) {
             priceEl.classList.add('price-flash');
-            priceEl.textContent = `$${match.price.toLocaleString()}`;
+            priceEl.textContent = formatVND(match.price);
             setTimeout(() => priceEl.classList.remove('price-flash'), 400);
         }
     });
 
     const priceEl = document.getElementById('modalPrice');
-    if (priceEl) priceEl.textContent = `$${selectedVariant.price.toLocaleString()}`;
+    if (priceEl) priceEl.textContent = formatVND(selectedVariant.price);
 }
 
 // ===================== MODAL =====================
@@ -436,7 +519,7 @@ function openModal(id) {
 
     renderVariantSelector(p);
     if (!p.variants || p.variants.length === 0) {
-        document.getElementById('modalPrice').textContent = `$${p.price.toLocaleString()}`;
+        document.getElementById('modalPrice').textContent = formatVND(p.price);
     }
 
     document.getElementById('modalOverlay').classList.add('open');
