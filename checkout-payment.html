@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - Apple Store</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/enhancements.css">
+  <link rel="stylesheet" href="assets/css/payments.css">
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">🍎 Apple Store</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="cart.html">🛒 Cart</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="payment-container">
+      <div class="payment-form">
+        <h1>Complete Payment</h1>
+
+        <!-- Payment Method Selection -->
+        <div class="payment-methods">
+          <label class="method-option">
+            <input type="radio" name="payment-method" value="stripe" checked>
+            <span>💳 Stripe (Credit/Debit Card)</span>
+          </label>
+          <label class="method-option">
+            <input type="radio" name="payment-method" value="vnpay">
+            <span>🏦 VNPay (Vietnam)</span>
+          </label>
+          <label class="method-option">
+            <input type="radio" name="payment-method" value="paypal">
+            <span>🅿️ PayPal</span>
+          </label>
+          <label class="method-option">
+            <input type="radio" name="payment-method" value="cod">
+            <span>🚚 Cash on Delivery (COD)</span>
+          </label>
+        </div>
+
+        <!-- Stripe Form -->
+        <div id="stripe-form" class="payment-method-form">
+          <form id="stripe-checkout">
+            <div class="form-group">
+              <label>Cardholder Name</label>
+              <input type="text" id="card-name" required>
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="card-email" required>
+            </div>
+
+            <div class="form-group">
+              <label>Card Details</label>
+              <div id="card-element" class="stripe-element"></div>
+              <div id="card-errors" class="error-message"></div>
+            </div>
+
+            <button type="submit" class="btn-primary btn-full">Pay Now</button>
+          </form>
+        </div>
+
+        <!-- VNPay Form -->
+        <div id="vnpay-form" class="payment-method-form" style="display: none;">
+          <p style="text-align: center; color: #666; margin-bottom: 1rem;">
+            You will be redirected to VNPay to complete the payment
+          </p>
+          <button type="button" onclick="handleVNPayPayment()" class="btn-primary btn-full">
+            Continue to VNPay
+          </button>
+        </div>
+
+        <!-- PayPal Form -->
+        <div id="paypal-form" class="payment-method-form" style="display: none;">
+          <div id="paypal-button-container"></div>
+        </div>
+
+        <!-- COD Form -->
+        <div id="cod-form" class="payment-method-form" style="display: none;">
+          <p style="color: #666; margin-bottom: 1rem;">
+            You will pay when receiving the package
+          </p>
+          <button type="button" class="btn-primary btn-full" onclick="confirmCOD()">
+            Confirm COD Order
+          </button>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h2>Order Summary</h2>
+        
+        <div class="order-items" id="order-items"></div>
+
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span id="subtotal">₫0</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span id="shipping">₫0</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Tax:</span>
+          <span id="tax">₫0</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span id="total">₫0</span>
+        </div>
+
+        <div class="security-info">
+          🔒 Secure payment processing  
+          Your payment information is encrypted and secure.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/stripe-handler.js"></script>
+  <script src="assets/js/vnpay-handler.js"></script>
+  <script>
+    const STRIPE_PUBLIC_KEY = 'pk_test_YOUR_KEY_HERE';
+    let stripeHandler;
+    let vnpayHandler;
+    let totalAmount;
+    let orderId;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initPayment();
+      setupPaymentMethodToggle();
+    });
+
+    function initPayment() {
+      // Load order from localStorage
+      const order = JSON.parse(localStorage.getItem('currentOrder'));
+      
+      if (!order) {
+        showToast('No order found. Redirecting to checkout...', 'error');
+        setTimeout(() => {
+          window.location.href = '/checkout.html';
+        }, 2000);
+        return;
+      }
+
+      orderId = order.id;
+      totalAmount = order.total;
+
+      // Initialize payment handlers
+      stripeHandler = new StripeHandler(STRIPE_PUBLIC_KEY);
+      stripeHandler.mount('card-element');
+
+      vnpayHandler = new VNPayHandler('MERCHANT_CODE', 'HASH_SECRET');
+
+      // Update summary
+      updateOrderSummary(order);
+
+      // Handle Stripe form
+      document.getElementById('stripe-checkout').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await processStripePayment();
+      });
+    }
+
+    function setupPaymentMethodToggle() {
+      document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          showPaymentForm(e.target.value);
+        });
+      });
+    }
+
+    function showPaymentForm(method) {
+      document.querySelectorAll('.payment-method-form').forEach(form => {
+        form.style.display = 'none';
+      });
+
+      switch(method) {
+        case 'stripe':
+          document.getElementById('stripe-form').style.display = 'block';
+          break;
+        case 'vnpay':
+          document.getElementById('vnpay-form').style.display = 'block';
+          break;
+        case 'paypal':
+          document.getElementById('paypal-form').style.display = 'block';
+          break;
+        case 'cod':
+          document.getElementById('cod-form').style.display = 'block';
+          break;
+      }
+    }
+
+    async function processStripePayment() {
+      try {
+        setLoading(true, 'Processing payment...');
+        
+        const result = await stripeHandler.handlePayment(
+          totalAmount,
+          orderId,
+          document.getElementById('card-name').value,
+          document.getElementById('card-email').value
+        );
+
+        if (result.success) {
+          localStorage.setItem('payment-status', JSON.stringify({
+            status: 'success',
+            paymentId: result.paymentId,
+            method: 'stripe'
+          }));
+          window.location.href = `/order-confirmation.html?orderId=${orderId}`;
+        }
+      } catch (error) {
+        showToast(error.message, 'error');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function handleVNPayPayment() {
+      vnpayHandler.redirectToPayment(totalAmount, orderId);
+    }
+
+    function confirmCOD() {
+      if (!confirm('Confirm Cash on Delivery order? You will pay when the package arrives.')) {
+        return;
+      }
+
+      localStorage.setItem('payment-status', JSON.stringify({
+        status: 'pending',
+        method: 'cod'
+      }));
+      window.location.href = `/order-confirmation.html?orderId=${orderId}`;
+    }
+
+    function updateOrderSummary(order) {
+      document.getElementById('subtotal').textContent = '₫' + (order.subtotal || 0).toLocaleString();
+      document.getElementById('shipping').textContent = '₫' + (order.shipping || 0).toLocaleString();
+      document.getElementById('tax').textContent = '₫' + (order.tax || 0).toLocaleString();
+      document.getElementById('total').textContent = '₫' + order.total.toLocaleString();
+
+      const itemsHtml = (order.items || []).map(item => `
+        <div class="order-item">
+          <span>${item.name || 'Item'} x ${item.quantity || 0}</span>
+          <span>₫${((item.price || 0) * (item.quantity || 0)).toLocaleString()}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('order-items').innerHTML = itemsHtml || '<p>No items</p>';
+    }
+  </script>
+</body>
+</html>

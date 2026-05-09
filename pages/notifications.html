@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - Apple Store</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/enhancements.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">🍎 Apple Store</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="../cart.html">🛒 Cart</a>
+        <a href="../profile.html" data-auth="user-only">Profile</a>
+        <button id="logout-btn" class="btn-secondary" data-auth="user-only">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="notifications-page">
+      <div class="notifications-header">
+        <h1>Notifications</h1>
+        <div class="header-actions">
+          <button id="mark-all-read" class="btn-secondary">Mark all as read</button>
+          <button id="clear-all" class="btn-danger">Clear all</button>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="notification-filters">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="unread">Unread</button>
+        <button class="filter-tab" data-filter="success">Success</button>
+        <button class="filter-tab" data-filter="info">Info</button>
+        <button class="filter-tab" data-filter="warning">Promotions</button>
+        <button class="filter-tab" data-filter="error">Errors</button>
+      </div>
+
+      <!-- Notifications List -->
+      <div id="notifications-list" class="notifications-list">
+        <p class="empty-state">No notifications</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/notification-service.js"></script>
+  <script>
+    let currentFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!auth.isLoggedIn()) {
+        window.location.href = '../login.html';
+        return;
+      }
+
+      renderNotifications();
+      setupEventListeners();
+    });
+
+    function renderNotifications() {
+      const list = document.getElementById('notifications-list');
+      
+      let filtered = notificationService.notifications;
+      if (currentFilter !== 'all') {
+        if (currentFilter === 'unread') {
+          filtered = filtered.filter(n => !n.read);
+        } else {
+          filtered = filtered.filter(n => n.type === currentFilter);
+        }
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<p class="empty-state">No notifications</p>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(notif => `
+        <div class="notification-item ${notif.read ? 'read' : 'unread'} notif-${notif.type}">
+          <div class="notification-icon">
+            ${getNotificationIcon(notif.type)}
+          </div>
+          <div class="notification-content">
+            <h3>${notif.title}</h3>
+            <p>${notif.message}</p>
+            <span class="notification-time">${formatTime(notif.createdAt)}</span>
+          </div>
+          <div class="notification-actions">
+            ${!notif.read ? `
+              <button class="btn-icon" onclick="markAsRead('${notif.id}', event)" title="Mark as read">
+                ✓
+              </button>
+            ` : ''}
+            <button class="btn-icon btn-danger" onclick="deleteNotification('${notif.id}', event)" title="Delete">
+              ✕
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getNotificationIcon(type) {
+      const icons = {
+        'success': '✅',
+        'info': 'ℹ️',
+        'warning': '🎉',
+        'error': '❌'
+      };
+      return icons[type] || '📢';
+    }
+
+    function formatTime(isoDate) {
+      const date = new Date(isoDate);
+      const now = new Date();
+      const diff = now - date;
+
+      if (diff < 60000) {
+        return 'just now';
+      } else if (diff < 3600000) {
+        const mins = Math.floor(diff / 60000);
+        return `${mins}m ago`;
+      } else if (diff < 86400000) {
+        const hours = Math.floor(diff / 3600000);
+        return `${hours}h ago`;
+      } else {
+        const days = Math.floor(diff / 86400000);
+        return `${days}d ago`;
+      }
+    }
+
+    async function markAsRead(notifId, event) {
+      event.stopPropagation();
+      await notificationService.markAsRead(notifId);
+      renderNotifications();
+    }
+
+    async function deleteNotification(notifId, event) {
+      event.stopPropagation();
+      await notificationService.deleteNotification(notifId);
+      renderNotifications();
+    }
+
+    function setupEventListeners() {
+      // Filter tabs
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilter = e.target.getAttribute('data-filter');
+          renderNotifications();
+        });
+      });
+
+      // Mark all as read
+      document.getElementById('mark-all-read').addEventListener('click', async () => {
+        for (let notif of notificationService.notifications) {
+          if (!notif.read) {
+            await notificationService.markAsRead(notif.id);
+          }
+        }
+        renderNotifications();
+      });
+
+      // Clear all
+      document.getElementById('clear-all').addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete all notifications?')) {
+          await notificationService.deleteAllNotifications();
+          renderNotifications();
+        }
+      });
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          auth.logout();
+          window.location.href = '/';
+        });
+      }
+    }
+
+    // Refresh notifications every 30 seconds
+    setInterval(() => {
+      notificationService.loadNotifications();
+      renderNotifications();
+    }, 30000);
+  </script>
+</body>
+</html>

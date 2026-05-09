@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders - Apple Store</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/enhancements.css">
+  <link rel="stylesheet" href="../assets/css/order-tracking.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">🍎 Apple Store</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <span data-auth="user-name"></span>
+        <a href="../profile.html">Profile</a>
+        <button id="logout-btn" class="btn-secondary">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="orders-page">
+      <h1>My Orders</h1>
+
+      <div class="orders-filter">
+        <button class="filter-btn active" onclick="filterOrders('all')">All</button>
+        <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+        <button class="filter-btn" onclick="filterOrders('processing')">Processing</button>
+        <button class="filter-btn" onclick="filterOrders('shipped')">Shipped</button>
+        <button class="filter-btn" onclick="filterOrders('delivered')">Delivered</button>
+      </button>
+
+      <div id="orders-list" class="orders-list"></div>
+    </div>
+
+    <!-- Order Details Modal (optional) -->
+    <div id="order-details-container"></div>
+  </main>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/order-tracking.js"></script>
+  <script>
+    function filterOrders(status) {
+      if (status === 'all') {
+        // Show all orders
+        orderTracker.renderOrdersList();
+      } else {
+        // Filter by status
+        const filtered = orderTracker.orders.filter(o => o.status === status);
+        const container = document.getElementById('orders-list');
+        
+        if (filtered.length === 0) {
+          container.innerHTML = '<p class="empty-state">No orders with this status</p>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(order => `
+          <div class="order-card" onclick="orderTracker.viewOrder('${order.id}')">
+            <div class="order-header">
+              <h3>Order #${order.id}</h3>
+              <span class="status-badge status-${order.status}">${order.status}</span>
+            </div>
+            <p><strong>₫${order.total.toLocaleString()}</strong></p>
+            <p>${new Date(order.createdAt).toLocaleDateString()}</p>
+          </div>
+        `).join('');
+      }
+
+      // Update active button
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      auth.logout();
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Yêu Thích — Apple Store Việt Nam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/enhancements.css">
+    <style>
+        .wishlist-header {
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--blue-gradient);
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .wishlist-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .wishlist-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .wishlist-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+
+        .wishlist-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wishlist-item-image {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin-bottom: 16px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .wishlist-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-item-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .wishlist-item-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .wishlist-item-category {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .wishlist-item-description {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.5;
+            margin: 12px 0;
+            flex-grow: 1;
+        }
+
+        .wishlist-item-footer {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .wishlist-item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .wishlist-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .wishlist-item-actions .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .wishlist-header {
+                padding: 24px 20px;
+            }
+
+            .wishlist-header h1 {
+                font-size: 24px;
+            }
+
+            .wishlist-actions {
+                flex-direction: column;
+            }
+
+            .wishlist-actions .btn {
+                width: 100%;
+            }
+
+            .wishlist-items {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+            <span>Apple Store VN</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Sản Phẩm</a>
+            <a href="orders.html" class="nav-link">Đơn Hàng</a>
+            <a href="wishlist.html" class="nav-link active">Yêu Thích</a>
+        </div>
+
+        <a href="cart.html" class="nav-cart">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+
+        <button class="nav-burger" id="navBurger">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- WISHLIST CONTAINER -->
+<main class="main-container">
+    <div id="wishlistContainer"></div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-col">
+            <h4>Về Apple Store</h4>
+            <ul>
+                <li><a href="#">Thông Tin Về Chúng Tôi</a></li>
+                <li><a href="#">Tuyên Bố Riêng Tư</a></li>
+                <li><a href="#">Điều Khoản Sử Dụng</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Hỗ Trợ</h4>
+            <ul>
+                <li><a href="#">Liên Hệ Chúng Tôi</a></li>
+                <li><a href="#">Câu Hỏi Thường Gặp</a></li>
+                <li><a href="#">Chính Sách Hoàn Trả</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Theo Dõi Chúng Tôi</h4>
+            <ul>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Twitter</a></li>
+            </ul>
+        </div>
+    </div>
+    <p class="footer-copy">© 2024 Apple Store Việt Nam. Bản quyền đã được bảo vệ.</p>
+</footer>
+
+<!-- Scripts -->
+<script src="assets/js/utils.js"></script>
+<script src="assets/js/reviews.js"></script>
+<script src="assets/js/wishlist.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        Wishlist.renderPage();
+        updateBadge();
+    });
+</script>
+</body>
+</html>

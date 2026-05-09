@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Apple Store</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/enhancements.css">
+  <link rel="stylesheet" href="assets/css/user-system.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">🍎 Apple Store</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="login.html" class="btn-secondary">Sign In</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="auth-container">
+    <div class="auth-card">
+      <h1>Create Your Account</h1>
+      <p class="auth-subtitle">Join us to get started shopping</p>
+
+      <form id="register-form" class="auth-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+          <small class="password-hint">We'll use this to sign you in</small>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+          <small class="password-hint">
+            At least 8 characters with uppercase, lowercase, and number
+          </small>
+          <div class="password-requirements">
+            <div class="requirement" id="req-length">
+              <span class="req-icon">✓</span> At least 8 characters
+            </div>
+            <div class="requirement" id="req-upper">
+              <span class="req-icon">✓</span> Uppercase letter (A-Z)
+            </div>
+            <div class="requirement" id="req-lower">
+              <span class="req-icon">✓</span> Lowercase letter (a-z)
+            </div>
+            <div class="requirement" id="req-number">
+              <span class="req-icon">✓</span> Number (0-9)
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="terms" name="terms" required>
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </label>
+
+        <button type="submit" class="btn-primary btn-full">Create Account</button>
+      </form>
+
+      <div class="auth-divider">OR</div>
+
+      <div class="social-login">
+        <button class="social-btn google-btn">
+          <span>🔗</span> Sign up with Google
+        </button>
+        <button class="social-btn facebook-btn">
+          <span>👥</span> Sign up with Facebook
+        </button>
+      </div>
+
+      <p class="auth-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    const passwordInput = document.getElementById('password');
+
+    passwordInput.addEventListener('input', () => {
+      const password = passwordInput.value;
+
+      // Check requirements
+      document.getElementById('req-length').classList.toggle('met', password.length >= 8);
+      document.getElementById('req-upper').classList.toggle('met', /[A-Z]/.test(password));
+      document.getElementById('req-lower').classList.toggle('met', /[a-z]/.test(password));
+      document.getElementById('req-number').classList.toggle('met', /\d/.test(password));
+    });
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const terms = document.getElementById('terms').checked;
+
+      if (password !== confirmPassword) {
+        showToast('Passwords do not match', 'error');
+        return;
+      }
+
+      if (!terms) {
+        showToast('Please agree to terms and conditions', 'error');
+        return;
+      }
+
+      try {
+        setLoading(true, 'Creating account...');
+        const user = await auth.register(name, email, phone, password);
+        
+        showToast('Account created successfully!', 'success');
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
+      } catch (error) {
+        showToast(error.message, 'error');
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>

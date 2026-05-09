@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - Apple Store Admin</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin-panel.css">
+  <link rel="stylesheet" href="../assets/css/analytics.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+  <div class="admin-container">
+    <aside class="admin-sidebar">
+      <nav>
+        <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+        <a href="products.html" class="nav-link">📦 Products</a>
+        <a href="analytics.html" class="nav-link active">📈 Analytics</a>
+        <a href="../orders.html" class="nav-link">📋 Orders</a>
+        <a href="#" class="nav-link" onclick="logout()">🚪 Logout</a>
+      </nav>
+    </aside>
+
+    <main class="admin-content">
+      <div class="admin-header">
+        <h1>Analytics Dashboard</h1>
+        <div class="header-actions">
+          <select id="date-range" class="form-control">
+            <option value="today">Today</option>
+            <option value="week" selected>Last 7 Days</option>
+            <option value="month">Last 30 Days</option>
+            <option value="year">Last Year</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="analytics-grid kpi-grid">
+        <div class="kpi-card">
+          <h3>Total Revenue</h3>
+          <p class="kpi-value" id="total-revenue">₫0</p>
+          <span class="kpi-change positive" id="revenue-change">+0%</span>
+        </div>
+        <div class="kpi-card">
+          <h3>Total Orders</h3>
+          <p class="kpi-value" id="total-orders">0</p>
+          <span class="kpi-change positive" id="orders-change">+0%</span>
+        </div>
+        <div class="kpi-card">
+          <h3>Average Order Value</h3>
+          <p class="kpi-value" id="avg-order">₫0</p>
+          <span class="kpi-change positive" id="aov-change">+0%</span>
+        </div>
+        <div class="kpi-card">
+          <h3>Conversion Rate</h3>
+          <p class="kpi-value" id="conversion-rate">0%</p>
+          <span class="kpi-change positive" id="conversion-change">+0%</span>
+        </div>
+      </div>
+
+      <!-- Charts Row 1 -->
+      <div class="analytics-grid chart-grid-2">
+        <div class="chart-card">
+          <h3>Revenue Over Time</h3>
+          <canvas id="revenue-chart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Orders Distribution</h3>
+          <canvas id="orders-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Charts Row 2 -->
+      <div class="analytics-grid chart-grid-2">
+        <div class="chart-card">
+          <h3>Top Products</h3>
+          <canvas id="top-products-chart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Sales by Category</h3>
+          <canvas id="category-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Advanced Analytics -->
+      <div class="analytics-grid">
+        <div class="chart-card full-width">
+          <h3>Customer Insights</h3>
+          <div class="insights-grid">
+            <div class="insight-item">
+              <span class="metric-label">New Customers</span>
+              <span class="metric-value" id="new-customers">0</span>
+            </div>
+            <div class="insight-item">
+              <span class="metric-label">Returning Customers</span>
+              <span class="metric-value" id="returning-customers">0</span>
+            </div>
+            <div class="insight-item">
+              <span class="metric-label">Customer Lifetime Value</span>
+              <span class="metric-value" id="customer-lifetime">₫0</span>
+            </div>
+            <div class="insight-item">
+              <span class="metric-label">Average Orders per Customer</span>
+              <span class="metric-value" id="avg-orders-customer">0</span>
+            </div>
+            <div class="insight-item">
+              <span class="metric-label">Product Return Rate</span>
+              <span class="metric-value" id="return-rate">0%</span>
+            </div>
+            <div class="insight-item">
+              <span class="metric-label">Cart Abandonment Rate</span>
+              <span class="metric-value" id="abandonment-rate">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Section -->
+      <div class="export-section">
+        <h3>Export Data</h3>
+        <div class="export-buttons">
+          <button class="btn-secondary" onclick="exportCSV()">📥 Export CSV</button>
+          <button class="btn-secondary" onclick="exportPDF()">📄 Export PDF</button>
+          <button class="btn-secondary" onclick="printReport()">🖨️ Print Report</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/charts-handler.js"></script>
+  <script src="../assets/js/analytics-dashboard.js"></script>
+  <script src="../assets/js/analytics-export.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!auth.isAdmin()) {
+        window.location.href = '../';
+        return;
+      }
+
+      analyticsDashboard.init();
+    });
+
+    document.getElementById('date-range').addEventListener('change', (e) => {
+      analyticsDashboard.updateDateRange(e.target.value);
+    });
+
+    function logout() {
+      auth.logout();
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>
