@@ -79,19 +79,14 @@ a { text-decoration: none; color: inherit; }
 
 .nav-logo {
     display: flex; align-items: center; gap: 10px;
-    font-weight: 700; font-size: 17px; color: var(--black);
     flex-shrink: 0;
-    background: var(--blue-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    text-decoration: none;
 }
 
-.nav-logo svg {
-    background: var(--blue-gradient);
-    padding: 4px;
-    border-radius: 6px;
-    color: white;
+.nav-logo img, .logo img {
+    display: block;
+    height: 36px;
+    width: auto;
 }
 
 .nav-links { display: flex; gap: 4px; flex: 1; }

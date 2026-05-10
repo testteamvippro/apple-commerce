@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 900" role="img" aria-label="TÁO HOUSE logo">
+  <!-- Background -->
+  <rect width="512" height="900" fill="#CC3D4D"/>
+
+  <!-- Leaf above the Á (sits where the accent mark would be) -->
+  <g transform="translate(198,250) rotate(-18)">
+    <ellipse cx="0" cy="0" rx="14" ry="24" fill="none" stroke="white" stroke-width="7"/>
+    <line x1="0" y1="22" x2="0" y2="44" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="0" y1="8" x2="8" y2="-4" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- TÁO – large bold text -->
+  <text
+    x="44" y="430"
+    font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="900"
+    font-size="192"
+    fill="white"
+    letter-spacing="-4">TÁO</text>
+
+  <!-- HOUSE – smaller, wider spacing -->
+  <text
+    x="48" y="532"
+    font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="700"
+    font-size="100"
+    fill="white"
+    letter-spacing="22">HOUSE</text>
+
+  <!-- HOUSE ICON (line-art, outline style) -->
+  <!-- Positioned to the right of the text block -->
+  <g transform="translate(308, 308)">
+    <!-- Roof chevron -->
+    <polyline
+      points="8,82 83,4 158,82"
+      stroke="white" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+    <!-- House body rectangle -->
+    <rect x="14" y="82" width="138" height="108" rx="4"
+      stroke="white" stroke-width="13" fill="none"/>
+    <!-- Leaf 1 — grows from inside house, curves up through roof area -->
+    <path d="M96,178 C112,148 134,112 136,90"
+      stroke="white" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M96,178 C118,150 138,110 136,90 C120,98 98,148 96,178Z"
+      stroke="white" stroke-width="9" fill="none"/>
+    <!-- Leaf 2 — extends outside upper-right -->
+    <path d="M154,62 C168,42 182,24 196,10"
+      stroke="white" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M154,62 C168,40 184,22 196,10 C182,18 164,44 154,62Z"
+      stroke="white" stroke-width="9" fill="none"/>
+  </g>
+
+  <!-- 4-pointed sparkle — bottom-right corner -->
+  <path
+    d="M474,848 L478,862 L492,866 L478,870 L474,884 L470,870 L456,866 L470,862 Z"
+    fill="white" opacity="0.55"/>
+</svg>

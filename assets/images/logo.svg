@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 46" role="img" aria-label="TÁO HOUSE logo">
+  <!-- House + leaf icon -->
+  <g>
+    <!-- Roof -->
+    <polyline points="2,21 21,4 40,21"
+      stroke="#CC3D4D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+    <!-- House body -->
+    <rect x="6" y="21" width="30" height="22" rx="1.5"
+      stroke="#CC3D4D" stroke-width="3" fill="none"/>
+    <!-- Leaf 1 — inside/through house -->
+    <path d="M28,40 C34,30 37,20 38,16 C32,20 26,32 28,40Z"
+      stroke="#CC3D4D" stroke-width="2.2" fill="none"/>
+    <path d="M28,40 C33,29 37,19 38,16"
+      stroke="#CC3D4D" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <!-- Leaf 2 — extends outside upper-right -->
+    <path d="M38,13 C43,8 48,4 54,1 C49,6 43,10 38,13Z"
+      stroke="#CC3D4D" stroke-width="2.2" fill="none"/>
+    <path d="M38,13 C43,8 49,4 54,1"
+      stroke="#CC3D4D" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- TÁO text -->
+  <text x="58" y="27"
+    font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="900" font-size="22" fill="#CC3D4D">TÁO</text>
+
+  <!-- HOUSE text -->
+  <text x="60" y="43"
+    font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="700" font-size="12" fill="#444" letter-spacing="5">HOUSE</text>
+</svg>
