@@ -350,5 +350,3 @@ const Search = {
         });
     }
 };
-
-console.log('✅ Search module loaded');

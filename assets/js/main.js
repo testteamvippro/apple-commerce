@@ -15,10 +15,12 @@ let searchTerm = '';
 let sortMode = 'featured';
 let priceBand = 'all';
 let compareList = loadCompareList();
+let catalogSyncTimer = null;
 
 // ===================== BOOT =====================
 document.addEventListener('DOMContentLoaded', async () => {
     updateBadge();
+    updateOrderLinks();
     await fetchProducts();
     readUrlParams();      // restore filters from URL before rendering
     applyFilters();
@@ -29,9 +31,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupCompare();
     setupMobileNav();
     setupStickyNav();
+    setupCatalogSync();
     initCarousel();
     initBehavioralTracking();
 });
+
+// ===================== ORDER LINK ROUTING =====================
+function updateOrderLinks() {
+    try {
+        const user = JSON.parse(localStorage.getItem('auth-user') || 'null');
+        if (!user || !user.id) return;
+        // Redirect all "orders.html" links to the API-backed my-orders page for logged-in users
+        document.querySelectorAll('a[href="orders.html"]').forEach(a => {
+            a.href = 'pages/my-orders.html';
+        });
+    } catch { /* ignore */ }
+}
 
 // ===================== FETCH PRODUCTS =====================
 async function fetchProducts() {
@@ -39,12 +54,42 @@ async function fetchProducts() {
         const result = await window.AppleStoreAPI.getProducts({ limit: 100 });
         products = result.data;
     } catch (e) {
-        // Hard fallback to raw JSON
-        try {
-            const res = await fetch('products.json');
-            products = await res.json();
-        } catch { products = []; }
+        console.error('Failed to load catalog from API:', e);
+        products = [];
     }
+
+    if (currentProduct) {
+        currentProduct = products.find(product => String(product.id) === String(currentProduct.id)) || null;
+    }
+
+    return products;
+}
+
+async function refreshCatalog() {
+    await fetchProducts();
+    applyFilters();
+}
+
+function setupCatalogSync() {
+    if (catalogSyncTimer) {
+        clearInterval(catalogSyncTimer);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            refreshCatalog().catch(() => {});
+        }
+    });
+
+    window.addEventListener('focus', () => {
+        refreshCatalog().catch(() => {});
+    });
+
+    catalogSyncTimer = window.setInterval(() => {
+        if (!document.hidden) {
+            refreshCatalog().catch(() => {});
+        }
+    }, 30000);
 }
 
 // ===================== TRACKING HELPERS =====================
@@ -403,11 +448,14 @@ function renderCards(list, grid) {
         const installment = getInstallmentPrice(minPrice);
         const storageList = p.variants ? [...new Set(p.variants.map(v => v.storage))] : [];
         const isCompared = compareList.includes(p.id);
+        const stock = p.quantity ?? p.stock ?? null;
+        const outOfStock = stock !== null && stock <= 0;
+        const lowStock   = stock !== null && stock > 0 && stock <= 5;
         const el = document.createElement('div');
-        el.className = 'product-card';
+        el.className = 'product-card' + (outOfStock ? ' oos-card' : '');
         el.innerHTML = `
             <div class="card-img-wrap">
-                ${p.badge && p.badge !== 'Sale' ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
+                ${outOfStock ? '<span class="card-badge badge-oos">Hết Hàng</span>' : lowStock ? `<span class="card-badge badge-low">Còn ${stock}</span>` : (p.badge && p.badge !== 'Sale' ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : '')}
                 <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${isUsed ? '✅ Đã Dùng' : '🟢 Mới'}</span>
                 <img data-src="${escapeAttr(getProductImage(p))}" src="${blank}" alt="${escapeAttr(p.name)}" data-category="${escapeAttr(p.category)}" class="lazy-img"
                      onerror="handleImageError(this)">
@@ -427,7 +475,7 @@ function renderCards(list, grid) {
                     <span>Giao nhanh 48h</span>
                 </div>
                 <div class="card-actions">
-                    <button class="card-add-btn" onclick="quickAdd(event, ${p.id})">🛒 Thêm Vào Giỏ</button>
+                    <button class="card-add-btn" ${outOfStock ? 'disabled' : `onclick="quickAdd(event, ${p.id})"`}>${outOfStock ? '🚫 Hết Hàng' : '🛒 Thêm Vào Giỏ'}</button>
                     <button class="card-compare-btn${isCompared ? ' active' : ''}" onclick="toggleCompare(event, ${p.id})">${isCompared ? 'Đã chọn' : 'So sánh'}</button>
                 </div>
             </div>
@@ -575,6 +623,8 @@ function quickAdd(e, id) {
     e.stopPropagation();
     const p = products.find(x => x.id === id);
     if (!p) return;
+    const stock = p.quantity ?? p.stock ?? null;
+    if (stock !== null && stock <= 0) { showToast('Sản phẩm này đã hết hàng'); return; }
     addToCart(p, 1, null);
     trackAddToCart(p, 1);
     showToast(`${p.name} đã thêm vào giỏ 🛒`);
@@ -775,6 +825,8 @@ function setupModal() {
 
     document.getElementById('btnAdd').addEventListener('click', () => {
         if (!currentProduct) return;
+        const stock = currentProduct.quantity ?? currentProduct.stock ?? null;
+        if (stock !== null && stock <= 0) { showToast('Sản phẩm này đã hết hàng'); return; }
         const qty = parseInt(document.getElementById('modalQty').value) || 1;
         addToCart(currentProduct, qty, selectedVariant);
         trackAddToCart(currentProduct, qty);

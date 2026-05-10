@@ -1,0 +1,20 @@
+Options -Indexes
+DirectoryIndex index.html index.php
+
+RewriteEngine On
+
+# ── Block direct access to sensitive files ────────────────────────────────────
+<FilesMatch "\.(sql|json|env|log|md|yml|gitignore)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^(backup-database|router)\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ── Route /api/* (without .php extension) through router.php ─────────────────
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ router.php [L,QSA]

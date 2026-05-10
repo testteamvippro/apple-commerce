@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Management - Apple Store Admin</title>
+  <title>Quản Lý Sản Phẩm — Admin Apple Store VN</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/admin-panel.css">
 </head>
@@ -15,36 +15,36 @@
         <h2>🍎 Admin</h2>
       </div>
       <nav class="sidebar-nav">
-        <a href="dashboard.html">📊 Dashboard</a>
-        <a href="products.html" class="active">📱 Products</a>
-        <a href="orders.html">📦 Orders</a>
-        <a href="analytics.html">📈 Analytics</a>
-        <a href="settings.html">⚙️ Settings</a>
-        <button id="logout-btn">🚪 Logout</button>
+        <a href="dashboard.html">📊 Bảng Điều Khiển</a>
+        <a href="products.html" class="active">📱 Sản Phẩm</a>
+        <a href="orders.html">📦 Đơn Hàng</a>
+        <a href="analytics.html">📈 Thống Kê</a>
+        <a href="system-status.html">⚙️ Hệ Thống</a>
+        <button id="logout-btn">🚶 Đăng Xuất</button>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="admin-main">
       <header class="admin-header">
-        <h1>📱 Product Management</h1>
+        <h1>📱 Quản Lý Sản Phẩm</h1>
         <div class="header-controls">
           <div class="search-box">
-            <input type="text" id="product-search" placeholder="Search products...">
+            <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
           </div>
-          <button id="add-product-btn" class="btn-primary">+ Add Product</button>
+          <button id="add-product-btn" class="btn-primary">+ Thêm Sản Phẩm</button>
         </div>
       </header>
 
       <!-- Quick Tips -->
       <section class="dashboard-section" style="background: #e8f4f8; border-left: 4px solid #0084ff; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
-        <strong style="color: #0084ff;">💡 Quick Tips:</strong>
+        <strong style="color: #0084ff;">💡 Mẹo Nhanh:</strong>
         <ul style="margin: 0.5rem 0 0 1.5rem; color: #333; font-size: 0.95rem;">
-          <li><strong>Low Stock:</strong> Mark item as "Low Stock" when quantity < 10 to alert customers</li>
-          <li><strong>Update Price:</strong> Click Edit → Change Price → Save (updates on website in 5 min)</li>
-          <li><strong>Add Image:</strong> Use clear product photos for better sales</li>
-          <li><strong>Stock Zero:</strong> Mark as "Out of Stock" when no units available</li>
-          <li><strong>Search:</strong> Use the search box to quickly find any product by name</li>
+          <li><strong>Tồn Kho Thấp:</strong> Đánh dấu “Tồn Kho Thấp” khi số lượng &lt; 10</li>
+          <li><strong>Cập Nhật Giá:</strong> Nhấn Sửa → Thay Giá → Lưu (cập nhật trên web sau 5 phút)</li>
+          <li><strong>Thêm Ảnh:</strong> Dùng ảnh sản phẩm rõ nét để tăng doanh số</li>
+          <li><strong>Hết Hàng:</strong> Đánh dấu “Hết Hàng” khi không còn hàng</li>
+          <li><strong>Tìm Kiếm:</strong> Dùng ô tìm kiếm để tra nhanh sản phẩm theo tên</li>
         </ul>
       </section>
 
@@ -56,17 +56,17 @@
               <th style="width: 30px;">
                 <input type="checkbox" id="select-all">
               </th>
-              <th>Product Name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Tên Sản Phẩm</th>
+              <th>Loại</th>
+              <th>Giá</th>
+              <th>Tồn Kho</th>
+              <th>Trạng Thái</th>
+              <th>Thao Tác</th>
             </tr>
           </thead>
           <tbody id="products-table-body">
             <tr>
-              <td colspan="7" style="text-align: center; padding: 2rem;">Loading...</td>
+              <td colspan="7" style="text-align: center; padding: 2rem;">Đang tải...</td>
             </tr>
           </tbody>
         </table>
@@ -78,111 +78,120 @@
   <div id="product-modal" class="modal" style="display: none;">
     <div class="modal-content">
       <button class="modal-close" id="modal-close">×</button>
-      <h2 id="modal-title">Add Product</h2>
+      <h2 id="modal-title">Thêm Sản Phẩm</h2>
 
       <form id="product-form" class="product-form">
         <input type="hidden" id="product-id">
 
         <div class="form-group">
-          <label for="product-name">Product Name</label>
+          <label for="product-name">Tên Sản Phẩm</label>
           <input type="text" id="product-name" required>
         </div>
 
         <div class="form-group">
-          <label for="product-category">Category</label>
+          <label for="product-category">Loại Sản Phẩm</label>
           <select id="product-category" required>
-            <option value="">Select Category</option>
-            <option value="iphone">iPhone</option>
-            <option value="ipad">iPad</option>
-            <option value="macbook">MacBook</option>
-            <option value="airpods">AirPods</option>
-            <option value="accessories">Accessories</option>
+            <option value="">Chọn Loại</option>
+            <option value="iPhone">iPhone</option>
+            <option value="Mac">Mac / MacBook</option>
+            <option value="iPad">iPad</option>
+            <option value="Watch">Apple Watch</option>
+            <option value="AirPods">AirPods</option>
+            <option value="Accessories">Phụ Kiện</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="product-description">Description</label>
+          <label for="product-description">Mô Tả</label>
           <textarea id="product-description"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="product-price">Price (₫)</label>
+          <label for="product-price">Giá (₫)</label>
           <input type="number" id="product-price" min="0" step="1000" required>
         </div>
 
         <div class="form-group">
-          <label for="product-stock">Stock Quantity</label>
+          <label for="product-stock">Số Lượng Tồn Kho</label>
           <input type="number" id="product-stock" min="0" required>
         </div>
 
         <!-- Advanced Fields -->
         <details class="form-details" style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 8px;">
-          <summary style="cursor: pointer; font-weight: 600; color: #667eea;">📋 Additional Details</summary>
+          <summary style="cursor: pointer; font-weight: 600; color: #667eea;">📋 Thông Tin Thêm</summary>
           
           <div style="margin-top: 1rem;">
             <div class="form-group">
-              <label for="product-color">Color Options (comma-separated)</label>
+              <label for="product-color">Màu Sắc (cách nhau bằng dấu phẩy)</label>
               <input type="text" id="product-color" placeholder="Space Gray, Midnight, Silver">
             </div>
 
             <div class="form-group">
-              <label for="product-storage">Storage Options (comma-separated)</label>
+              <label for="product-storage">Dung Lượng (cách nhau bằng dấu phẩy)</label>
               <input type="text" id="product-storage" placeholder="64GB, 128GB, 256GB, 512GB">
             </div>
 
             <div class="form-group">
-              <label for="product-specs">Specifications (JSON)</label>
+              <label for="product-variants">Biến Thể (JSON)</label>
+              <textarea id="product-variants" rows="8" placeholder='[
+  {"storage": "256GB", "color": "Natural Titanium", "region": "VN", "price": 31890000},
+  {"storage": "512GB", "color": "Black Titanium", "region": "VN", "price": 36790000}
+]'></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="product-specs">Thông Số Kỹ Thuật (JSON)</label>
               <textarea id="product-specs" rows="4" placeholder='{"processor": "A17 Pro", "camera": "48MP", "battery": "4000mAh"}'></textarea>
             </div>
 
             <div class="form-group">
-              <label for="product-sku">SKU</label>
+              <label for="product-sku">Mã SKU</label>
               <input type="text" id="product-sku" placeholder="PROD-001">
             </div>
 
             <div class="form-group">
-              <label for="product-brand">Brand</label>
+              <label for="product-brand">Nhãn Hiệu</label>
               <input type="text" id="product-brand" value="Apple" required>
             </div>
 
             <div class="form-group">
-              <label for="product-rating">Rating (0-5)</label>
+              <label for="product-rating">Sao Đánh Giá (0-5)</label>
               <input type="number" id="product-rating" min="0" max="5" step="0.1" placeholder="4.5">
             </div>
 
             <div class="form-group">
-              <label for="product-reviews">Number of Reviews</label>
+              <label for="product-reviews">Số Lượt Đánh Giá</label>
               <input type="number" id="product-reviews" min="0" placeholder="0">
             </div>
 
             <div class="form-group">
-              <label for="product-discount">Discount %</label>
+              <label for="product-discount">Giảm Giá %</label>
               <input type="number" id="product-discount" min="0" max="100" placeholder="0">
             </div>
 
             <div class="form-group">
-              <label for="product-image">Image URL</label>
+              <label for="product-image">URL Ảnh Sản Phẩm</label>
               <input type="url" id="product-image" placeholder="https://example.com/image.jpg">
             </div>
 
             <div class="form-group">
-              <label for="product-warranty">Warranty (months)</label>
+              <label for="product-warranty">Bảo Hành (tháng)</label>
               <input type="number" id="product-warranty" min="0" placeholder="12">
             </div>
 
             <div class="form-group">
-              <label for="product-availability">Availability Status</label>
+              <label for="product-availability">Tình Trạng Hàng</label>
               <select id="product-availability">
-                <option value="in-stock">In Stock</option>
-                <option value="low-stock">Low Stock</option>
-                <option value="out-of-stock">Out of Stock</option>
-                <option value="pre-order">Pre-Order</option>
+                <option value="in-stock">Còn Hàng</option>
+                <option value="low-stock">Gần Hết Hàng</option>
+                <option value="out-of-stock">Hết Hàng</option>
+                <option value="pre-order">Đặt Trước</option>
               </select>
             </div>
           </div>
         </details>
 
-        <button type="submit" class="btn-primary btn-full">Save Product</button>
+        <button type="submit" class="btn-primary btn-full">Lưu Sản Phẩm</button>
       </form>
     </div>
   </div>

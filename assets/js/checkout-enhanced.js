@@ -264,5 +264,3 @@ const Checkout = {
         }
     }
 };
-
-console.log('✅ Enhanced Checkout module loaded');

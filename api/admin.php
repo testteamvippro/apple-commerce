@@ -1,128 +1,102 @@
 <?php
-header('Content-Type: application/json');
+require_once __DIR__ . '/config.php';
+
+header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  exit(0);
+  http_response_code(204);
+  exit;
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? null;
 
-$productsFile = '../data/products.json';
-$ordersFile = '../data/orders.json';
-$usersFile = '../data/users.json';
+try {
+  if ($method === 'GET' && $action === 'stats') {
+    $dbStats   = DataStore::getStats();
+    $orders    = DataStore::getOrders();
+    $products  = DataStore::getProducts();
 
-function loadJSON($file) {
-  if (file_exists($file)) {
-    return json_decode(file_get_contents($file), true);
-  }
-  return [];
-}
-
-function saveJSON($file, $data) {
-  file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
-}
-
-function respond($success, $message, $data = null) {
-  echo json_encode(['success' => $success, 'message' => $message, 'data' => $data]);
-  exit;
-}
-
-// Get dashboard stats
-if ($method === 'GET' && $action === 'stats') {
-  $products = loadJSON('../data/products.json');
-  $orders = loadJSON('../data/orders.json');
-  $users = loadJSON('../data/users.json');
-
-  // Calculate stats
-  $stats = [
-    'totalProducts' => count($products),
-    'totalOrders' => count($orders),
-    'totalRevenue' => array_sum(array_column($orders, 'total')),
-    'totalUsers' => count($users),
-    'recentOrders' => array_slice($orders, -5),
-    'topProducts' => array_slice($products, 0, 6)
-  ];
-
-  respond(true, 'Stats loaded', $stats);
-}
-
-// Get products
-if ($method === 'GET' && $action === 'products') {
-  $products = loadJSON('../data/products.json');
-  respond(true, 'Products loaded', $products);
-}
-
-// Get orders
-if ($method === 'GET' && $action === 'orders') {
-  $orders = loadJSON('../data/orders.json');
-  respond(true, 'Orders loaded', $orders);
-}
-
-// Add product
-if ($method === 'POST') {
-  $input = json_decode(file_get_contents('php://input'), true);
-  
-  if ($input['action'] === 'add-product') {
-    $products = loadJSON('../data/products.json');
-
-    $newProduct = [
-      'id' => uniqid(),
-      'name' => $input['name'],
-      'category' => $input['category'],
-      'description' => $input['description'] ?? '',
-      'price' => $input['price'],
-      'stock' => $input['stock'],
-      'createdAt' => date('c')
+    $stats = [
+      'totalProducts' => $dbStats['totalProducts'],
+      'totalOrders'   => $dbStats['totalOrders'],
+      'totalRevenue'  => $dbStats['totalRevenue'],
+      'totalUsers'    => $dbStats['totalUsers'],
+      'recentOrders'  => array_slice($orders, 0, 5),
+      'topProducts'   => array_slice($products, 0, 6),
     ];
 
-    $products[] = $newProduct;
-    saveJSON('../data/products.json', $products);
-
-    respond(true, 'Product added', $newProduct);
+    respond(true, 'Stats loaded', $stats);
   }
-}
 
-// Update product
-if ($method === 'PUT') {
-  $input = json_decode(file_get_contents('php://input'), true);
+  if ($method === 'GET' && $action === 'products') {
+    respond(true, 'Products loaded', DataStore::getProducts());
+  }
 
-  if ($input['action'] === 'update-product') {
-    $products = loadJSON('../data/products.json');
+  if ($method === 'GET' && $action === 'orders') {
+    respond(true, 'Orders loaded', DataStore::getOrders());
+  }
 
-    foreach ($products as &$product) {
-      if ($product['id'] === $input['id']) {
-        $product['name'] = $input['name'];
-        $product['category'] = $input['category'];
-        $product['description'] = $input['description'];
-        $product['price'] = $input['price'];
-        $product['stock'] = $input['stock'];
-        $product['updatedAt'] = date('c');
-        break;
+  if ($method === 'POST') {
+    $input = json_decode(file_get_contents('php://input'), true) ?: [];
+    if (($input['action'] ?? null) === 'add-product') {
+      $quantity = isset($input['quantity']) ? (int) $input['quantity'] : (int) ($input['stock'] ?? 0);
+      $newProduct = [
+        'id' => $input['id'] ?? uniqid(),
+        'name' => $input['name'] ?? 'New Product',
+        'category' => $input['category'] ?? '',
+        'description' => $input['description'] ?? '',
+        'price' => (float) ($input['price'] ?? 0),
+        'quantity' => max(0, $quantity),
+        'availability' => $input['availability'] ?? null,
+        'createdAt' => date('c')
+      ];
+
+      foreach (['image', 'brand', 'sku', 'colors', 'storage', 'specs', 'rating', 'reviews', 'discount', 'warranty', 'condition', 'badge', 'gallery', 'variants'] as $field) {
+        if (array_key_exists($field, $input)) {
+          $newProduct[$field] = $input[$field];
+        }
       }
+
+      respond(true, 'Product added', DataStore::saveProduct($newProduct));
     }
-
-    saveJSON('../data/products.json', $products);
-    respond(true, 'Product updated');
   }
+
+  if ($method === 'PUT') {
+    $input = json_decode(file_get_contents('php://input'), true) ?: [];
+    if (($input['action'] ?? null) === 'update-product') {
+      $product = DataStore::findProductById((string) ($input['id'] ?? ''));
+      if (!$product) {
+        respond(false, 'Product not found', null, 404);
+      }
+
+      foreach (['name', 'category', 'description', 'price', 'availability', 'image', 'brand', 'sku', 'colors', 'storage', 'specs', 'rating', 'reviews', 'discount', 'warranty', 'condition', 'badge', 'gallery', 'variants'] as $field) {
+        if (array_key_exists($field, $input)) {
+          $product[$field] = $input[$field];
+        }
+      }
+
+      if (isset($input['quantity']) || isset($input['stock'])) {
+        $product['quantity'] = isset($input['quantity']) ? (int) $input['quantity'] : (int) $input['stock'];
+      }
+
+      $product['updatedAt'] = date('c');
+      DataStore::saveProduct($product);
+      respond(true, 'Product updated', DataStore::findProductById((string) $product['id']) ?? $product);
+    }
+  }
+
+  if ($method === 'DELETE') {
+    $input = json_decode(file_get_contents('php://input'), true) ?: [];
+    DataStore::deleteProduct((string) ($input['id'] ?? ''));
+    respond(true, 'Product deleted');
+  }
+
+  respond(false, 'Invalid request', null, 400);
+} catch (Throwable $error) {
+  respond(false, $error->getMessage(), null, 500);
 }
-
-// Delete product
-if ($method === 'DELETE') {
-  $input = json_decode(file_get_contents('php://input'), true);
-  $productId = $input['id'];
-
-  $products = loadJSON('../data/products.json');
-  $products = array_filter($products, function($p) use ($productId) {
-    return $p['id'] !== $productId;
-  });
-
-  saveJSON('../data/products.json', array_values($products));
-  respond(true, 'Product deleted');
-}
-
-respond(false, 'Invalid request');
 ?>

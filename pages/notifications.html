@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notifications - Apple Store</title>
+  <title>Thông Báo — Apple Store VN</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/enhancements.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
@@ -11,12 +11,12 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="logo">🍎 Apple Store</a>
+      <a href="/" class="logo">🍎 Apple Store VN</a>
       <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="../cart.html">🛒 Cart</a>
-        <a href="../profile.html" data-auth="user-only">Profile</a>
-        <button id="logout-btn" class="btn-secondary" data-auth="user-only">Logout</button>
+        <a href="/">Trang Chủ</a>
+        <a href="../cart.html">🛒 Giỏ Hàng</a>
+        <a href="../profile.html" data-auth="user-only">Hồ Sơ</a>
+        <button id="logout-btn" class="btn-secondary" data-auth="user-only">Đăng Xuất</button>
       </div>
     </div>
   </nav>
@@ -24,26 +24,26 @@
   <main class="container">
     <div class="notifications-page">
       <div class="notifications-header">
-        <h1>Notifications</h1>
+        <h1>Thông Báo</h1>
         <div class="header-actions">
-          <button id="mark-all-read" class="btn-secondary">Mark all as read</button>
-          <button id="clear-all" class="btn-danger">Clear all</button>
+          <button id="mark-all-read" class="btn-secondary">Đánh dấu đã đọc tất cả</button>
+          <button id="clear-all" class="btn-danger">Xóa tất cả</button>
         </div>
       </div>
 
       <!-- Filter Tabs -->
       <div class="notification-filters">
-        <button class="filter-tab active" data-filter="all">All</button>
-        <button class="filter-tab" data-filter="unread">Unread</button>
-        <button class="filter-tab" data-filter="success">Success</button>
-        <button class="filter-tab" data-filter="info">Info</button>
-        <button class="filter-tab" data-filter="warning">Promotions</button>
-        <button class="filter-tab" data-filter="error">Errors</button>
+        <button class="filter-tab active" data-filter="all">Tất Cả</button>
+        <button class="filter-tab" data-filter="unread">Chưa Đọc</button>
+        <button class="filter-tab" data-filter="success">Thành Công</button>
+        <button class="filter-tab" data-filter="info">Thông Tin</button>
+        <button class="filter-tab" data-filter="warning">Khuyến Mãi</button>
+        <button class="filter-tab" data-filter="error">Lỗi</button>
       </div>
 
       <!-- Notifications List -->
       <div id="notifications-list" class="notifications-list">
-        <p class="empty-state">No notifications</p>
+        <p class="empty-state">Không có thông báo</p>
       </div>
     </div>
   </main>
@@ -54,12 +54,13 @@
   <script>
     let currentFilter = 'all';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       if (!auth.isLoggedIn()) {
         window.location.href = '../login.html';
         return;
       }
 
+      await notificationService.loadNotifications();
       renderNotifications();
       setupEventListeners();
     });
@@ -77,7 +78,7 @@
       }
 
       if (filtered.length === 0) {
-        list.innerHTML = '<p class="empty-state">No notifications</p>';
+        list.innerHTML = '<p class="empty-state">Không có thông báo</p>';
         return;
       }
 
@@ -93,11 +94,11 @@
           </div>
           <div class="notification-actions">
             ${!notif.read ? `
-              <button class="btn-icon" onclick="markAsRead('${notif.id}', event)" title="Mark as read">
+              <button class="btn-icon" onclick="markAsRead('${notif.id}', event)" title="Đánh dấu đã đọc">
                 ✓
               </button>
             ` : ''}
-            <button class="btn-icon btn-danger" onclick="deleteNotification('${notif.id}', event)" title="Delete">
+            <button class="btn-icon btn-danger" onclick="deleteNotification('${notif.id}', event)" title="Xóa">
               ✕
             </button>
           </div>
@@ -121,16 +122,16 @@
       const diff = now - date;
 
       if (diff < 60000) {
-        return 'just now';
+        return 'vừa xong';
       } else if (diff < 3600000) {
         const mins = Math.floor(diff / 60000);
-        return `${mins}m ago`;
+        return `${mins} phút trước`;
       } else if (diff < 86400000) {
         const hours = Math.floor(diff / 3600000);
-        return `${hours}h ago`;
+        return `${hours} giờ trước`;
       } else {
         const days = Math.floor(diff / 86400000);
-        return `${days}d ago`;
+        return `${days} ngày trước`;
       }
     }
 
@@ -186,8 +187,8 @@
     }
 
     // Refresh notifications every 30 seconds
-    setInterval(() => {
-      notificationService.loadNotifications();
+    setInterval(async () => {
+      await notificationService.loadNotifications();
       renderNotifications();
     }, 30000);
   </script>

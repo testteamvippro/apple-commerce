@@ -332,5 +332,3 @@ const Reviews = {
         });
     }
 };
-
-console.log('✅ Reviews module loaded');

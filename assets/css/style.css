@@ -640,6 +640,23 @@ a { text-decoration: none; color: inherit; }
     color: white;
 }
 
+.badge-oos {
+    background: rgba(220, 38, 38, 0.9);
+    color: white;
+}
+
+.badge-low {
+    background: rgba(234, 88, 12, 0.9);
+    color: white;
+}
+
+.oos-card { opacity: 0.75; }
+.oos-card .card-add-btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .card-body { 
     padding: 18px; 
     flex: 1;

@@ -74,8 +74,8 @@ class ProductManager {
           ${product.rating ? '<br><small>⭐ ' + product.rating.toFixed(1) + ' (' + product.reviews + ' reviews)</small>' : ''}
         </td>
         <td>
-          <button onclick="productManager.openEditModal('${product.id}')" class="action-btn">✏️ Edit</button>
-          <button onclick="productManager.deleteProduct('${product.id}')" class="action-btn danger">🗑️ Delete</button>
+          <button onclick="productManager.openEditModal('${String(product.id)}')" class="action-btn">✏️ Edit</button>
+          <button onclick="productManager.deleteProduct('${String(product.id)}')" class="action-btn danger">🗑️ Delete</button>
         </td>
       </tr>
     `).join('');
@@ -145,12 +145,14 @@ class ProductManager {
       // Set default brand
       const brandField = document.getElementById('product-brand');
       if (brandField) brandField.value = 'Apple';
+      const variantsField = document.getElementById('product-variants');
+      if (variantsField) variantsField.value = '';
       modal.style.display = 'flex';
     }
   }
 
   async openEditModal(productId) {
-    const product = this.products.find(p => p.id === productId);
+    const product = this.products.find(p => String(p.id) === String(productId));
     if (!product) return;
 
     const modal = document.getElementById('product-modal');
@@ -176,6 +178,13 @@ class ProductManager {
         storageField.value = Array.isArray(product.storage)
           ? product.storage.join(', ')
           : product.storage || '';
+      }
+
+      const variantsField = document.getElementById('product-variants');
+      if (variantsField) {
+        variantsField.value = Array.isArray(product.variants) && product.variants.length > 0
+          ? JSON.stringify(product.variants, null, 2)
+          : '';
       }
 
       const specsField = document.getElementById('product-specs');
@@ -244,19 +253,46 @@ class ProductManager {
     }
   }
 
-  async saveProduct() {
-    const productId = document.getElementById('product-id').value;
-    
-    const product = {
+  parseVariants() {
+    const variantsField = document.getElementById('product-variants');
+    if (!variantsField || !variantsField.value.trim()) return [];
+
+    try {
+      const parsed = JSON.parse(variantsField.value);
+      if (!Array.isArray(parsed)) {
+        throw new Error('Variants must be an array');
+      }
+
+      return parsed
+        .map(variant => ({
+          storage: String(variant.storage || '').trim(),
+          color: String(variant.color || '').trim(),
+          region: String(variant.region || '').trim(),
+          price: Number(variant.price || 0)
+        }))
+        .filter(variant => variant.storage || variant.color || variant.region || variant.price > 0);
+    } catch (error) {
+      throw new Error('Invalid variants JSON');
+    }
+  }
+
+  buildProductPayload() {
+    const variants = this.parseVariants();
+    const variantPrices = variants.map(variant => Number(variant.price || 0)).filter(price => price > 0);
+    const derivedColors = [...new Set(variants.map(variant => variant.color).filter(Boolean))];
+    const derivedStorage = [...new Set(variants.map(variant => variant.storage).filter(Boolean))];
+
+    return {
       name: document.getElementById('product-name').value,
       category: document.getElementById('product-category').value,
       description: document.getElementById('product-description').value,
-      price: parseFloat(document.getElementById('product-price').value),
+      price: variantPrices.length > 0
+        ? Math.min(...variantPrices)
+        : parseFloat(document.getElementById('product-price').value),
       quantity: parseInt(document.getElementById('product-stock').value),
-      
-      // Enhanced fields
-      colors: this.parseColors(),
-      storage: this.parseStorage(),
+      colors: derivedColors.length > 0 ? derivedColors : this.parseColors(),
+      storage: derivedStorage.length > 0 ? derivedStorage : this.parseStorage(),
+      variants,
       specs: this.parseSpecs(),
       sku: document.getElementById('product-sku').value,
       brand: document.getElementById('product-brand').value,
@@ -267,9 +303,14 @@ class ProductManager {
       warranty: parseInt(document.getElementById('product-warranty').value || 12),
       availability: document.getElementById('product-availability').value
     };
+  }
+
+  async saveProduct() {
+    const productId = document.getElementById('product-id').value;
 
     try {
       setLoading(true, 'Saving product...');
+      const product = this.buildProductPayload();
 
       const method = productId ? 'PUT' : 'POST';
       const body = productId 

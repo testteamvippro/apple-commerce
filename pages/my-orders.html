@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Orders - Apple Store</title>
+  <title>Đơn Hàng Của Tôi — Apple Store VN</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/enhancements.css">
   <link rel="stylesheet" href="../assets/css/order-tracking.css">
@@ -11,26 +11,27 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="logo">🍎 Apple Store</a>
+      <a href="/" class="logo">🍎 Apple Store VN</a>
       <div class="nav-links">
-        <a href="/">Home</a>
+        <a href="/">Trang Chủ</a>
         <span data-auth="user-name"></span>
-        <a href="../profile.html">Profile</a>
-        <button id="logout-btn" class="btn-secondary">Logout</button>
+        <a href="../profile.html">Hồ Sơ</a>
+        <button id="logout-btn" class="btn-secondary">Đăng Xuất</button>
       </div>
     </div>
   </nav>
 
   <main class="container">
     <div class="orders-page">
-      <h1>My Orders</h1>
+      <h1>Đơn Hàng Của Tôi</h1>
 
       <div class="orders-filter">
-        <button class="filter-btn active" onclick="filterOrders('all')">All</button>
-        <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
-        <button class="filter-btn" onclick="filterOrders('processing')">Processing</button>
-        <button class="filter-btn" onclick="filterOrders('shipped')">Shipped</button>
-        <button class="filter-btn" onclick="filterOrders('delivered')">Delivered</button>
+        <button class="filter-btn active" onclick="filterOrders('all')">Tất Cả</button>
+        <button class="filter-btn" onclick="filterOrders('pending')">Chờ Xác Nhận</button>
+        <button class="filter-btn" onclick="filterOrders('processing')">Đang Xử Lý</button>
+        <button class="filter-btn" onclick="filterOrders('shipped')">Đang Giao</button>
+        <button class="filter-btn" onclick="filterOrders('delivered')">Đã Giao</button>
+        <button class="filter-btn" onclick="filterOrders('cancelled')">Đã Hủy</button>
       </button>
 
       <div id="orders-list" class="orders-list"></div>
@@ -54,7 +55,7 @@
         const container = document.getElementById('orders-list');
         
         if (filtered.length === 0) {
-          container.innerHTML = '<p class="empty-state">No orders with this status</p>';
+          container.innerHTML = '<p class="empty-state">Không có đơn hàng nào với trạng thái này</p>';
           return;
         }
 

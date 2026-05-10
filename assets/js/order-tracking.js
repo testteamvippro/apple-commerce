@@ -106,6 +106,11 @@ class OrderTracker {
     if (!container) return;
 
     const order = this.currentOrder;
+    const shippingAddress = order.shipping?.address || order.customer?.address || 'Not available';
+    const shippingCity = order.shipping?.city || order.customer?.city || '';
+    const shippingZip = order.shipping?.zip || order.customer?.postal || '';
+    const shippingCost = typeof order.shipping === 'number' ? order.shipping : (order.shipping?.cost || 0);
+    const customerUpdate = order.cancellationReason || order.customerUpdateMessage || '';
 
     container.innerHTML = `
       <div class="order-details">
@@ -119,14 +124,26 @@ class OrderTracker {
           ${this.renderTimeline(order)}
         </div>
 
+        ${customerUpdate ? `
+          <div class="shipping-info">
+            <h2>Latest Update</h2>
+            <div class="info-grid">
+              <div>
+                <strong>Status Update:</strong>
+                <p>${customerUpdate}</p>
+              </div>
+            </div>
+          </div>
+        ` : ''}
+
         <!-- Shipping Info -->
         <div class="shipping-info">
           <h2>Shipping Information</h2>
           <div class="info-grid">
             <div>
               <strong>Shipped to:</strong>
-              <p>${order.shipping?.address || 'Not available'}</p>
-              <p>${order.shipping?.city || ''}, ${order.shipping?.zip || ''}</p>
+              <p>${shippingAddress}</p>
+              <p>${shippingCity}${shippingCity && shippingZip ? ', ' : ''}${shippingZip}</p>
             </div>
             <div>
               <strong>Tracking Number:</strong>
@@ -176,7 +193,7 @@ class OrderTracker {
           </div>
           <div class="summary-row">
             <span>Shipping:</span>
-            <span>₫${(order.shipping?.cost || 0).toLocaleString()}</span>
+            <span>₫${shippingCost.toLocaleString()}</span>
           </div>
           <div class="summary-row">
             <span>Tax:</span>
@@ -216,7 +233,11 @@ class OrderTracker {
       { status: 'delivered', label: 'Delivered', icon: '✅', date: order.deliveredDate }
     ];
 
-    const statuses = ['pending', 'processing', 'shipped', 'delivered'];
+    if (order.status === 'cancelled') {
+      timeline.push({ status: 'cancelled', label: 'Cancelled', icon: '❌', date: order.cancelledAt });
+    }
+
+    const statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
     const currentIndex = statuses.indexOf(order.status);
 
     return timeline.map((item, index) => {

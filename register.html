@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Account - Apple Store</title>
+  <title>Đăng Ký Tài Khoản — Apple Store VN</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/enhancements.css">
   <link rel="stylesheet" href="assets/css/user-system.css">
@@ -11,84 +11,84 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="logo">🍎 Apple Store</a>
+      <a href="/" class="logo">🍎 Apple Store VN</a>
       <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="login.html" class="btn-secondary">Sign In</a>
+        <a href="/">Trang Chủ</a>
+        <a href="login.html" class="btn-secondary">Đăng Nhập</a>
       </div>
     </div>
   </nav>
 
   <main class="auth-container">
     <div class="auth-card">
-      <h1>Create Your Account</h1>
-      <p class="auth-subtitle">Join us to get started shopping</p>
+      <h1>Tạo Tài Khoản Mới</h1>
+      <p class="auth-subtitle">Đăng ký để bắt đầu mua sắm</p>
 
       <form id="register-form" class="auth-form">
         <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" required>
+          <label for="name">Họ và Tên</label>
+          <input type="text" id="name" name="name" placeholder="Nguyễn Văn An" required>
         </div>
 
         <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required>
-          <small class="password-hint">We'll use this to sign you in</small>
+          <label for="email">Địa Chỉ Email</label>
+          <input type="email" id="email" name="email" placeholder="email@example.com" required>
+          <small class="password-hint">Dùng để đăng nhập tài khoản</small>
         </div>
 
         <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required>
+          <label for="phone">Số Điện Thoại</label>
+          <input type="tel" id="phone" name="phone" placeholder="0912345678" required>
         </div>
 
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Mật Khẩu</label>
           <input type="password" id="password" name="password" required>
           <small class="password-hint">
-            At least 8 characters with uppercase, lowercase, and number
+            Ít nhất 8 ký tự, gồm chữ hoa, chữ thường và số
           </small>
           <div class="password-requirements">
             <div class="requirement" id="req-length">
-              <span class="req-icon">✓</span> At least 8 characters
+              <span class="req-icon">✓</span> Ít nhất 8 ký tự
             </div>
             <div class="requirement" id="req-upper">
-              <span class="req-icon">✓</span> Uppercase letter (A-Z)
+              <span class="req-icon">✓</span> Chữ hoa (A-Z)
             </div>
             <div class="requirement" id="req-lower">
-              <span class="req-icon">✓</span> Lowercase letter (a-z)
+              <span class="req-icon">✓</span> Chữ thường (a-z)
             </div>
             <div class="requirement" id="req-number">
-              <span class="req-icon">✓</span> Number (0-9)
+              <span class="req-icon">✓</span> Chữ số (0-9)
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="confirm-password">Confirm Password</label>
+          <label for="confirm-password">Xác Nhận Mật Khẩu</label>
           <input type="password" id="confirm-password" name="confirm-password" required>
         </div>
 
         <label class="checkbox-label">
           <input type="checkbox" id="terms" name="terms" required>
-          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          Tôi đồng ý với <a href="#">Điều Khoản Dịch Vụ</a> và <a href="#">Chính Sách Bảo Mật</a>
         </label>
 
-        <button type="submit" class="btn-primary btn-full">Create Account</button>
+        <button type="submit" class="btn-primary btn-full">Tạo Tài Khoản</button>
       </form>
 
-      <div class="auth-divider">OR</div>
+      <div class="auth-divider">HOẶC</div>
 
       <div class="social-login">
         <button class="social-btn google-btn">
-          <span>🔗</span> Sign up with Google
+          <span>🔗</span> Đăng ký với Google
         </button>
         <button class="social-btn facebook-btn">
-          <span>👥</span> Sign up with Facebook
+          <span>👥</span> Đăng ký với Facebook
         </button>
       </div>
 
       <p class="auth-footer">
-        Already have an account? <a href="login.html">Sign in</a>
+        Đã có tài khoản? <a href="login.html">Đăng nhập</a>
       </p>
     </div>
   </main>
@@ -119,20 +119,20 @@
       const terms = document.getElementById('terms').checked;
 
       if (password !== confirmPassword) {
-        showToast('Passwords do not match', 'error');
+        showToast('Mật khẩu xác nhận không khớp', 'error');
         return;
       }
 
       if (!terms) {
-        showToast('Please agree to terms and conditions', 'error');
+        showToast('Vui lòng đồng ý với điều khoản dịch vụ', 'error');
         return;
       }
 
       try {
-        setLoading(true, 'Creating account...');
+        setLoading(true, 'Đang tạo tài khoản...');
         const user = await auth.register(name, email, phone, password);
         
-        showToast('Account created successfully!', 'success');
+        showToast('Tạo tài khoản thành công!', 'success');
         setTimeout(() => {
           window.location.href = '/';
         }, 1000);

@@ -1,15 +1,22 @@
-# Backend files (not needed for GitHub Pages)
-submit-order.php
-process-order.php
-orders/
+# Environment / secrets
+.env
+.env.local
+.env.production
 
-# Node.js (local dev only — not deployed to PHP hosting)
+# Node.js
 node_modules/
 package-lock.json
+
+# Runtime data — not tracked (contains user uploads and logs)
+data/logs/
+data/uploads/
+data/backups/
 
 # OS files
 .DS_Store
 Thumbs.db
+._*
+__MACOSX/
 
 # IDE
 .vscode/
@@ -20,3 +27,7 @@ Thumbs.db
 # Backup files
 *.bak
 *.backup
+
+# PHP error logs
+*.log
+error_log

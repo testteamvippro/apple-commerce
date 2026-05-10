@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Apple Store</title>
+  <title>Bảng Điều Khiển Admin — Apple Store VN</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/admin-panel.css">
 </head>
@@ -15,19 +15,19 @@
         <h2>🍎 Admin</h2>
       </div>
       <nav class="sidebar-nav">
-        <a href="dashboard.html" class="active">📊 Dashboard</a>
-        <a href="products.html">📱 Products</a>
-        <a href="orders.html">📦 Orders</a>
-        <a href="analytics.html">📈 Analytics</a>
-        <a href="settings.html">⚙️ Settings</a>
-        <button id="logout-btn">🚪 Logout</button>
+        <a href="dashboard.html" class="active">📊 Bảng Điều Khiển</a>
+        <a href="products.html">📱 Sản Phẩm</a>
+        <a href="orders.html">📦 Đơn Hàng</a>
+        <a href="analytics.html">📈 Thống Kê</a>
+        <a href="system-status.html">⚙️ Hệ Thống</a>
+        <button id="logout-btn">🚶 Đăng Xuất</button>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="admin-main">
       <header class="admin-header">
-        <h1>📊 Dashboard</h1>
+        <h1>📊 Bảng Điều Khiển</h1>
         <div class="header-controls">
           <span data-auth="user-name" style="color: #333; font-weight: 600;"></span>
         </div>
@@ -36,56 +36,56 @@
       <!-- Stats Cards -->
       <section class="stats-grid">
         <div class="stat-card">
-          <h3>Total Products</h3>
+          <h3>Tổng Sản Phẩm</h3>
           <p class="stat-value" id="total-products">0</p>
-          <p class="stat-change">✓ All active</p>
+          <p class="stat-change">✓ Tất cả còn hàng</p>
         </div>
 
         <div class="stat-card">
-          <h3>Total Orders</h3>
+          <h3>Tổng Đơn Hàng</h3>
           <p class="stat-value" id="total-orders">0</p>
-          <p class="stat-change">↑ 15% this week</p>
+          <p class="stat-change">↑ 15% tuần này</p>
         </div>
 
         <div class="stat-card">
-          <h3>Total Revenue</h3>
+          <h3>Tổng Doanh Thu</h3>
           <p class="stat-value" id="total-revenue">₫0</p>
-          <p class="stat-change">↑ 22% this month</p>
+          <p class="stat-change">↑ 22% tháng này</p>
         </div>
 
         <div class="stat-card">
-          <h3>Total Users</h3>
+          <h3>Tổng Người Dùng</h3>
           <p class="stat-value" id="total-users">0</p>
-          <p class="stat-change">↑ 8% this month</p>
+          <p class="stat-change">↑ 8% tháng này</p>
         </div>
       </section>
 
       <!-- Quick Guidelines Alert -->
       <section class="dashboard-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-        <h2 style="color: white; margin-top: 0;">📌 Daily Checklist</h2>
+        <h2 style="color: white; margin-top: 0;">📌 Danh Sách Hàng Ngày</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
           <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 6px;">
-            <strong>✓ Morning (5 min)</strong>
+            <strong>✓ Buổi Sáng (5 phút)</strong>
             <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
-              <li>Check new orders</li>
-              <li>Update stock levels</li>
-              <li>Check system status</li>
+              <li>Kiểm tra đơn hàng mới</li>
+              <li>Cập nhật số lượng tồn kho</li>
+              <li>Kiểm tra trạng thái hệ thống</li>
             </ul>
           </div>
           <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 6px;">
-            <strong>✓ Weekly (Sunday)</strong>
+            <strong>✓ Hàng Tuần (Chủ Nhật)</strong>
             <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
-              <li>Review sales</li>
-              <li>Check low stock</li>
-              <li>Download backup</li>
+              <li>Xem lại doanh số</li>
+              <li>Kiểm tra tồn kho thấp</li>
+              <li>Tải bản sao lưu</li>
             </ul>
           </div>
           <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 6px;">
-            <strong>⚠️ Need Help?</strong>
+            <strong>⚠️ Cần Giúp Đỡ?</strong>
             <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
-              <li><a href="https://github.com/YOUR-GITHUB-USERNAME/apple-commerce/blob/main/OWNER_GUIDE.md" target="_blank" style="color: #ffff00; text-decoration: none;">📖 Read Full Guide</a></li>
-              <li>🔧 Contact developer</li>
-              <li>💾 Always backup</li>
+              <li><a href="https://github.com/YOUR-GITHUB-USERNAME/apple-commerce/blob/main/OWNER_GUIDE.md" target="_blank" style="color: #ffff00; text-decoration: none;">📖 Đọc Hướng Dẫn</a></li>
+              <li>🔧 Liên hệ lập trình viên</li>
+              <li>💾 Luôn sao lưu dữ liệu</li>
             </ul>
           </div>
         </div>
@@ -93,21 +93,21 @@
 
       <!-- Recent Orders -->
       <section class="dashboard-section">
-        <h2>📋 Recent Orders</h2>
+        <h2>📋 Đơn Hàng Gần Đây</h2>
         <table class="admin-table">
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Action</th>
+              <th>Mã Đơn</th>
+              <th>Khách Hàng</th>
+              <th>Số Tiền</th>
+              <th>Trạng Thái</th>
+              <th>Ngày</th>
+              <th>Thao Tác</th>
             </tr>
           </thead>
           <tbody id="recent-orders-table">
             <tr>
-              <td colspan="6" style="text-align: center; padding: 2rem;">Loading...</td>
+              <td colspan="6" style="text-align: center; padding: 2rem;">Đang tải...</td>
             </tr>
           </tbody>
         </table>
@@ -115,9 +115,9 @@
 
       <!-- Top Products -->
       <section class="dashboard-section">
-        <h2>🎯 Top Products</h2>
+        <h2>🎯 Sản Phẩm Nổi Bật</h2>
         <div id="top-products-grid" class="product-grid">
-          <p style="text-align: center; grid-column: 1/-1;">Loading...</p>
+          <p style="text-align: center; grid-column: 1/-1;">Đang tải...</p>
         </div>
       </section>
     </main>

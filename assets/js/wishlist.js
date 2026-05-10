@@ -214,8 +214,7 @@ const Wishlist = {
             navigator.share({
                 title: 'Danh Sách Yêu Thích',
                 text: text
-            }).catch(err => {
-                console.log('Share error:', err);
+            }).catch(() => {
                 Wishlist.copyShareLink();
             });
         } else {
@@ -271,5 +270,3 @@ const Wishlist = {
         }
     }
 };
-
-console.log('✅ Wishlist module loaded');

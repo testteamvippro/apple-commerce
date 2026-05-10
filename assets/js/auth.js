@@ -4,6 +4,14 @@ class Auth {
     this.token = localStorage.getItem('auth-token');
   }
 
+  normalizeAuthResult(result) {
+    const payload = result?.data || {};
+    return {
+      user: payload.user || payload,
+      token: payload.token || result?.token || null
+    };
+  }
+
   async register(name, email, phone, password) {
     // Validate inputs
     if (!this.validateEmail(email)) {
@@ -34,11 +42,12 @@ class Auth {
       const result = await response.json();
 
       if (result.success) {
-        this.user = result.data;
-        this.token = result.token;
+        const authState = this.normalizeAuthResult(result);
+        this.user = authState.user;
+        this.token = authState.token;
         localStorage.setItem('auth-token', this.token);
         localStorage.setItem('auth-user', JSON.stringify(this.user));
-        return result.data;
+        return this.user;
       } else {
         throw new Error(result.message || 'Registration failed');
       }
@@ -66,8 +75,9 @@ class Auth {
       const result = await response.json();
 
       if (result.success) {
-        this.user = result.data;
-        this.token = result.token;
+        const authState = this.normalizeAuthResult(result);
+        this.user = authState.user;
+        this.token = authState.token;
         localStorage.setItem('auth-token', this.token);
         localStorage.setItem('auth-user', JSON.stringify(this.user));
 
@@ -75,7 +85,7 @@ class Auth {
           localStorage.setItem('remember-email', email);
         }
 
-        return result.data;
+        return this.user;
       } else {
         throw new Error(result.message || 'Login failed');
       }
@@ -92,7 +102,7 @@ class Auth {
   }
 
   isLoggedIn() {
-    return this.token && this.user;
+    return Boolean(this.token && this.token !== 'undefined' && this.user?.id);
   }
 
   getUser() {
@@ -136,7 +146,10 @@ class Auth {
 
   loadUser() {
     const userStr = localStorage.getItem('auth-user');
-    return userStr ? JSON.parse(userStr) : null;
+    if (!userStr) return null;
+
+    const parsedUser = JSON.parse(userStr);
+    return parsedUser?.user || parsedUser;
   }
 
   updateUIForAuth() {

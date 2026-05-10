@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Status & Data Visualization - Admin</title>
+  <title>Trạng Thái Hệ Thống — Admin Apple Store VN</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/admin-panel.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -193,80 +193,80 @@
         <h2>🍎 Admin</h2>
       </div>
       <nav class="sidebar-nav">
-        <a href="dashboard.html">📊 Dashboard</a>
-        <a href="products.html">📱 Products</a>
-        <a href="orders.html">📦 Orders</a>
-        <a href="analytics.html">📈 Analytics</a>
-        <a href="system-status.html" class="active">⚙️ System Status</a>
-        <button id="logout-btn">🚪 Logout</button>
+        <a href="dashboard.html">📊 Bảng Điều Khiển</a>
+        <a href="products.html">📱 Sản Phẩm</a>
+        <a href="orders.html">📦 Đơn Hàng</a>
+        <a href="analytics.html">📈 Thống Kê</a>
+        <a href="system-status.html" class="active">⚙️ Hệ Thống</a>
+        <button id="logout-btn">🚶 Đăng Xuất</button>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="admin-main">
       <header class="admin-header">
-        <h1>⚙️ System Status & Data Visualization</h1>
+        <h1>⚙️ Trạng Thái Hệ Thống</h1>
         <div class="header-controls">
-          <button id="refresh-btn" class="btn-primary">🔄 Refresh</button>
-          <button id="export-btn" class="btn-secondary">📥 Export</button>
+          <button id="refresh-btn" class="btn-primary">🔄 Làm Mới</button>
+          <button id="export-btn" class="btn-secondary">📥 Xuất</button>
         </div>
       </header>
 
       <!-- Quick Tips -->
       <div style="background: #f0f7ff; border-left: 4px solid #0084ff; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
-        <strong style="color: #0084ff;">💾 System Status Guide:</strong>
+        <strong style="color: #0084ff;">💾 Hướng Dẫn Trạng Thái Hệ Thống:</strong>
         <ul style="margin: 0.5rem 0 0 1.5rem; color: #333; font-size: 0.95rem;">
-          <li><strong>Connection ✅ Green:</strong> System working normally - continue operations</li>
-          <li><strong>Connection ❌ Red:</strong> Database offline - CONTACT DEVELOPER IMMEDIATELY!</li>
-          <li><strong>Weekly Backup:</strong> Click Export button every Sunday to download backup</li>
-          <li><strong>Store Backups:</strong> Save backups to Google Drive + USB stick for safety</li>
-          <li><strong>Database Info:</strong> Shows system type (MySQL/JSON) and last update time</li>
+          <li><strong>Kết Nối ✅ Xanh:</strong> Hệ thống hoạt động bình thường</li>
+          <li><strong>Kết Nối ❌ Đỏ:</strong> Cơ sở dữ liệu ngoại tuyến — LIÊN HỆ LẬP TRÌNH VIÊN NGAY!</li>
+          <li><strong>Sao Lưu Hàng Tuần:</strong> Nhấn nút Xuất mỗi Chủ Nhật để tải bản sao lưu</li>
+          <li><strong>Lưu Bản Sao Lưu:</strong> Lưu vào Google Drive + USB để an toàn</li>
+          <li><strong>Thông Tin DB:</strong> Hiển thị loại hệ thống (MySQL) và thời gian cập nhật</li>
         </ul>
       </div>
 
       <!-- Database Info -->
       <div class="db-info" id="db-info">
-        <h3>📊 Database Information</h3>
+        <h3>📊 Thông Tin Cơ Sở Dữ Liệu</h3>
         <div class="db-stat">
-          <span>Storage Type:</span>
-          <strong id="db-type">Loading...</strong>
+          <span>Loại Lưu Trữ:</span>
+          <strong id="db-type">Đang tải...</strong>
         </div>
         <div class="db-stat">
-          <span>Last Updated:</span>
-          <strong id="db-updated">Loading...</strong>
+          <span>Cập Nhật Lần Cuối:</span>
+          <strong id="db-updated">Đang tải...</strong>
         </div>
         <div class="db-stat">
-          <span>Total Data Size:</span>
-          <strong id="db-size">Loading...</strong>
+          <span>Kích Thước Dữ Liệu:</span>
+          <strong id="db-size">Đang tải...</strong>
         </div>
         <div class="db-stat">
-          <span>Connection Status:</span>
-          <strong id="db-status" style="color: #11998e;">✓ Connected</strong>
+          <span>Trạng Thái Kết Nối:</span>
+          <strong id="db-status" style="color: #11998e;">✓ Đã Kết Nối</strong>
         </div>
       </div>
 
       <!-- KPI Cards -->
       <div class="status-grid" id="kpi-cards">
         <div class="status-card primary">
-          <div class="status-label">📱 Total Products</div>
+          <div class="status-label">📱 Tổng Sản Phẩm</div>
           <div class="status-value" id="total-products">0</div>
           <div class="status-detail" id="low-stock-detail">0 low stock</div>
         </div>
 
         <div class="status-card success">
-          <div class="status-label">📦 Total Orders</div>
+          <div class="status-label">📦 Tổng Đơn Hàng</div>
           <div class="status-value" id="total-orders">0</div>
           <div class="status-detail" id="pending-orders">0 pending</div>
         </div>
 
         <div class="status-card info">
-          <div class="status-label">👥 Total Users</div>
+          <div class="status-label">👥 Tổng Người Dùng</div>
           <div class="status-value" id="total-users">0</div>
           <div class="status-detail" id="admin-count">Admins: 0</div>
         </div>
 
         <div class="status-card warning">
-          <div class="status-label">💰 Total Revenue</div>
+          <div class="status-label">💰 Tổng Doanh Thu</div>
           <div class="status-value" id="total-revenue">₫0</div>
           <div class="status-detail" id="avg-order">Avg: ₫0</div>
         </div>
@@ -274,27 +274,27 @@
 
       <!-- Tabs -->
       <div class="tab-buttons">
-        <button class="tab-btn active" onclick="switchTab('overview')">📈 Overview</button>
-        <button class="tab-btn" onclick="switchTab('products')">📱 Products</button>
-        <button class="tab-btn" onclick="switchTab('orders')">📦 Orders</button>
-        <button class="tab-btn" onclick="switchTab('users')">👥 Users</button>
+        <button class="tab-btn active" onclick="switchTab('overview')">📈 Tổng Quan</button>
+        <button class="tab-btn" onclick="switchTab('products')">📱 Sản Phẩm</button>
+        <button class="tab-btn" onclick="switchTab('orders')">📦 Đơn Hàng</button>
+        <button class="tab-btn" onclick="switchTab('users')">👥 Người Dùng</button>
       </div>
 
       <!-- Overview Tab -->
       <div id="overview" class="tab-content active">
         <div class="chart-row">
           <div class="chart-container">
-            <h3>Orders by Status</h3>
+            <h3>Đơn Hàng Theo Trạng Thái</h3>
             <canvas id="ordersStatusChart"></canvas>
           </div>
           <div class="chart-container">
-            <h3>Products by Category</h3>
+            <h3>Sản Phẩm Theo Danh Mục</h3>
             <canvas id="productsChartChart"></canvas>
           </div>
         </div>
 
         <div class="chart-container">
-          <h3>Revenue Trend (Last 7 Days)</h3>
+            <h3>Xu Hướng Doanh Thu (7 Ngày Qua)</h3>
           <canvas id="revenueTrendChart"></canvas>
         </div>
       </div>
@@ -302,42 +302,42 @@
       <!-- Products Tab -->
       <div id="products" class="tab-content">
         <div class="sample-section">
-          <h3>📱 Product Summary</h3>
+          <h3>📱 Tóm Tắt Sản Phẩm</h3>
           <div class="db-stat">
-            <span>Total Products:</span>
+            <span>Tổng Sản Phẩm:</span>
             <strong id="prod-count">0</strong>
           </div>
           <div class="db-stat">
-            <span>Low Stock (&lt;10):</span>
+            <span>Tồn Kho Thấp (&lt;10):</span>
             <strong id="prod-low-stock">0</strong>
           </div>
           <div class="db-stat">
-            <span>Out of Stock:</span>
+            <span>Hết Hàng:</span>
             <strong id="prod-out-of-stock">0</strong>
           </div>
           <div class="db-stat">
-            <span>Avg Price:</span>
+            <span>Giá Trung Bình:</span>
             <strong id="prod-avg-price">₫0</strong>
           </div>
           <div class="db-stat">
-            <span>Total Inventory Value:</span>
+            <span>Tổng Giá Trị Tồn Kho:</span>
             <strong id="prod-total-value">₫0</strong>
           </div>
 
-          <h4 style="margin-top: 2rem;">Recent Products</h4>
+          <h4 style="margin-top: 2rem;">Sản Phẩm Gần Đây</h4>
           <table class="data-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Rating</th>
+                <th>Tên</th>
+                <th>Loại</th>
+                <th>Giá</th>
+                <th>Tồn Kho</th>
+                <th>Sao</th>
               </tr>
             </thead>
             <tbody id="products-table">
               <tr>
-                <td colspan="5" class="empty-state">No products yet</td>
+                <td colspan="5" class="empty-state">Chưa có sản phẩm</td>
               </tr>
             </tbody>
           </table>
@@ -347,46 +347,46 @@
       <!-- Orders Tab -->
       <div id="orders" class="tab-content">
         <div class="sample-section">
-          <h3>📦 Orders Summary</h3>
+          <h3>📦 Tóm Tắt Đơn Hàng</h3>
           <div class="db-stat">
-            <span>Total Orders:</span>
+            <span>Tổng Đơn:</span>
             <strong id="order-count">0</strong>
           </div>
           <div class="db-stat">
-            <span>Pending:</span>
+            <span>Chờ Xác Nhận:</span>
             <strong id="order-pending">0</strong>
           </div>
           <div class="db-stat">
-            <span>Processing:</span>
+            <span>Đang Xử Lý:</span>
             <strong id="order-processing">0</strong>
           </div>
           <div class="db-stat">
-            <span>Shipped:</span>
+            <span>Đang Giao:</span>
             <strong id="order-shipped">0</strong>
           </div>
           <div class="db-stat">
-            <span>Delivered:</span>
+            <span>Đã Giao:</span>
             <strong id="order-delivered">0</strong>
           </div>
           <div class="db-stat">
-            <span>Total Revenue:</span>
+            <span>Tổng Doanh Thu:</span>
             <strong id="order-revenue">₫0</strong>
           </div>
 
-          <h4 style="margin-top: 2rem;">Recent Orders</h4>
+          <h4 style="margin-top: 2rem;">Đơn Hàng Gần Đây</h4>
           <table class="data-table">
             <thead>
               <tr>
-                <th>Order ID</th>
-                <th>User</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
+                <th>Mã Đơn</th>
+                <th>Người Dùng</th>
+                <th>Số Tiền</th>
+                <th>Trạng Thái</th>
+                <th>Ngày</th>
               </tr>
             </thead>
             <tbody id="orders-table">
               <tr>
-                <td colspan="5" class="empty-state">No orders yet</td>
+                <td colspan="5" class="empty-state">Chưa có đơn hàng</td>
               </tr>
             </tbody>
           </table>
@@ -396,33 +396,33 @@
       <!-- Users Tab -->
       <div id="users" class="tab-content">
         <div class="sample-section">
-          <h3>👥 Users Summary</h3>
+          <h3>👥 Tóm Tắt Người Dùng</h3>
           <div class="db-stat">
-            <span>Total Users:</span>
+            <span>Tổng Người Dùng:</span>
             <strong id="user-count">0</strong>
           </div>
           <div class="db-stat">
-            <span>Admins:</span>
+            <span>Quản Trị Viên:</span>
             <strong id="user-admins">0</strong>
           </div>
           <div class="db-stat">
-            <span>Customers:</span>
+            <span>Khách Hàng:</span>
             <strong id="user-customers">0</strong>
           </div>
 
-          <h4 style="margin-top: 2rem;">Recent Users</h4>
+          <h4 style="margin-top: 2rem;">Người Dùng Gần Đây</h4>
           <table class="data-table">
             <thead>
               <tr>
                 <th>Email</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Joined</th>
+                <th>Tên</th>
+                <th>Vai Trò</th>
+                <th>Ngày Tham Gia</th>
               </tr>
             </thead>
             <tbody id="users-table">
               <tr>
-                <td colspan="4" class="empty-state">No users yet</td>
+                <td colspan="4" class="empty-state">Chưa có người dùng</td>
               </tr>
             </tbody>
           </table>

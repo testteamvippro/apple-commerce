@@ -12,10 +12,55 @@ function loadCart() {
     try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; }
 }
 
+function loadLoggedInUserId() {
+    try {
+        const user = JSON.parse(localStorage.getItem('auth-user') || 'null');
+        return user?.id || null;
+    } catch {
+        return null;
+    }
+}
+
 function updateBadge() {
     const count = cart.reduce((s, i) => s + i.quantity, 0);
     const b = document.getElementById('cartBadge');
     if (b) { b.textContent = count; b.classList.toggle('hidden', count === 0); }
+}
+
+function getOrdersPageHref() {
+    return loadLoggedInUserId() ? 'pages/my-orders.html' : 'orders.html';
+}
+
+function appendOrderHistory(orderId, payload) {
+    try {
+        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const [firstName = '', ...restName] = (payload.customer.name || '').split(' ');
+        const lastName = restName.join(' ');
+        const tax = Math.round(payload.subtotal * 0.1);
+
+        existingOrders.push({
+            orderNumber: orderId,
+            orderDate: new Date().toISOString(),
+            firstName,
+            lastName,
+            email: payload.customer.email,
+            phone: payload.customer.phone,
+            address: payload.customer.address,
+            city: payload.customer.city,
+            state: payload.customer.state || '',
+            postal: payload.customer.postal || '',
+            country: payload.customer.country || '',
+            notes: payload.customer.note || '',
+            items: payload.items,
+            subtotal: payload.subtotal,
+            tax,
+            total: payload.total,
+        });
+
+        localStorage.setItem('orders', JSON.stringify(existingOrders));
+    } catch (error) {
+        console.error('Failed to persist local order history:', error);
+    }
 }
 
 function renderSummary() {
@@ -59,12 +104,16 @@ async function submitOrder(e) {
     const total    = sub + shipping;
 
     const payload = {
+        userId: loadLoggedInUserId(),
         customer: {
             name:    `${data.get('firstName')} ${data.get('lastName')}`.trim(),
             email:   data.get('email'),
             phone:   data.get('phone'),
             address: data.get('address'),
             city:    data.get('city'),
+            state:   data.get('state'),
+            postal:  data.get('postal'),
+            country: data.get('country'),
             note:    data.get('notes') || ''
         },
         items:    cart,
@@ -88,6 +137,7 @@ async function submitOrder(e) {
             fbq('track', 'Purchase', { value: total, currency: 'VND', num_items: cart.length });
         }
 
+        appendOrderHistory(result.data.orderId, payload);
         localStorage.removeItem('cart');
         showSuccess(result.data.orderId);
     } catch (err) {
@@ -106,7 +156,7 @@ function showSuccess(num) {
                 <div class="success-order">${num}</div>
                 <p>Lưu lại mã đơn hàng của bạn để theo dõi.</p>
                 <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
-                    <a href="orders.html" class="btn-primary">Xem Đơn Hàng</a>
+                    <a href="${getOrdersPageHref()}" class="btn-primary">Xem Đơn Hàng</a>
                     <a href="index.html" class="btn-ghost">Tiếp Tục Mua Sắm</a>
                 </div>
             </div>

@@ -14,11 +14,11 @@ ini_set('display_errors', 0);
 // CONFIGURATION
 // ============================================
 
-// Database credentials
-$db_host = 'localhost';
-$db_user = 'apple_user';
-$db_pass = 'your_password';  // CHANGE THIS
-$db_name = 'apple_store_prod';
+// Database credentials — pulled from environment (same as api/config.php)
+$db_host = getenv('DB_HOST') ?: 'localhost';
+$db_user = getenv('DB_USER') ?: 'root';
+$db_pass = getenv('DB_PASS') ?: '';
+$db_name = getenv('DB_NAME') ?: 'apple_store_prod';
 
 // Backup settings
 $backup_dir = 'backups/';
@@ -89,25 +89,6 @@ function backup_mysql($db_host, $db_user, $db_pass, $db_name, $backup_dir) {
     }
   } else {
     log_message("❌ Backup failed with code: $return_code");
-    return false;
-  }
-}
-
-function backup_json_files($backup_dir) {
-  log_message("Starting JSON files backup...");
-  
-  $timestamp = date('Y-m-d_H-i-s');
-  $backup_file = $backup_dir . 'json_backup_' . $timestamp . '.tar.gz';
-  
-  $command = "tar -czf " . escapeshellarg($backup_file) . " data/ 2>/dev/null";
-  exec($command, $output, $return_code);
-  
-  if ($return_code === 0) {
-    $size_mb = round(filesize($backup_file) / 1024 / 1024, 2);
-    log_message("✓ JSON backup successful: {$backup_file} ({$size_mb}MB)");
-    return true;
-  } else {
-    log_message("⚠️ JSON backup failed");
     return false;
   }
 }
@@ -186,27 +167,18 @@ log_message("║     Database Backup Started             ║");
 log_message("║     " . date('Y-m-d H:i:s') . "              ║");
 log_message("╚════════════════════════════════════════╝");
 
-// Run backups
+// Run MySQL backup
 $mysql_success = backup_mysql($db_host, $db_user, $db_pass, $db_name, $backup_dir);
-$json_success = backup_json_files($backup_dir);
 
 // Cleanup
 cleanup_old_backups($backup_dir, $backup_retention_days);
 
 // Summary
 log_message("📊 Backup Summary:");
-log_message("  MySQL:  " . ($mysql_success ? "✓ Success" : "❌ Failed"));
-log_message("  JSON:   " . ($json_success ? "✓ Success" : "❌ Failed"));
+log_message("  MySQL: " . ($mysql_success ? "✓ Success" : "❌ Failed"));
 
-// Disk space
 $disk_usage = exec("du -sh " . escapeshellarg($backup_dir));
 log_message("  Storage: $disk_usage");
 
-if ($mysql_success && $json_success) {
-  log_message("✅ Backup completed successfully");
-  exit(0);
-} else {
-  log_message("⚠️ Backup completed with errors");
-  exit(1);
-}
+exit($mysql_success ? 0 : 1);
 ?>

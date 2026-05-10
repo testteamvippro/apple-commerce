@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý Đơn Hàng Admin — Apple Store VN</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin-panel.css">
+  <style>
+    .orders-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .panel-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+    }
+
+    .panel-head h2,
+    .panel-head h3 {
+      margin: 0;
+      color: #222;
+    }
+
+    .filters-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 0 1.5rem 1rem;
+    }
+
+    .filter-pill {
+      border: 1px solid #d8dee8;
+      background: white;
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: #445;
+    }
+
+    .filter-pill.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .orders-table-wrap {
+      overflow-x: auto;
+    }
+
+    .customer-cell {
+      display: grid;
+      gap: 0.15rem;
+    }
+
+    .customer-cell strong {
+      color: #222;
+    }
+
+    .customer-cell span {
+      color: #667085;
+      font-size: 0.9rem;
+    }
+
+    .status-select,
+    .tracking-input {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid #d8dee8;
+      border-radius: 8px;
+      font: inherit;
+      background: white;
+    }
+
+    .detail-body {
+      padding: 1.5rem;
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .detail-card {
+      background: #f8faff;
+      border: 1px solid #e8edf7;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .detail-card h4 {
+      margin: 0 0 0.65rem;
+      color: #334155;
+      font-size: 0.95rem;
+    }
+
+    .detail-card p {
+      margin: 0.25rem 0;
+      color: #475467;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .items-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid #edf1f7;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .summary-lines {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: #475467;
+    }
+
+    .summary-line.total {
+      padding-top: 0.65rem;
+      border-top: 1px solid #e5e7eb;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .detail-actions {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .muted-note {
+      color: #667085;
+      font-size: 0.92rem;
+      margin: 0;
+    }
+
+    .empty-state {
+      padding: 2rem 1.5rem;
+      color: #667085;
+      text-align: center;
+    }
+
+    @media (max-width: 1080px) {
+      .orders-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .orders-shell {
+        padding: 1rem;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <h2>🍎 Admin</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html">📊 Bảng Điều Khiển</a>
+        <a href="products.html">📱 Sản Phẩm</a>
+        <a href="orders.html" class="active">📦 Đơn Hàng</a>
+        <a href="analytics.html">📈 Thống Kê</a>
+        <a href="system-status.html">⚙️ Hệ Thống</a>
+        <button id="logout-btn">🚶 Đăng Xuất</button>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1>📦 Đơn Hàng</h1>
+        <div class="header-controls">
+          <span data-auth="user-name" style="color: #333; font-weight: 600;"></span>
+        </div>
+      </header>
+
+      <section class="orders-shell">
+        <section class="panel-card">
+          <div class="panel-head">
+            <h2>Hàng Đợi Đơn Hàng</h2>
+            <button class="action-btn" id="refresh-orders-btn">Làm Mới</button>
+          </div>
+          <div class="filters-row" id="status-filters">
+            <button class="filter-pill active" data-status="all">Tất Cả</button>
+            <button class="filter-pill" data-status="pending">Chờ Xác Nhận</button>
+            <button class="filter-pill" data-status="processing">Đang Xử Lý</button>
+            <button class="filter-pill" data-status="shipped">Đang Giao</button>
+            <button class="filter-pill" data-status="delivered">Đã Giao</button>
+            <button class="filter-pill" data-status="cancelled">Đã Hủy</button>
+          </div>
+          <div class="orders-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Mã Đơn</th>
+                  <th>Khách Hàng</th>
+                  <th>Tổng Tiền</th>
+                  <th>Trạng Thái</th>
+                  <th>Ngày</th>
+                  <th>Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <tr><td colspan="6" style="text-align:center;padding:2rem;">Đang tải...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="panel-card" id="details-panel">
+          <div class="panel-head">
+            <h3>Chi Tiết Đơn Hàng</h3>
+          </div>
+          <div class="detail-body" id="order-details-body">
+            <p class="muted-note">Chọn một đơn hàng để xem thông tin khách hàng và cập nhật trạng thái.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/admin-orders.js"></script>
+</body>
+</html>

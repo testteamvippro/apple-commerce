@@ -145,6 +145,42 @@ const Loader = {
     }
 };
 
+let activePageLoader = null;
+
+function setLoading(isLoading, message = 'Loading...') {
+    const submitButtons = DOM.queryAll('button[type="submit"], input[type="submit"]');
+
+    submitButtons.forEach((button) => {
+        if (!button.dataset.originalText) {
+            button.dataset.originalText = button.textContent;
+        }
+
+        button.disabled = isLoading;
+        if (isLoading && message) {
+            button.textContent = message;
+        } else if (!isLoading && button.dataset.originalText) {
+            button.textContent = button.dataset.originalText;
+        }
+    });
+
+    if (isLoading) {
+        if (!activePageLoader) {
+            activePageLoader = Loader.showFullPage(message);
+        }
+        return;
+    }
+
+    if (activePageLoader) {
+        activePageLoader.remove();
+        activePageLoader = null;
+    }
+}
+
+function showToast(message, type = 'info', duration) {
+    const method = Toast[type] || Toast.info;
+    return method(message, duration);
+}
+
 // ===================== DATA PERSISTENCE =====================
 
 const Storage = {
@@ -412,5 +448,3 @@ const Timing = {
         };
     }
 };
-
-console.log('✅ Utils module loaded');

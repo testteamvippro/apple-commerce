@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Profile - Apple Store</title>
+  <title>Hồ Sơ Của Tôi — Apple Store VN</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/enhancements.css">
   <link rel="stylesheet" href="assets/css/user-system.css">
@@ -11,11 +11,11 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="logo">🍎 Apple Store</a>
+      <a href="/" class="logo">🍎 Apple Store VN</a>
       <div class="nav-links">
-        <a href="/">Home</a>
+        <a href="/">Trang Chủ</a>
         <span data-auth="user-name"></span>
-        <button id="logout-btn" class="btn-secondary">Logout</button>
+        <button id="logout-btn" class="btn-secondary">Đăng Xuất</button>
       </div>
     </div>
   </nav>
@@ -25,22 +25,28 @@
       <aside class="profile-sidebar">
         <div class="profile-card">
           <div class="profile-avatar">👤</div>
-          <h2 id="profile-name">User Name</h2>
+          <h2 id="profile-name">Tên Người Dùng</h2>
           <p id="profile-email">user@example.com</p>
         </div>
 
         <nav class="profile-nav">
+          <a class="nav-item" href="pages/my-orders.html">
+            📦 Đơn Hàng Của Tôi
+          </a>
+          <a class="nav-item" href="pages/notifications.html">
+            🔔 Thông Báo
+          </a>
           <button class="nav-item active" onclick="switchTab('personal')">
-            👤 Personal Info
+            👤 Thông Tin Cá Nhân
           </button>
           <button class="nav-item" onclick="switchTab('addresses')">
-            📍 Addresses
+            📍 Địa Chỉ
           </button>
           <button class="nav-item" onclick="switchTab('security')">
-            🔒 Security
+            🔒 Bảo Mật
           </button>
           <button class="nav-item" onclick="switchTab('preferences')">
-            ⚙️ Preferences
+            ⚙️ Tùy Chọn
           </button>
         </nav>
       </aside>
@@ -48,10 +54,10 @@
       <section class="profile-content">
         <!-- Personal Info Tab -->
         <div id="tab-personal" class="profile-tab active">
-          <h2>Personal Information</h2>
+          <h2>Thông Tin Cá Nhân</h2>
           <form id="personal-form" class="profile-form">
             <div class="form-group">
-              <label>Full Name</label>
+              <label>Họ và Tên</label>
               <input type="text" id="input-name" required>
             </div>
 
@@ -61,82 +67,82 @@
                 <input type="email" id="input-email" required>
               </div>
               <div class="form-group">
-                <label>Phone</label>
+                <label>Số Điện Thoại</label>
                 <input type="tel" id="input-phone" required>
               </div>
             </div>
 
             <div class="form-group">
-              <label>Birth Date</label>
+              <label>Ngày Sinh</label>
               <input type="date" id="input-birthdate">
             </div>
 
-            <button type="submit" class="btn-primary">Save Changes</button>
+            <button type="submit" class="btn-primary">Lưu Thay Đổi</button>
           </form>
         </div>
 
         <!-- Addresses Tab -->
         <div id="tab-addresses" class="profile-tab">
-          <h2>Saved Addresses</h2>
+          <h2>Địa Chỉ Đã Lưu</h2>
           
           <div id="addresses-list" class="addresses-list"></div>
 
-          <button class="btn-primary" onclick="openAddressModal()">+ Add New Address</button>
+          <button class="btn-primary" onclick="openAddressModal()">+ Thêm Địa Chỉ Mới</button>
         </div>
 
         <!-- Security Tab -->
         <div id="tab-security" class="profile-tab">
-          <h2>Security Settings</h2>
+          <h2>Cài Đặt Bảo Mật</h2>
 
           <div class="security-section">
-            <h3>Change Password</h3>
+            <h3>Đổi Mật Khẩu</h3>
             <form id="password-form" class="profile-form">
               <div class="form-group">
-                <label>Current Password</label>
+                <label>Mật Khẩu Hiện Tại</label>
                 <input type="password" id="current-password" required>
               </div>
 
               <div class="form-group">
-                <label>New Password</label>
+                <label>Mật Khẩu Mới</label>
                 <input type="password" id="new-password" required>
               </div>
 
               <div class="form-group">
-                <label>Confirm New Password</label>
+                <label>Xác Nhận Mật Khẩu Mới</label>
                 <input type="password" id="confirm-new-password" required>
               </div>
 
-              <button type="submit" class="btn-primary">Update Password</button>
+              <button type="submit" class="btn-primary">Cập Nhật Mật Khẩu</button>
             </form>
           </div>
 
           <div class="security-section danger-zone">
-            <h3>Danger Zone</h3>
-            <p>Deleting your account is permanent and cannot be undone.</p>
-            <button onclick="showDeleteConfirm()" class="btn-danger">Delete Account</button>
+            <h3>Khu Vực Nguy Hiểm</h3>
+            <p>Xóa tài khoản là vĩnh viễn và không thể phục hồi.</p>
+            <button onclick="showDeleteConfirm()" class="btn-danger">Xóa Tài Khoản</button>
           </div>
         </div>
 
         <!-- Preferences Tab -->
         <div id="tab-preferences" class="profile-tab">
-          <h2>Account Preferences</h2>
+          <h2>Tùy Chọn Tài Khoản</h2>
           
           <div class="preferences-section">
             <label class="checkbox-label">
               <input type="checkbox" checked>
-              Email notifications for orders
+              Thông báo email cho đơn hàng
             </label>
             <label class="checkbox-label">
               <input type="checkbox" checked>
-              Marketing and promotional emails
+              Email khuyến mãi và tiếp thị
             </label>
             <label class="checkbox-label">
               <input type="checkbox" checked>
-              Product recommendations
+              Gợi ý sản phẩm
             </label>
           </div>
 
-          <button class="btn-primary">Save Preferences</button>
+          <button class="btn-primary">Lưu Tùy Chọn</button>
         </div>
       </section>
     </div>
@@ -146,36 +152,36 @@
   <div id="address-modal" class="modal" style="display: none;">
     <div class="modal-content">
       <button class="modal-close" onclick="closeAddressModal()">×</button>
-      <h2>Add Address</h2>
+      <h2>Thêm Địa Chỉ</h2>
       
       <form id="address-form" class="profile-form">
         <div class="form-group">
-          <label>Street Address</label>
+          <label>Số Nhà, Tên Đường</label>
           <input type="text" id="address-street" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>City</label>
+            <label>Thành Phố</label>
             <input type="text" id="address-city" required>
-          </div>
-          <div class="form-group">
-            <label>Postal Code</label>
+            </div>
+            <div class="form-group">
+            <label>Mã Bưu Điện</label>
             <input type="text" id="address-zip" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Country</label>
+          <label>Đất Nước</label>
           <input type="text" id="address-country" required>
         </div>
 
         <label class="checkbox-label">
           <input type="checkbox" id="address-default">
-          Set as default address
+          Đặt làm địa chỉ mặc định
         </label>
 
-        <button type="submit" class="btn-primary btn-full">Save Address</button>
+        <button type="submit" class="btn-primary btn-full">Lưu Địa Chỉ</button>
       </form>
     </div>
   </div>
@@ -218,14 +224,14 @@
       e.preventDefault();
 
       try {
-        setLoading(true, 'Updating profile...');
+        setLoading(true, 'Đang cập nhật hồ sơ...');
         await userProfile.updateProfile(
           document.getElementById('input-name').value,
           document.getElementById('input-email').value,
           document.getElementById('input-phone').value,
           document.getElementById('input-birthdate').value
         );
-        showToast('Profile updated successfully', 'success');
+        showToast('Cập nhật hồ sơ thành công', 'success');
         loadProfileData();
       } catch (error) {
         showToast(error.message, 'error');
@@ -239,13 +245,13 @@
       e.preventDefault();
 
       try {
-        setLoading(true, 'Changing password...');
+        setLoading(true, 'Đang đổi mật khẩu...');
         await userProfile.changePassword(
           document.getElementById('current-password').value,
           document.getElementById('new-password').value,
           document.getElementById('confirm-new-password').value
         );
-        showToast('Password changed successfully', 'success');
+        showToast('Đổi mật khẩu thành công', 'success');
         document.getElementById('password-form').reset();
       } catch (error) {
         showToast(error.message, 'error');
@@ -260,7 +266,7 @@
       const container = document.getElementById('addresses-list');
 
       if (addresses.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: #999;">No addresses saved yet</p>';
+        container.innerHTML = '<p style="text-align: center; color: #999;">Đưa chỉ bưu gửi vẩn chưa có</p>';
         return;
       }
 
@@ -271,8 +277,8 @@
           <p>${addr.city}, ${addr.zip}</p>
           <p>${addr.country}</p>
           <div class="address-actions">
-            <button onclick="editAddress('${addr.id}')" class="btn-secondary btn-sm">Edit</button>
-            <button onclick="deleteAddress('${addr.id}')" class="btn-danger btn-sm">Delete</button>
+            <button onclick="editAddress('${addr.id}')" class="btn-secondary btn-sm">Sửa</button>
+            <button onclick="deleteAddress('${addr.id}')" class="btn-danger btn-sm">Xóa</button>
           </div>
         </div>
       `).join('');
@@ -290,7 +296,7 @@
       e.preventDefault();
 
       try {
-        setLoading(true, 'Adding address...');
+        setLoading(true, 'Đang thêm địa chỉ...');
         await userProfile.addAddress(
           document.getElementById('address-street').value,
           document.getElementById('address-city').value,
@@ -298,7 +304,7 @@
           document.getElementById('address-country').value,
           document.getElementById('address-default').checked
         );
-        showToast('Address added successfully', 'success');
+        showToast('Đã thêm địa chỉ thành công', 'success');
         closeAddressModal();
         loadAddresses();
         document.getElementById('address-form').reset();
@@ -310,11 +316,11 @@
     });
 
     async function deleteAddress(addressId) {
-      if (!confirm('Delete this address?')) return;
+      if (!confirm('Xóa địa chỉ này?')) return;
 
       try {
         await userProfile.removeAddress(addressId);
-        showToast('Address deleted', 'success');
+        showToast('Đã xóa địa chỉ', 'success');
         loadAddresses();
       } catch (error) {
         showToast(error.message, 'error');
@@ -322,7 +328,7 @@
     }
 
     function showDeleteConfirm() {
-      const password = prompt('Enter your password to confirm account deletion:');
+      const password = prompt('Nhập mật khẩu để xác nhận xóa tài khoản:');
       if (password) {
         deleteAccount(password);
       }

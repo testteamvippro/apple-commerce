@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Apple Store</title>
+  <title>Đăng Nhập — Apple Store VN</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/enhancements.css">
   <link rel="stylesheet" href="assets/css/user-system.css">
@@ -11,54 +11,54 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="logo">🍎 Apple Store</a>
+      <a href="/" class="logo">🍎 Apple Store VN</a>
       <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="register.html" class="btn-secondary">Create Account</a>
+        <a href="/">Trang Chủ</a>
+        <a href="register.html" class="btn-secondary">Đăng Ký</a>
       </div>
     </div>
   </nav>
 
   <main class="auth-container">
     <div class="auth-card">
-      <h1>Welcome Back</h1>
-      <p class="auth-subtitle">Sign in to your account</p>
+      <h1>Chào Trở Lại</h1>
+      <p class="auth-subtitle">Đăng nhập vào tài khoản của bạn</p>
 
       <form id="login-form" class="auth-form">
         <div class="form-group">
-          <label for="email">Email Address</label>
+          <label for="email">Địa Chỉ Email</label>
           <input type="email" id="email" name="email" required>
         </div>
 
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Mật Khẩu</label>
           <input type="password" id="password" name="password" required>
         </div>
 
         <div class="form-options">
           <label class="checkbox-label">
             <input type="checkbox" id="remember-me" name="remember-me">
-            Remember me
+            Ghi nhớ tôi
           </label>
-          <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+          <a href="forgot-password.html" class="forgot-link">Quên mật khẩu?</a>
         </div>
 
-        <button type="submit" class="btn-primary btn-full">Sign In</button>
+        <button type="submit" class="btn-primary btn-full">Đăng Nhập</button>
       </form>
 
-      <div class="auth-divider">OR</div>
+      <div class="auth-divider">HOẶC</div>
 
       <div class="social-login">
         <button class="social-btn google-btn">
-          <span>🔗</span> Sign in with Google
+          <span>🔗</span> Đăng nhập với Google
         </button>
         <button class="social-btn facebook-btn">
-          <span>👥</span> Sign in with Facebook
+          <span>👥</span> Đăng nhập với Facebook
         </button>
       </div>
 
       <p class="auth-footer">
-        Don't have an account? <a href="register.html">Create one</a>
+        Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
       </p>
     </div>
   </main>
@@ -81,10 +81,10 @@
       const rememberMe = document.getElementById('remember-me').checked;
 
       try {
-        setLoading(true, 'Signing in...');
+        setLoading(true, 'Đang đăng nhập...');
         const user = await auth.login(email, password, rememberMe);
         
-        showToast('Login successful!', 'success');
+        showToast('Đăng nhập thành công!', 'success');
         setTimeout(() => {
           window.location.href = '/';
         }, 1000);

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/config.php';
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
@@ -6,22 +8,6 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit(0);
-}
-
-$dataDir = '../data/';
-
-function loadJSON($filename) {
-  global $dataDir;
-  $filepath = $dataDir . $filename;
-  if (!file_exists($filepath)) {
-    return [];
-  }
-  return json_decode(file_get_contents($filepath), true) ?? [];
-}
-
-function respond($success, $message, $data = null) {
-  echo json_encode(['success' => $success, 'message' => $message, 'data' => $data]);
-  exit;
 }
 
 function getDateRange($range) {
@@ -50,11 +36,12 @@ function getDateRange($range) {
 
 // GET /api/analytics
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  $range = $_GET['range'] ?? 'week';
-  $dateRange = getDateRange($range);
+  try {
+    $range = $_GET['range'] ?? 'week';
+    $dateRange = getDateRange($range);
 
-  $orders = loadJSON('orders.json');
-  $users = loadJSON('users.json') ?? [];
+    $orders = DataStore::getOrders();
+    $users = DataStore::getUsers() ?? [];
 
   // Filter orders by date range
   $filteredOrders = array_filter($orders, function($order) use ($dateRange) {
@@ -100,12 +87,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $topProducts = array_slice($productSales, 0, 5);
 
   // Customer insights
-  $uniqueCustomers = count(array_unique(array_column($filteredOrders, 'userId')));
+  $customerIds = array_values(array_filter(array_column($filteredOrders, 'userId'), function($userId) {
+    return !empty($userId);
+  }));
+  $uniqueCustomers = count(array_unique($customerIds));
   $newCustomers = count(array_filter($users, function($user) use ($dateRange) {
     $userDate = new DateTime($user['createdAt']);
     return $userDate >= $dateRange['start'] && $userDate <= $dateRange['end'];
   }));
-  $returningCustomers = $uniqueCustomers - $newCustomers;
+  $returningCustomers = max(0, $uniqueCustomers - $newCustomers);
 
   $customerLifetimeValue = $uniqueCustomers > 0 ? $totalRevenue / $uniqueCustomers : 0;
   $averageOrdersPerCustomer = $uniqueCustomers > 0 ? $totalOrders / $uniqueCustomers : 0;
@@ -152,7 +142,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     ]
   ];
 
-  respond(true, 'Analytics data retrieved', $analytics);
+    respond(true, 'Analytics data retrieved', $analytics);
+  } catch (Throwable $error) {
+    respond(false, $error->getMessage(), null, 500);
+  }
 }
 
 respond(false, 'Invalid request');
