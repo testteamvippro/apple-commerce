@@ -58,6 +58,10 @@ async function fetchProducts() {
         products = [];
     }
 
+    // Notify enhancements.js that catalog is ready
+    if (typeof window.onCatalogReady === 'function') window.onCatalogReady(products);
+    document.dispatchEvent(new CustomEvent('catalogLoaded', { detail: products }));
+
     if (currentProduct) {
         currentProduct = products.find(product => String(product.id) === String(currentProduct.id)) || null;
     }
@@ -445,6 +449,8 @@ function renderCards(list, grid) {
     list.forEach(p => {
         const isUsed = p.condition === 'Used';
         const minPrice = getMinPrice(p);
+        const discount = p.discount || 0;
+        const originalPrice = discount > 0 ? Math.round(minPrice / (1 - discount / 100) / 1000) * 1000 : 0;
         const installment = getInstallmentPrice(minPrice);
         const storageList = p.variants ? [...new Set(p.variants.map(v => v.storage))] : [];
         const isCompared = compareList.includes(p.id);
@@ -456,9 +462,11 @@ function renderCards(list, grid) {
         el.innerHTML = `
             <div class="card-img-wrap">
                 ${outOfStock ? '<span class="card-badge badge-oos">Hết Hàng</span>' : lowStock ? `<span class="card-badge badge-low">Còn ${stock}</span>` : (p.badge && p.badge !== 'Sale' ? `<span class="card-badge badge-${p.badge.toLowerCase()}">${p.badge}</span>` : '')}
+                ${discount > 0 ? `<span class="card-discount-pct">-${discount}%</span>` : ''}
                 <span class="condition-tag condition-${(p.condition||'new').toLowerCase()}">${isUsed ? '✅ Đã Dùng' : '🟢 Mới'}</span>
                 <img data-src="${escapeAttr(getProductImage(p))}" src="${blank}" alt="${escapeAttr(p.name)}" data-category="${escapeAttr(p.category)}" class="lazy-img"
                      onerror="handleImageError(this)">
+                <div class="card-quick-view">Xem nhanh</div>
             </div>
             <div class="card-body">
                 <p class="card-cat">${p.category}</p>
@@ -467,6 +475,7 @@ function renderCards(list, grid) {
                 <div class="card-pricing">
                     <div class="price-row">
                         <span class="card-price-sale">${formatVND(minPrice)}</span>
+                        ${originalPrice > 0 ? `<span class="card-price-original">${formatVND(originalPrice)}</span>` : ''}
                     </div>
                     <p class="card-installment">Trả trước: <strong>${formatVND(installment)}</strong></p>
                 </div>

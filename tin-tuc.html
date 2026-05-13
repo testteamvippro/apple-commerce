@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Hay — Apple Store Việt Nam</title>
+    <meta name="description" content="Tin tức công nghệ, đánh giá sản phẩm Apple, wiki kiến thức và khuyến mãi mới nhất từ Apple Store VN.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/enhancements-v2.css">
+    <link rel="stylesheet" href="assets/css/tin-tuc.css">
+</head>
+<body>
+
+<!-- SEARCH TRENDS -->
+<div class="top-trends" aria-label="Xu hướng tìm kiếm">
+    <div class="trend-container">
+        <span>Xu hướng tìm kiếm</span>
+        <a href="index.html#products">iPhone 17 sẵn hàng</a>
+        <a href="index.html#products">MacBook M Series</a>
+        <a href="index.html#products">AirPods 4</a>
+        <a href="index.html#products">Apple Watch</a>
+        <a href="index.html#products">Cốc sạc Apple</a>
+    </div>
+</div>
+
+<!-- FLOATING CALL BUTTON -->
+<a href="tel:+84901234567" class="call-fab" id="callFab" aria-label="Gọi ngay">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.1 2.82 2 2 0 012.11 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    <span>Gọi Ngay</span>
+</a>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/logo.jpeg" height="36" alt="TÁO HOUSE">
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Sản Phẩm</a>
+            <a href="tin-tuc.html" class="nav-link active">Tin Tức</a>
+            <a href="wishlist.html" class="nav-link">Yêu Thích</a>
+            <a href="orders.html" class="nav-link">Đơn Hàng</a>
+            <a href="profile.html" class="nav-link">Tài Khoản</a>
+        </div>
+        <div class="nav-search">
+            <input type="search" id="navSearchInput" placeholder="Tìm tin tức..." autocomplete="off">
+        </div>
+        <div class="nav-actions">
+            <a href="tel:+84901234567" class="nav-action"><strong>1800 3355</strong><span>Hotline</span></a>
+            <a href="orders.html" class="nav-action"><strong>Kiểm tra</strong><span>Đơn hàng</span></a>
+            <a href="profile.html" class="nav-action"><strong>Tài khoản</strong><span>Đăng nhập</span></a>
+        </div>
+        <a href="cart.html" class="nav-cart">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+        <button class="nav-burger" id="navBurger">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+        <a href="index.html">Sản Phẩm</a>
+        <a href="tin-tuc.html">Tin Tức</a>
+        <a href="wishlist.html">Yêu Thích</a>
+        <a href="orders.html">Đơn Hàng</a>
+        <a href="profile.html">Tài Khoản</a>
+        <a href="cart.html">Giỏ Hàng</a>
+    </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="tn-breadcrumb">
+    <div class="container">
+        <a href="index.html">Trang Chủ</a>
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Thông Tin Hay</span>
+    </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="tn-page-header">
+    <div class="container">
+        <h1 class="tn-page-title">Tin Tức Mới Nhất</h1>
+        <p class="tn-page-sub">Cập nhật công nghệ, đánh giá sản phẩm Apple, mẹo hay và khuyến mãi hấp dẫn</p>
+    </div>
+</div>
+
+<!-- CATEGORY FILTER TABS -->
+<div class="tn-tabs-wrap">
+    <div class="container">
+        <div class="tn-tabs" id="tnTabs" role="tablist">
+            <button class="tn-tab active" data-cat="all" role="tab" aria-selected="true">Tất Cả</button>
+            <button class="tn-tab" data-cat="tech" role="tab">Tin Công Nghệ</button>
+            <button class="tn-tab" data-cat="wiki" role="tab">Wiki</button>
+            <button class="tn-tab" data-cat="promo" role="tab">Khuyến Mãi</button>
+            <button class="tn-tab" data-cat="event" role="tab">Sự Kiện</button>
+            <button class="tn-tab" data-cat="review" role="tab">Đánh Giá</button>
+            <button class="tn-tab" data-cat="guide" role="tab">Tư Vấn Chọn Mua</button>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="tn-main">
+    <div class="container">
+        <div class="tn-layout">
+
+            <!-- LEFT: ARTICLES -->
+            <div class="tn-articles">
+
+                <!-- FEATURED ARTICLE -->
+                <article class="tn-featured" data-cat="tech">
+                    <a href="#" class="tn-featured-link">
+                        <div class="tn-featured-img-wrap">
+                            <div class="tn-featured-img tn-img-tech">
+                                <span class="tn-fi-icon">📱</span>
+                            </div>
+                            <span class="tn-featured-badge">Nổi Bật</span>
+                        </div>
+                        <div class="tn-featured-body">
+                            <span class="news-tag news-tag--tech">Tin Công Nghệ</span>
+                            <h2 class="tn-featured-title">iPhone 17 Series ra mắt: Thiết kế hoàn toàn mới, chip A19 Pro mạnh hơn 30%</h2>
+                            <p class="tn-featured-excerpt">Apple vừa chính thức trình làng iPhone 17 Series với 4 phiên bản — iPhone 17, iPhone 17 Plus, iPhone 17 Pro và iPhone 17 Pro Max. Điểm đột phá là chip A19 Pro được sản xuất trên tiến trình 2nm, mạnh hơn A18 Pro tới 30% hiệu năng CPU và 40% GPU.</p>
+                            <div class="tn-meta">
+                                <span class="tn-author">
+                                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    Biên tập viên
+                                </span>
+                                <span class="news-date">12/05/2026 · 8 phút đọc</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- ARTICLE GRID -->
+                <div class="tn-grid" id="tnGrid">
+
+                    <!-- Article 1 -->
+                    <article class="tn-card" data-cat="wiki">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-wiki">
+                                <span>📖</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--wiki">Wiki</span>
+                                <h3>iOS 26 có gì mới? Tổng hợp tính năng nổi bật người dùng cần biết</h3>
+                                <p class="tn-card-excerpt">Giao diện Liquid Glass, Apple Intelligence tiếng Việt, cải tiến Camera Control — tất cả tính năng iOS 26 được tổng hợp chi tiết.</p>
+                                <span class="news-date">11/05/2026 · 5 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="tn-card" data-cat="promo">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-promo">
+                                <span>🎁</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--promo">Khuyến Mãi</span>
+                                <h3>Trade-in iPhone 15, nhận iPhone 17 giảm thêm 2 triệu — Ưu đãi tháng 5</h3>
+                                <p class="tn-card-excerpt">Chương trình thu cũ đổi mới đặc biệt áp dụng đến hết 31/05/2026, hỗ trợ trả góp 0% cùng quà tặng phụ kiện chính hãng.</p>
+                                <span class="news-date">11/05/2026 · 3 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="tn-card" data-cat="review">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-review">
+                                <span>💻</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--review">Đánh Giá</span>
+                                <h3>Review MacBook Air M4 15-inch: Siêu mỏng, pin 18h, hiệu năng vượt trội</h3>
+                                <p class="tn-card-excerpt">Sau 2 tuần sử dụng thực tế, đây là đánh giá toàn diện nhất về MacBook Air M4 — từ thiết kế, màn hình đến hiệu năng xuất video 4K.</p>
+                                <span class="news-date">10/05/2026 · 10 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 4 -->
+                    <article class="tn-card" data-cat="tech">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-tech">
+                                <span>🤖</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--tech">Tin Công Nghệ</span>
+                                <h3>Apple Intelligence chính thức hỗ trợ tiếng Việt từ iOS 26</h3>
+                                <p class="tn-card-excerpt">Apple mở rộng AI cho người dùng Việt Nam với các tính năng Writing Tools, Smart Reply và Image Playground hoàn toàn bằng tiếng Việt.</p>
+                                <span class="news-date">10/05/2026 · 4 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 5 -->
+                    <article class="tn-card" data-cat="wiki">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-wiki">
+                                <span>🎧</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--wiki">Wiki</span>
+                                <h3>AirPods Pro 3 vs AirPods Pro 2: Khác biệt gì? Có nên nâng cấp?</h3>
+                                <p class="tn-card-excerpt">So sánh chi tiết về chống ồn, âm thanh, pin và tính năng mới của AirPods Pro 3 so với thế hệ trước để giúp bạn quyết định đúng.</p>
+                                <span class="news-date">09/05/2026 · 6 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 6 -->
+                    <article class="tn-card" data-cat="guide">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-guide">
+                                <span>🔍</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--guide">Tư Vấn Chọn Mua</span>
+                                <h3>Nên mua iPhone 17 hay iPhone 17 Pro? So sánh chi tiết 2 phiên bản</h3>
+                                <p class="tn-card-excerpt">Phân tích toàn diện camera, chip, màn hình và mức giá giúp bạn chọn đúng phiên bản iPhone 17 phù hợp với nhu cầu và ngân sách.</p>
+                                <span class="news-date">09/05/2026 · 7 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 7 -->
+                    <article class="tn-card" data-cat="event">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-event">
+                                <span>🎉</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--event">Sự Kiện</span>
+                                <h3>Khai trương Apple Store VN chi nhánh Hà Nội — Ưu đãi lên tới 30%</h3>
+                                <p class="tn-card-excerpt">Ngày 15/05/2026, cửa hàng mới tại 123 Cầu Giấy, Hà Nội chính thức mở cửa với hàng loạt ưu đãi đặc biệt dành riêng cho 500 khách hàng đầu tiên.</p>
+                                <span class="news-date">08/05/2026 · 2 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 8 -->
+                    <article class="tn-card" data-cat="tech">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-tech">
+                                <span>⌚</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--tech">Tin Công Nghệ</span>
+                                <h3>Apple Watch Series 11 tích hợp cảm biến glucose theo dõi đường huyết không xâm lấn</h3>
+                                <p class="tn-card-excerpt">Tính năng theo dõi đường huyết liên tục không cần kim châm là bước đột phá lớn nhất của Apple Watch Series 11 — hữu ích cho hàng triệu người dùng.</p>
+                                <span class="news-date">08/05/2026 · 5 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 9 -->
+                    <article class="tn-card" data-cat="wiki">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-wiki">
+                                <span>🖥️</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--wiki">Wiki</span>
+                                <h3>Chip M4 Max là gì? Sức mạnh, thông số kỹ thuật và so sánh với M3 Max</h3>
+                                <p class="tn-card-excerpt">Giải thích toàn bộ về chip M4 Max: kiến trúc CPU/GPU 14 nhân, unified memory 128GB, và lý do nó thống trị bảng xếp hạng benchmark năm 2026.</p>
+                                <span class="news-date">07/05/2026 · 8 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 10 — initially hidden, shown on "load more" -->
+                    <article class="tn-card tn-hidden" data-cat="guide">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-guide">
+                                <span>🛒</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--guide">Tư Vấn Chọn Mua</span>
+                                <h3>iPad Pro M4 vs MacBook Air M4: Mua cái nào tốt hơn cho sinh viên?</h3>
+                                <p class="tn-card-excerpt">Phân tích chi tiết về giá, tính năng, trọng lượng và hệ sinh thái để giúp sinh viên chọn đúng thiết bị Apple phù hợp với học tập và giải trí.</p>
+                                <span class="news-date">07/05/2026 · 6 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 11 -->
+                    <article class="tn-card tn-hidden" data-cat="review">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-review">
+                                <span>📷</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--review">Đánh Giá</span>
+                                <h3>Đánh giá camera iPhone 17 Pro: Zoom 5x, chụp đêm và quay ProRes 8K</h3>
+                                <p class="tn-card-excerpt">Hệ thống camera 5 ống kính của iPhone 17 Pro có thực sự đáng giá? Đánh giá thực tế qua 500+ bức ảnh và 50 đoạn video trong nhiều điều kiện ánh sáng khác nhau.</p>
+                                <span class="news-date">06/05/2026 · 12 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Article 12 -->
+                    <article class="tn-card tn-hidden" data-cat="promo">
+                        <a href="#" class="tn-card-link">
+                            <div class="tn-card-img tn-img-promo">
+                                <span>💳</span>
+                            </div>
+                            <div class="tn-card-body">
+                                <span class="news-tag news-tag--promo">Khuyến Mãi</span>
+                                <h3>Trả góp 0% qua 24 tháng cho tất cả MacBook — Chỉ còn 7 ngày</h3>
+                                <p class="tn-card-excerpt">Chương trình trả góp đặc biệt hợp tác với VPBank và Techcombank cho phép mua MacBook với lãi suất 0% trong 24 tháng, không cần thẻ tín dụng.</p>
+                                <span class="news-date">06/05/2026 · 2 phút đọc</span>
+                            </div>
+                        </a>
+                    </article>
+
+                </div><!-- /tn-grid -->
+
+                <!-- LOAD MORE -->
+                <div class="tn-load-more-wrap">
+                    <button class="tn-load-more-btn" id="tnLoadMore">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        Xem Thêm
+                    </button>
+                </div>
+
+            </div><!-- /tn-articles -->
+
+            <!-- RIGHT: SIDEBAR -->
+            <aside class="tn-sidebar">
+
+                <!-- MOST VIEWED -->
+                <div class="tn-sidebar-box">
+                    <h3 class="tn-sidebar-title">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Xem Nhiều Nhất
+                    </h3>
+                    <ol class="tn-most-viewed">
+                        <li>
+                            <a href="#">
+                                <div class="tn-mv-img tn-img-wiki"><span>📱</span></div>
+                                <div class="tn-mv-info">
+                                    <span class="tn-mv-title">Hướng dẫn kích hoạt Apple Intelligence tiếng Việt trên iPhone</span>
+                                    <span class="news-tag news-tag--wiki">Wiki</span>
+                                    <span class="news-date">11/05/2026</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="tn-mv-img tn-img-wiki"><span>✨</span></div>
+                                <div class="tn-mv-info">
+                                    <span class="tn-mv-title">Cách sử dụng tính năng AI Summary của iOS 26 cực đơn giản</span>
+                                    <span class="news-tag news-tag--wiki">Wiki</span>
+                                    <span class="news-date">10/05/2026</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="tn-mv-img tn-img-guide"><span>🛍️</span></div>
+                                <div class="tn-mv-info">
+                                    <span class="tn-mv-title">Top 5 phụ kiện không thể thiếu cho iPhone 17 mới</span>
+                                    <span class="news-tag news-tag--guide">Tư Vấn</span>
+                                    <span class="news-date">09/05/2026</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="tn-mv-img tn-img-review"><span>💻</span></div>
+                                <div class="tn-mv-info">
+                                    <span class="tn-mv-title">MacBook M4 Pro vs Dell XPS 15: Đâu là lựa chọn tốt cho dân văn phòng?</span>
+                                    <span class="news-tag news-tag--review">Đánh Giá</span>
+                                    <span class="news-date">08/05/2026</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="tn-mv-img tn-img-tech"><span>🔖</span></div>
+                                <div class="tn-mv-info">
+                                    <span class="tn-mv-title">AirTag 2 ra mắt: Thiết kế mới, pin lâu hơn, chống nước IP68</span>
+                                    <span class="news-tag news-tag--tech">Tin Công Nghệ</span>
+                                    <span class="news-date">07/05/2026</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- TRENDING TAGS -->
+                <div class="tn-sidebar-box">
+                    <h3 class="tn-sidebar-title">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                        Chủ Đề Hot
+                    </h3>
+                    <div class="tn-tag-cloud">
+                        <button class="tn-tag-btn" onclick="filterByTag('tech')">iPhone 17</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('wiki')">iOS 26</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('wiki')">MacBook M4</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('wiki')">AirPods Pro 3</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('tech')">Apple Watch S11</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('tech')">iPad Pro M4</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('tech')">Apple Intelligence</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('promo')">Trade-in</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('guide')">Trả Góp 0%</button>
+                        <button class="tn-tag-btn" onclick="filterByTag('wiki')">Chip M4</button>
+                    </div>
+                </div>
+
+                <!-- SUBSCRIBE BOX -->
+                <div class="tn-sidebar-box tn-subscribe-box">
+                    <h3 class="tn-sidebar-title">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+                        Nhận Tin Mới
+                    </h3>
+                    <p>Đăng ký nhận bản tin công nghệ và ưu đãi Apple mỗi tuần.</p>
+                    <form class="tn-subscribe-form" onsubmit="handleSubscribe(event)">
+                        <input type="email" placeholder="Email của bạn" required>
+                        <button type="submit">Đăng Ký</button>
+                    </form>
+                </div>
+
+                <!-- PROMO BANNER SIDEBAR -->
+                <div class="tn-sidebar-promo">
+                    <div class="tn-sidebar-promo-inner">
+                        <span class="tn-sp-tag">Ưu Đãi Đặc Biệt</span>
+                        <h4>iPhone 17 Pro Max</h4>
+                        <p>Trả góp 0% · Giao trong 24h</p>
+                        <a href="index.html#products" class="tn-sp-btn">Xem Ngay →</a>
+                        <div class="tn-sp-emoji">📱</div>
+                    </div>
+                </div>
+
+            </aside><!-- /tn-sidebar -->
+
+        </div><!-- /tn-layout -->
+    </div>
+</main>
+
+<!-- ADVANCED FOOTER (same as index.html) -->
+<footer class="footer-advanced">
+    <div class="footer-hotline-strip">
+        <div class="container">
+            <div class="footer-hotline-inner">
+                <div class="footer-hotline-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.1 2.82 2 2 0 012.11 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                    <span>Tổng đài liên hệ <small>(08h00 – 22h00)</small></span>
+                </div>
+                <div class="footer-hotline-grid">
+                    <a href="tel:18003355" class="footer-hotline-btn"><span class="hb-dept">Tư Vấn Mua Hàng</span><span class="hb-num">📞 18003355</span></a>
+                    <a href="tel:18003355" class="footer-hotline-btn"><span class="hb-dept">Hỗ Trợ Kỹ Thuật</span><span class="hb-num">📞 18003355</span></a>
+                    <a href="tel:08383355777" class="footer-hotline-btn"><span class="hb-dept">Tư Vấn Bảo Hành</span><span class="hb-num">📞 0838335577</span></a>
+                    <a href="tel:0911335577" class="footer-hotline-btn"><span class="hb-dept">Phản Ánh Dịch Vụ</span><span class="hb-num">📞 0911335577</span></a>
+                    <a href="tel:0832335577" class="footer-hotline-btn"><span class="hb-dept">Tuyển Dụng</span><span class="hb-num">📞 0832335577</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-main-body">
+        <div class="container">
+            <div class="footer-cols">
+                <div class="footer-col footer-col-brand">
+                    <div class="footer-adv-logo">
+                        <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 436.8 0 290.1 0 290.1c0-5.8 0-11.6.6-17.5 0-142.5 87.5-218.1 174.8-218.1 69.3 0 120.3 45.8 161.7 45.8 39.5 0 101.1-48.4 179.6-48.4 14.4 0 107.7 1.3 172 78.3zm-230.5-97.7c26.4-32.1 45.2-76.9 45.2-121.7 0-6.4-.6-13.5-1.9-19.2-43.5 1.9-97.7 27-131.7 62.5-25.1 27-48.4 71.9-48.4 117.3 0 6.9 1.3 13.9 1.9 16.1 2.5.6 6.4 1.3 10.3 1.3 39.5 0 89.9-25.4 124.6-56.3z"/></svg>
+                        Apple Store VN
+                    </div>
+                    <p>Thiết bị Apple chính hãng. Giao nhanh toàn quốc, kiểm tra máy trước khi nhận, hỗ trợ trả góp 0%.</p>
+                    <div class="footer-social">
+                        <a href="#" class="footer-social-btn zalo" aria-label="Zalo"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><text x="2" y="18" font-size="14" font-weight="bold">Z</text></svg></a>
+                        <a href="#" class="footer-social-btn facebook" aria-label="Facebook"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+                        <a href="#" class="footer-social-btn youtube" aria-label="YouTube"><svg width="16" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20.06 12 20.06 12 20.06s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg></a>
+                        <a href="#" class="footer-social-btn instagram" aria-label="Instagram"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                        <a href="#" class="footer-social-btn tiktok" aria-label="TikTok"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.86 4.86 0 01-1.01-.07z"/></svg></a>
+                    </div>
+                    <div class="footer-certs">
+                        <div class="cert-badge"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Đã Thông Báo<br>Bộ Công Thương</span></div>
+                        <div class="cert-badge dmca"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>DMCA<br>PROTECTED</span></div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5 class="footer-col-title">Liên hệ &amp; mua hàng</h5>
+                    <p class="footer-contact-label">Chăm sóc khách hàng:</p>
+                    <a href="mailto:cskh@applestorexvn.com" class="footer-email-link">cskh@applestorexvn.com</a>
+                    <h5 class="footer-col-title" style="margin-top:20px">Chính sách bán hàng</h5>
+                    <ul class="footer-policy-list">
+                        <li><a href="#">&#9658; Chính Sách Giao Hàng</a></li>
+                        <li><a href="#">&#9658; Chính Sách Bảo Hành</a></li>
+                        <li><a href="#">&#9658; Chính Sách Đổi Trả</a></li>
+                        <li><a href="#">&#9658; Chính Sách Bảo Mật</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5 class="footer-col-title">Thông tin, dịch vụ khác</h5>
+                    <ul class="footer-policy-list">
+                        <li><a href="#">&#9658; Khách hàng doanh nghiệp</a></li>
+                        <li><a href="#">&#9658; Trả góp</a></li>
+                        <li><a href="#">&#9658; Thu Cũ Đổi Mới</a></li>
+                        <li><a href="tin-tuc.html">&#9658; Thông tin hay</a></li>
+                        <li><a href="#">&#9658; Tuyển dụng</a></li>
+                    </ul>
+                    <h5 class="footer-col-title" style="margin-top:20px">Hình thức thanh toán</h5>
+                    <div class="footer-payment-grid">
+                        <div class="pay-badge pay-visa">VISA</div>
+                        <div class="pay-badge pay-mc">MC</div>
+                        <div class="pay-badge pay-atm">ATM</div>
+                        <div class="pay-badge pay-onepay">OnePay</div>
+                        <div class="pay-badge pay-vnpay">VNPAY</div>
+                        <div class="pay-badge pay-momo">MoMo</div>
+                        <div class="pay-badge pay-qr">QR Pay</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom-bar">
+        <div class="container footer-bottom-inner">
+            <p>© 2026 Apple Store VN. Không liên kết chính thức với Apple Inc. Tất cả tên sản phẩm là thương hiệu của Apple Inc.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Điều khoản sử dụng</a>
+                <a href="#">Chính sách bảo mật</a>
+                <a href="#">Sơ đồ trang</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top-btn" id="scrollTopBtn" aria-label="Lên đầu trang">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- CHAT WIDGET -->
+<div class="chat-widget" id="chatWidget">
+    <button class="chat-toggle-btn" id="chatToggle" aria-label="Hỗ trợ khách hàng">
+        <span class="chat-icon-default"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+        <span class="chat-icon-close" style="display:none">✕</span>
+        <span class="chat-badge">1</span>
+    </button>
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-panel-header">
+            <strong>Hỗ Trợ Khách Hàng</strong>
+            <small>Trả lời trong vài phút</small>
+        </div>
+        <div class="chat-options">
+            <a href="tel:18003355" class="chat-option chat-option--phone"><span class="co-icon">📞</span><div><strong>Gọi Hotline</strong><span>18003355 (miễn phí)</span></div></a>
+            <a href="#" class="chat-option chat-option--zalo"><span class="co-icon">💬</span><div><strong>Chat Zalo</strong><span>Phản hồi nhanh</span></div></a>
+            <a href="#" class="chat-option chat-option--fb"><span class="co-icon">📘</span><div><strong>Facebook Messenger</strong><span>Liên hệ fanpage</span></div></a>
+            <a href="orders.html" class="chat-option chat-option--order"><span class="co-icon">📦</span><div><strong>Kiểm tra đơn hàng</strong><span>Tra cứu trạng thái</span></div></a>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 22px;border-radius:8px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99999;"></div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/enhancements.js"></script>
+<script>
+/* ── Cart badge from localStorage ── */
+(function() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const total = cart.reduce((s, i) => s + (i.qty || 1), 0);
+        const badge = document.getElementById('cartBadge');
+        if (badge) badge.textContent = total;
+    } catch(e){}
+})();
+
+/* ── Mobile nav burger ── */
+(function() {
+    const burger = document.getElementById('navBurger');
+    const mobile = document.getElementById('navMobile');
+    if (burger && mobile) {
+        burger.addEventListener('click', () => mobile.classList.toggle('open'));
+    }
+})();
+
+/* ── Category filter tabs ── */
+(function() {
+    const tabs = document.getElementById('tnTabs');
+    const grid = document.getElementById('tnGrid');
+    const featured = document.querySelector('.tn-featured');
+    if (!tabs) return;
+
+    tabs.addEventListener('click', function(e) {
+        const btn = e.target.closest('.tn-tab');
+        if (!btn) return;
+        const cat = btn.dataset.cat;
+
+        // Active tab
+        tabs.querySelectorAll('.tn-tab').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Filter cards
+        document.querySelectorAll('.tn-card').forEach(card => {
+            const match = cat === 'all' || card.dataset.cat === cat;
+            card.style.display = match ? '' : 'none';
+        });
+
+        // Featured article
+        if (featured) {
+            featured.style.display = (cat === 'all' || featured.dataset.cat === cat) ? '' : 'none';
+        }
+
+        // Load more button visibility
+        const loadMoreBtn = document.getElementById('tnLoadMore');
+        if (loadMoreBtn) loadMoreBtn.style.display = cat !== 'all' ? 'none' : '';
+    });
+})();
+
+/* ── Tag cloud filter ── */
+window.filterByTag = function(cat) {
+    const tab = document.querySelector('.tn-tab[data-cat="' + cat + '"]');
+    if (tab) tab.click();
+    document.querySelector('.tn-articles').scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+/* ── Load More ── */
+(function() {
+    const btn = document.getElementById('tnLoadMore');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+        const hidden = document.querySelectorAll('.tn-card.tn-hidden');
+        hidden.forEach(c => c.classList.remove('tn-hidden'));
+        btn.style.display = 'none';
+    });
+})();
+
+/* ── Subscribe form ── */
+window.handleSubscribe = function(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.textContent = '✓ Đăng ký thành công! Cảm ơn bạn.';
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+    e.target.reset();
+};
+
+/* ── Search in news page ── */
+(function() {
+    const inp = document.getElementById('navSearchInput');
+    if (!inp) return;
+    inp.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && inp.value.trim()) {
+            window.location.href = 'index.html?q=' + encodeURIComponent(inp.value.trim());
+        }
+    });
+})();
+</script>
+</body>
+</html>
